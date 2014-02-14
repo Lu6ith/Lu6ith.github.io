@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>A Variadic Utility in JavaScript • Wojciech L-Łapiński
+    </title>
+    <link rel="author" href="https://plus.google.com/118101720568210469158/posts">
+    <link rel="alternate" href="/feed.xml" type="application/rss+xml" title="My thoughts materialised into a blog">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,700italic|Source+Code+Pro">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/fontello.css">
+    <script>(function(d){d.className=d.className.replace(/\bno-js\b/,'js');})(document.documentElement);</script>
+    <!--if lt IE 9script(src='//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js')
+    -->
+  </head>
+  <body class="article"><a href="/" title="Wojciech L-Łapiński" class="home icon-home back-to-home"></a>
+    <header class="header container"><small class="header-metadata"><span class="timestamp">December 29, 2013</span></small>
+      <h1 class="header-title">A Variadic Utility in JavaScript</h1>
+    </header>
+    <main role="main" class="content container">
+      <article class="content-article"><p>A variadic function is a type of function which accepts a variable number of arguments. In JavaScript, every function can be variadic and it’s commonplace to see snippets of code using <code>Array.prototype.slice.call(arguments, 1)</code> to get a unlimited number of trailing arguments back as an array. You can also find many instances where you would even slice all the arguments, for the sake of manipulation and array concatenation.</p>
+<p>The ability to get all the functions trailing arguments natively would be a great inclusion to the language, and in fact <a href="http://ariya.ofilabs.com/2013/03/es6-and-rest-parameter.html">it’s already in the works with ES6</a>. For now though, we could be stuck typing this out manually. Or we can write ourselves a <a href="https://github.com/blakeembrey/variadic">little utility function</a> to speed up our workflow.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> __slice = <span class="built_in">Array</span>.prototype.slice;
+
+<span class="comment">/**
+ * Generate a function that accepts a variable number of arguments as the last
+ * function argument.
+ *
+ * @param  {Function} fn
+ * @return {Function}
+ */</span>
+<span class="keyword">var</span> variadic = <span class="function"><span class="keyword">function</span> <span class="params">(fn)</span> {</span>
+  <span class="keyword">var</span> count = <span class="built_in">Math</span>.max(fn.length - <span class="number">1</span>, <span class="number">0</span>);
+
+  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+    <span class="keyword">var</span> args = __slice.call(<span class="built_in">arguments</span>, <span class="number">0</span>, count);
+
+    <span class="comment">// Enforce the array length, in case we don't have enough array padding.</span>
+    args.length = count;
+    args.push(__slice.call(<span class="built_in">arguments</span>, count));
+
+    <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, args);
+  };
+};
+</code></pre>
+<p>The snippet above accepts a single function as its argument and returns a new function that will pass in every additional argument as an array to the last parameter.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> fn = variadic(<span class="function"><span class="keyword">function</span> <span class="params">(args)</span> {</span>
+  <span class="keyword">return</span> args;
+});
+
+fn(); <span class="comment">//=&gt; []</span>
+fn(<span class="string">'a'</span>); <span class="comment">//=&gt; ['a']</span>
+fn(<span class="string">'a'</span>, <span class="string">'b'</span>) <span class="comment">//=&gt; ['a', 'b'];</span>
+
+<span class="keyword">var</span> fn = variadic(<span class="function"><span class="keyword">function</span> <span class="params">(a, b, args)</span> {</span>
+  <span class="keyword">return</span> { a: a, b: b, args: args };
+});
+
+fn(); <span class="comment">//=&gt; { a: undefined, b: undefined, args: [] }</span>
+fn(<span class="string">'a'</span>); <span class="comment">//=&gt; { a: 'a', b: undefined, args: [] }</span>
+fn(<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>, <span class="string">'e'</span>); <span class="comment">//=&gt; { a: 'a', b: 'b', args: ['c', 'd', 'e'] }</span>
+</code></pre>
+<p>When might you use this in practice though? One example is the Backbone.js event triggering mechanism which accepts a variable number of arguments.</p>
+<pre><code class="lang-javascript">trigger: <span class="function"><span class="keyword">function</span><span class="params">(name)</span> {</span>
+  <span class="keyword">if</span> (!<span class="keyword">this</span>._events) <span class="keyword">return</span> <span class="keyword">this</span>;
+  <span class="keyword">var</span> args = slice.call(<span class="built_in">arguments</span>, <span class="number">1</span>);
+  <span class="comment">// Trigger some events with the args.</span>
+  <span class="keyword">return</span> <span class="keyword">this</span>;
+},
+</code></pre>
+<p>Could be rewritten to simply be:</p>
+<pre><code class="lang-javascript">trigger: variadic(<span class="function"><span class="keyword">function</span> <span class="params">(name, args)</span> {</span>
+  <span class="keyword">if</span> (!<span class="keyword">this</span>._events) <span class="keyword">return</span> <span class="keyword">this</span>;
+  <span class="comment">// Trigger some events with the args.</span>
+  <span class="keyword">return</span> <span class="keyword">this</span>;
+}),
+</code></pre>
+</article>
+      <div class="content-share"><a href="https://twitter.com/JonasKrop" data-show-count="false" class="twitter-follow-button">Follow @JonasKrop</a><a href="https://twitter.com/share" data-url="http://www.armblog.pl/articles/javascript-variadic-function/" data-text="A Variadic Utility in JavaScript" data-via="JonasKrop" class="twitter-share-button">Tweet</a></div>
+      <div id="disqus_thread"></div>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        
+      </script>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        
+      </script>
+      <script>
+        var disqus_shortname = 'myarmblog'; // required: replace example with your forum shortname
+        
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+    </main>
+    <footer role="contentinfo" class="footer"><a href="/" title="Wojciech L-Łapiński" class="icon-home back-to-home"></a>
+      <p class="container">&copy; 2014&nbsp;<a href="http://armblog.pl">Wojciech L-Łapiński</a>&nbsp;&mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
+    </footer><a href="https://github.com/Lu6ith/blog" class="fork-me ir">Fork me on Github</a>
+  </body>
+</html>

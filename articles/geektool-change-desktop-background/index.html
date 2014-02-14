@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Change Desktop Background with Shell and GeekTool • Wojciech L-Łapiński
+    </title>
+    <link rel="author" href="https://plus.google.com/118101720568210469158/posts">
+    <link rel="alternate" href="/feed.xml" type="application/rss+xml" title="My thoughts materialised into a blog">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,700italic|Source+Code+Pro">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/fontello.css">
+    <script>(function(d){d.className=d.className.replace(/\bno-js\b/,'js');})(document.documentElement);</script>
+    <!--if lt IE 9script(src='//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js')
+    -->
+  </head>
+  <body class="article"><a href="/" title="Wojciech L-Łapiński" class="home icon-home back-to-home"></a>
+    <header class="header container"><small class="header-metadata"><span class="timestamp">October 30, 2011</span></small>
+      <h1 class="header-title">Change Desktop Background with Shell and GeekTool</h1>
+    </header>
+    <main role="main" class="content container">
+      <article class="content-article"><p>Make an AppleScript and run it using the “Shell” geeklet provided in GeekTool. First, we’ll make the ‘AppleScript’. So, open the AppleScript Editor app to get started. Copy and paste this code:</p>
+<pre><code>tell application &quot;Finder&quot;
+  set desktop picture to POSIX file &quot;file://localhost/  yourimage.png&quot;
+end tell
+</code></pre><p>Then, replace <code>file://localhost/yourimage.png</code> with the location to your image. It must be an absolute path to the image, so you might want to make a folder just for your GeekTool scripts somewhere. For example, I want to use the Tron background image, so I used <code>file://localhost/Users/blakeembrey/Dropbox/Application Settings/GeekTool/TronLegacy.png</code>. I am currently storing my GeekTool scripts in an ‘Applications’ folder inside my documents, as you can see. Once I finished that, I saved the script as <code>setTronBackground</code> in the same folder.</p>
+<p>Now in Geektool, drag the shell geeklet to the desktop from GeekTool. It doesn’t matter where it goes since it isn’t going to be seen anyway. Set the ‘group’ you would like it to be a part of, then set the ‘Refresh Every’ to 0. For the shell code, we are going to use something like</p>
+<pre><code>osascript ~/Documents/Applications/GeekTool/setTronBackground.scpt
+</code></pre><p>Notice we can use the relative location here, and that we need .scpt for the file extension. Finally, save and close GeekTool. Now every time you change the theme you will also change the background image.</p>
+</article>
+      <div class="content-share"><a href="https://twitter.com/JonasKrop" data-show-count="false" class="twitter-follow-button">Follow @JonasKrop</a><a href="https://twitter.com/share" data-url="http://www.armblog.pl/articles/geektool-change-desktop-background/" data-text="Change Desktop Background with Shell and GeekTool" data-via="JonasKrop" class="twitter-share-button">Tweet</a></div>
+      <div id="disqus_thread"></div>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        
+      </script>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        
+      </script>
+      <script>
+        var disqus_shortname = 'myarmblog'; // required: replace example with your forum shortname
+        
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+    </main>
+    <footer role="contentinfo" class="footer"><a href="/" title="Wojciech L-Łapiński" class="icon-home back-to-home"></a>
+      <p class="container">&copy; 2014&nbsp;<a href="http://armblog.pl">Wojciech L-Łapiński</a>&nbsp;&mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
+    </footer><a href="https://github.com/Lu6ith/blog" class="fork-me ir">Fork me on Github</a>
+  </body>
+</html>

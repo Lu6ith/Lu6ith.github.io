@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Introduction to Browserify • Wojciech L-Łapiński
+    </title>
+    <link rel="author" href="https://plus.google.com/118101720568210469158/posts">
+    <link rel="alternate" href="/feed.xml" type="application/rss+xml" title="My thoughts materialised into a blog">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,700italic|Source+Code+Pro">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/fontello.css">
+    <script>(function(d){d.className=d.className.replace(/\bno-js\b/,'js');})(document.documentElement);</script>
+    <!--if lt IE 9script(src='//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js')
+    -->
+  </head>
+  <body class="article"><a href="/" title="Wojciech L-Łapiński" class="home icon-home back-to-home"></a>
+    <header class="header container"><small class="header-metadata"><span class="timestamp">September 12, 2013</span></small>
+      <h1 class="header-title">Introduction to Browserify</h1>
+    </header>
+    <main role="main" class="content container">
+      <article class="content-article"><blockquote>
+<p>require(‘modules’) in the browser.</p>
+</blockquote>
+<p><a href="https://github.com/substack/node-browserify">Browserify</a> is a development tool that allows us to write node.js-style modules that compile for use in the browser. Just like node, we write our modules in separate files, exporting external methods and properties using the <code>module.exports</code> and <code>exports</code> variables. We can even require other modules using the <code>require</code> function, and if we omit the relative path it’ll resolve to the module in the <code>node_modules</code> directory.</p>
+<h2 id="getting-started">Getting Started</h2>
+<p>Getting started with the browserify command-line tool requires node.js and npm installed.</p>
+<pre><code class="lang-bash">npm install browserify -g
+</code></pre>
+<h2 id="our-first-module">Our First Module</h2>
+<p><strong>multiply.js:</strong></p>
+<pre><code class="lang-javascript">module.exports = <span class="function"><span class="keyword">function</span> <span class="params">(a, b)</span> {</span>
+  <span class="keyword">return</span> a * b;
+};
+</code></pre>
+<p><strong>square.js:</strong></p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> multiply = <span class="built_in">require</span>(<span class="string">'./multiply'</span>);
+
+module.exports = <span class="function"><span class="keyword">function</span> <span class="params">(n)</span> {</span>
+  <span class="keyword">return</span> multiply(n, n);
+};
+</code></pre>
+<p><strong>index.js:</strong></p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> square = <span class="built_in">require</span>(<span class="string">'./square'</span>);
+
+console.log(square(<span class="number">125</span>)); <span class="comment">//=&gt; 15625</span>
+</code></pre>
+<p>Now we have written a couple of modules that require each other, we can run browserify and generate the file for use in the browser:</p>
+<pre><code class="lang-bash">browserify index.js -o bundle.js
+</code></pre>
+<p>Now that we have a <code>bundle.js</code> file that bundled the three modules we wrote, we can add a single script tag reference to it into our html page and it’ll execute in the browser automatically resolving <code>require</code> calls. <code>&lt;script src=&quot;bundle.js&quot;&gt;&lt;/script&gt;</code> and we should see <code>15625</code> logged to the JavaScript console.</p>
+<h2 id="npm-browserify">NPM + Browserify</h2>
+<p>Since browserify implements the node.js module resolve algorithm, we can easily use npm to install modules from the package manager and use them inside the browser. There are lots of modules on npm that are made for tools such as browserify, but even more exciting is watching modules that were specifically written for node running in a browser environment without any effort. Let’s install <code>underscore</code> and include it in our script.</p>
+<pre><code class="lang-bash">npm install underscore --save
+</code></pre>
+<pre><code class="lang-javascript"><span class="keyword">var</span> _ = <span class="built_in">require</span>(<span class="string">'underscore'</span>);
+
+_.each([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="function"><span class="keyword">function</span> <span class="params">(n)</span> {</span>
+  console.log(n); <span class="comment">//=&gt; 1, 2, 3</span>
+});
+</code></pre>
+<h2 id="node-core-modules">Node-core Modules</h2>
+<p>The biggest attraction of browserify over similar tools would have to be the inclusion of <a href="https://github.com/substack/node-browserify#compatibility">node.js core modules</a>. Modules such as <code>url</code>, <code>path</code>, <code>stream</code>, <code>events</code> and <code>http</code> have all been ported for use in the browser. We can’t do everything that node can do, but we can do everything a browser can do using node.js style code.</p>
+<p>The most immediately obvious core modules that are useful on the client-side are <code>querystring</code>, <code>url</code> and <code>path</code>. By requiring these core modules, we can easily parse and resolves urls, query strings and paths in a client script. On top of that, the <code>process</code>, <code>Buffer</code>, <code>__dirname</code>, <code>__filename</code> and <code>global</code> variables are all populated with Browserify. That means we can use <code>process.nextTick</code> to easily invoke a function on the next event loop (with full cross-browser support). A special <code>process.browser</code> flag is also set in browserify builds, so we can do a quick check to see if the script is running in a browser environment (as opposed to node.js for all the cross-environment module developers).</p>
+<h2 id="transforms">Transforms</h2>
+<p>The most powerful feature in Browserify are <a href="https://github.com/substack/node-browserify#list-of-source-transforms">source transforms</a>. A source transform is a stream injected between the resolved module and the content that is returned. A simple use case for using a source transform is compiling CoffeeScript to JavaScript. Using <a href="https://github.com/substack/coffeeify">coffeeify</a> there is no longer a need for precompilation steps, it just works.</p>
+<p>There are loads more transforms and you can easily write your own. Some transforms I find myself using regularly are <a href="https://github.com/substack/brfs">brfs</a> (inlines file contents), <a href="https://github.com/epeli/node-hbsfy">hbsfy</a> (precompile Handlebars templates, <em>better performance and smaller footprint</em>), <a href="https://github.com/hughsk/uglifyify">uglifyify</a> (uglify bundled modules with UglifyJS2) and <a href="https://github.com/hughsk/envify">envify</a> (use environment variables within modules).</p>
+<h2 id="advanced-options">Advanced Options</h2>
+<h3 id="debug">Debug</h3>
+<p>Using the <code>-d</code> flag with Browserify will enable source map support. Source maps allow us to view the file in all its natural, multiple file glory. Just make sure you have source maps enabled in your dev tools, and debugging compiled scripts will become 100x easier.</p>
+<h3 id="stand-alone">Stand-alone</h3>
+<p>With the <code>-s &lt;name&gt;</code> option, we can create a bundle for public API consumption with other browser compile and runtime tools. It uses a UMD snippet to define an AMD module, CommonJS module and even falls back to aliasing the name to the <code>window</code> global.</p>
+<h3 id="external">External</h3>
+<p>In a production website environment, you’ll probably want to cut down on duplicate code being included by different modules. This can be done by using the <code>-x</code> flag, which specifies a module that should not be bundled directly with the build and instead required from the page itself. Combine this with the <code>-r</code> flag to explicitly require modules into a bundle, we can factor out common module dependencies and create a separate bundle.</p>
+<h3 id="browserify-shim">Browserify Shim</h3>
+<p>You’ll probably find some module that can’t simply be required because it was written for the browser environment. Conviently, we can write a simple polyfill using <code>module.exports = window.$</code> or similar. But what if it has dependencies in the global that we have used <code>require</code> with? We could alter the snippet a bit more and alias required modules, but even easier is the <a href="https://github.com/thlorenz/browserify-shim">browserify-shim</a> module that was written specifically with this purpose in mind.</p>
+<h3 id="grunt-task">Grunt task</h3>
+<p>Lots of people use Grunt everyday to run their build scripts, and browserify is no exception. <a href="https://github.com/jmreidy/grunt-browserify">Grunt-browserify</a> provides an awesome grunt configuration for setting up your browserify builds and even comes with some extra sugar on top, such as a bundled <code>browserify-shim</code> config option.</p>
+<h3 id="browser-field-package-json-">Browser Field (package.json)</h3>
+<p>Browserify also supports the <a href="https://gist.github.com/shtylman/4339901">browser</a> field in <code>package.json</code> files. This allows module developers to specify specific files that should be used in browser builds, in the case that the module has node-specific code that can’t or shouldn’t be browserified.</p>
+<h2 id="next-steps">Next Steps</h2>
+<p>This has been a very brief introduction to Browserify and I haven’t even covered everything that is possible. The <a href="https://github.com/substack/node-browserify">browserify docs</a> cover plenty of information and additional flags, so definitely take a quick look. Feel free to leave a comment with any issues you have, I’d love to help out and write a follow up post that covers more uses.</p>
+</article>
+      <div class="content-share"><a href="https://twitter.com/JonasKrop" data-show-count="false" class="twitter-follow-button">Follow @JonasKrop</a><a href="https://twitter.com/share" data-url="http://www.armblog.pl/articles/introduction-to-browserify/" data-text="Introduction to Browserify" data-via="JonasKrop" class="twitter-share-button">Tweet</a></div>
+      <div id="disqus_thread"></div>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        
+      </script>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        
+      </script>
+      <script>
+        var disqus_shortname = 'myarmblog'; // required: replace example with your forum shortname
+        
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+    </main>
+    <footer role="contentinfo" class="footer"><a href="/" title="Wojciech L-Łapiński" class="icon-home back-to-home"></a>
+      <p class="container">&copy; 2014&nbsp;<a href="http://armblog.pl">Wojciech L-Łapiński</a>&nbsp;&mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
+    </footer><a href="https://github.com/Lu6ith/blog" class="fork-me ir">Fork me on Github</a>
+  </body>
+</html>

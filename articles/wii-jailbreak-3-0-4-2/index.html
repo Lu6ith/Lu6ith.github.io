@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Jailbreak Wii (Softmod) 3.0 – 4.2 • Wojciech L-Łapiński
+    </title>
+    <link rel="author" href="https://plus.google.com/118101720568210469158/posts">
+    <link rel="alternate" href="/feed.xml" type="application/rss+xml" title="My thoughts materialised into a blog">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,700italic|Source+Code+Pro">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/fontello.css">
+    <script>(function(d){d.className=d.className.replace(/\bno-js\b/,'js');})(document.documentElement);</script>
+    <!--if lt IE 9script(src='//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js')
+    -->
+  </head>
+  <body class="article"><a href="/" title="Wojciech L-Łapiński" class="home icon-home back-to-home"></a>
+    <header class="header container"><small class="header-metadata"><span class="timestamp">April 12, 2011</span></small>
+      <h1 class="header-title">Jailbreak Wii (Softmod) 3.0 – 4.2</h1>
+    </header>
+    <main role="main" class="content container">
+      <article class="content-article"><p><img src="http://d.pr/i/SvZy+" alt="Homebrew Channel"></p>
+<p><strong>IMPORTANT: This information is for research and academic purposes only! This info is not to be abused! I am not responsible for any damage that you may create!</strong></p>
+<p>Although I did successfully complete this guide on my own Wii console, it does not mean that this same process will successfully jailbreak your Wii console. Make sure you read and complete all steps appropriately.</p>
+<p><strong>Prerequisites</strong></p>
+<ul>
+<li>Check your Wii version. This can be done by going to <code>Wii Settings -&gt; Top Right Corner -&gt; Your Wii&#39;s Firmware &amp; Region</code></li>
+<li>Jailbreak file [3.0-4.1] – <a href="http://www.mediafire.com/?rv3w0le0nrf7mm1">Mediafire</a> (Password is <code>wiihacks</code>)</li>
+<li>Jailbreak file [4.2] – <a href="http://www.mediafire.com/?9ulaa2elqvu7z4z">Mediafire</a> (Password is <code>wiihacks</code>)</li>
+<li>SD card with 1GB or more.</li>
+</ul>
+<p><strong>Preparation</strong></p>
+<ol>
+<li>Format your SD card to FAT32 or FAT16</li>
+<li>Make Sure WiiConnect 24 is OFF</li>
+<li>Unzip the previously downloaded jailbreak pack and place the files/folders onto the root of your SD card.</li>
+<li>Always launch md5summer.exe to verify that the files have been downloaded properly and they are not corrupted.</li>
+</ol>
+<p><strong>Step 1 – Installing Homebrew Channel and Bootmii</strong></p>
+<p><strong>[3.0-4.1]</strong> Go to Wii Options, then go to <code>Data Management -&gt; Channels -&gt; SD Card</code>, click on <code>Bannerbomb channel</code>, you will get a message saying “Load boot.elf/dol?”, select ‘Yes’ and the Hackmii installer will run.</p>
+<p><strong>[4.2]</strong> Click the SD Card Icon on the Wii Menu – “Load boot.elf/dol?”, select ‘Yes’ and the Hackmii installer will run.</p>
+<p>In the Hackmii Installer, make sure to install the Homebrew Channel. If you can, also install Bootmii as boot2. When installing bootmii select prepare SD card, then install. “Bootmii as IOS” is installed automatically.</p>
+<p>(If you receive an error stating “No vulnerable IOS”, <a href="http://www.wiihacks.com/recommended-faqs-guides-tutorials-only/29080-hackmii-fix-no-vulnerable-ios-black-screen-scam-freeze.html">complete these steps</a>.</p>
+<p><strong>Step 2 – Backup Your Wii’s NAND (required)</strong></p>
+<p>It is highly recommended to make a NAND Backup with bootmii as it can save you from 99% of bricks. That is, if you can install bootmii as boot2. You’ll need a SD Card with at least 550 MB free on it. Also, note bootmii can be picky about SD Cards so its best to avoid generic ones. The 2GB Sandisk SD Card is recommended.</p>
+<p><strong>a)</strong> Place the SD Card into your wii and power it on. If bootmii was installed as boot2, the bootmii screen should automatically appear, if it was installed as an IOS, then you’ll have to go to homebrew channel, press “home” on your wiimote then select “Launch Bootmii”</p>
+<p><strong>b)</strong> Navigate using the power/reset buttons on the front of your console and select the icon with the gears on it. If the console buttons don’t work, you’ll have to use a gamecube controller.</p>
+<p>Power = Browse
+Reset = Select</p>
+<p><strong>c)</strong> Now select the icon that has the Green arrow pointing to a SD Card but from the chip. Then follow the on-screen instructions to backup your NAND.</p>
+<p><strong>d)</strong> In 10 – 15 minutes, the NAND Backup should be complete. You may get a few bad blocks but any number of bad blocks under 80 is normal and fine. Once all is done, you can exit bootmii.</p>
+<p><strong>e)</strong> Remove the SD Card from your wii and insert into your PC, backup the ‘bootmii’ folder, the ‘NAND.bin’ file and ‘key.bin’ file from your sd card onto a safe place on your PC. Once these files/folders are on your PC, delete them from your SD Card. If you do not and bootmii as boot2 is installed, it will load everytime!</p>
+<p><strong>DO NOT LOSE YOUR NAND.BIN OR KEYS.BIN</strong></p>
+<p>If you were to ever fully brick the wii, just copy the bootmii folder and ‘NAND.bin’ from your PC onto the root of your SD Card. Then repeat parts <code>a</code>, <code>b</code> &amp; <code>c</code> but this time selecting the icon that points to the chip. While <code>bootmii</code>/<code>boot2</code> can save you from full bricks, <code>bootmii</code>/<code>IOS</code> cannot! It is not recommended to use <code>bootmii</code> as an <code>IOS</code> to restore your NAND! If you can only install as an <code>IOS</code>, your nand backup is still useful, keep it safe.</p>
+<p><strong>Step 3 – Modding your Wii (the jailbreak)</strong></p>
+<p><strong>[3.0-4.1 Only]</strong></p>
+<p><strong>a)</strong> Put the SD card into the Wii</p>
+<p><strong>b)</strong> Open The Homebrew channel and select Multi-Mod Manager. Go to <code>Install &amp; Patch iOS36 -&gt; Express Install</code> - When completed press <code>B</code> to go back into main menu go to the bottom choice <code>Load Another IOS</code> and select <code>IOS236</code> (this should already be selected).</p>
+<p>In Multi-Mod Manager go into <code>Wad Manager</code>, it should display these wads.</p>
+<p>(These are to softmod your Wii)</p>
+<p>  iOS60-[6174]-Patched.wad
+  cIOS249[56]-rev20.wad
+  cIOS250[57]-rev65535.wad
+  cIOS223[37+38]-rev4.wad
+  cIOS222[38]-rev4.wad</p>
+<p>(These are to install the extra IOS files)</p>
+<p>  iOS53-64-v5663.wad
+  iOS55-64-v5663.wad
+  iOS56-64-v5662.wad
+  iOS57-64-v5919.wad
+  iOS58-64-v6176.wad</p>
+<p><strong>c)</strong> Press 1 on Wiimote to install all these wads at once, Press A to confirm. If you get an error do not exit until they all install correctly. Retry installing</p>
+<p>After it installs correctly press the HOME button on Wiimote until you’re back in main Multi-Mod Manager Menu.</p>
+<p><strong>[4.2 Only]</strong></p>
+<p><strong>a)</strong> SD card in the Wii
+<strong>b)</strong> Open The Homebrew channel and select Multi-Mod Manager. Go to <code>Install &amp; Patch iOS36 -&gt; Express Install</code> - Once completed press B to go back into main menu go to the bottom choice <code>Load Another IOS</code> and select <code>IOS236</code> (this should already be selected).</p>
+<p>In Multi-Mod Manager go into Wad Manager, it should display these wads.</p>
+<p>(These are to softmod your wii)</p>
+<p>  iOS70-[6687]-Patched.wad
+  cIOS249[56]-rev20.wad
+  cIOS250[57]-rev65535.wad
+  cIOS222[38]-rev4.wad
+  cIOS223[37+38]-rev4.wad</p>
+<p>(These are the IOS your Wii needs)</p>
+<p>  iOS56-64-v5662.wad
+  iOS57-64-v5919.wad
+  iOS58-64-v6176.wad</p>
+<p><strong>c)</strong> Press 1 on wiimote to install all these wads at once, Press A to confirm. If you get an error do not exit until they install correctly. Retry installing.</p>
+<p>After they have all installed correctly press the B button on Wiimote until you’re back in main Multi-Mod Manager Menu.</p>
+<p><strong>Step 4 – Installing Priiloader</strong></p>
+<p><code>HBC -&gt; Load up MMM</code>. Make sure where it says Load another ios [IOS236 is Selected]</p>
+<p><strong>a)</strong> <code>Multi-Mod Manager -&gt; App Manager -&gt; Select Priiloader</code></p>
+<p><strong>b)</strong> It Should Load up Press + to Install</p>
+<p><strong>c)</strong> Your Wii should reboot into Homebrew Channel after the installation. Press the HOME button and power off your Wii. Hold reset on the console while turning it on to boot into Priiloader. Go to System Menu Hacks and enable ‘Block Disc Updates’ &amp; ‘Block Online Updates’, select ‘Save Settings’ when finished. Press B on the Wiimote to go back to the main menu, next go to Settings and use the d-pad to set Autoboot: System Menu. Then select Save Settings. Press B to go back to the main menu.</p>
+<p><strong>d)</strong> In the main menu in priiloader, select Launch Title and select the HomeBrew Channel to check if its working properly.</p>
+<p><strong>Step 5 – Getting HBC to use iOS58 for USB2 Support</strong></p>
+<p>From the Homebrew channel load up the hackmii installer and reinstall the Homebrew channel. This will make it use ios58 for USB2 Support.To check your HBC is using iOS58 press the home button when in HBC and it should tell you in top right corner.</p>
+<p><strong>Step 6 – Install more apps</strong></p>
+<p>This is what the whole jailbreak process was for, installing custom apps. Here is a list of some awesome apps, starting at my favourite.</p>
+<ul>
+<li><a href="http://www.wiimc.org/downloads/">WiiMC</a> – Wii Media Center</li>
+<li><a href="http://www.wiihacks.com/other-faq-guides-tutorials/68251-guide-homebrew-browser.html">Homebrew Browser</a> - Wii Homebrew App Store</li>
+<li>Update the <a href="http://www.wiihacks.com/general-homebrew-hack-issues/67034-update-shopping-channel-v20-guide.html">Wii Shopping Channel</a> to v20</li>
+<li><a href="http://www.wiihacks.com/recommended-faqs-guides-tutorials-only/47802-play-gamecube-backups-your-wii.html">Play Gamecube games</a> on your Wii</li>
+<li><a href="http://www.wiihacks.com/emulators-downloads/">Emulators</a></li>
+<li><a href="http://www.wiihacks.com/other-faq-guides-tutorials/66235-ftpii-guide.html">Wii FTP</a></li>
+</ul>
+<p><strong>And you are done!</strong></p>
+<p>Special thanks to author, <em>Cile</em>, for the original guide over at <a href="http://www.wiihacks.com/recommended-faqs-guides-tutorials-only/69690-softmod-3-0-4-2-e-u-j-wiis.html">WiiHacks</a>.</p>
+</article>
+      <div class="content-share"><a href="https://twitter.com/JonasKrop" data-show-count="false" class="twitter-follow-button">Follow @JonasKrop</a><a href="https://twitter.com/share" data-url="http://www.armblog.pl/articles/wii-jailbreak-3-0-4-2/" data-text="Jailbreak Wii (Softmod) 3.0 – 4.2" data-via="JonasKrop" class="twitter-share-button">Tweet</a></div>
+      <div id="disqus_thread"></div>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        
+      </script>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        
+      </script>
+      <script>
+        var disqus_shortname = 'myarmblog'; // required: replace example with your forum shortname
+        
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+    </main>
+    <footer role="contentinfo" class="footer"><a href="/" title="Wojciech L-Łapiński" class="icon-home back-to-home"></a>
+      <p class="container">&copy; 2014&nbsp;<a href="http://armblog.pl">Wojciech L-Łapiński</a>&nbsp;&mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
+    </footer><a href="https://github.com/Lu6ith/blog" class="fork-me ir">Fork me on Github</a>
+  </body>
+</html>

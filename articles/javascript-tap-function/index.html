@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>The Tap Utility in JavaScript • Wojciech L-Łapiński
+    </title>
+    <link rel="author" href="https://plus.google.com/118101720568210469158/posts">
+    <link rel="alternate" href="/feed.xml" type="application/rss+xml" title="My thoughts materialised into a blog">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,700italic|Source+Code+Pro">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/fontello.css">
+    <script>(function(d){d.className=d.className.replace(/\bno-js\b/,'js');})(document.documentElement);</script>
+    <!--if lt IE 9script(src='//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js')
+    -->
+  </head>
+  <body class="article"><a href="/" title="Wojciech L-Łapiński" class="home icon-home back-to-home"></a>
+    <header class="header container"><small class="header-metadata"><span class="timestamp">January 4, 2014</span></small>
+      <h1 class="header-title">The Tap Utility in JavaScript</h1>
+    </header>
+    <main role="main" class="content container">
+      <article class="content-article"><p>There are numerous functional JavaScript libraries out in the public, many of which include a <a href="http://underscorejs.org/#tap">utility called tap</a>. This simplistic utility serves a single purpose, to call a function with a value and return the value back to us. However, the usefulness of this utility is rarely understood and can even be confusing when looking at examples.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> tap = <span class="function"><span class="keyword">function</span> <span class="params">(value, fn)</span> {</span>
+  fn(value);
+  <span class="keyword">return</span> value;
+};
+</code></pre>
+<p>The code above depicts the simplicity of the function, but when would we ever use it? It’s really only useful when we want to chain the value between calls. You can pass in any function and you will always receive the passed in value as the return, regardless of the function return value.</p>
+<pre><code class="lang-javascript"><span class="comment">// Pop a value of the end of an array, in reality we'd use an `invoke` utility.</span>
+tap([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>], <span class="function"><span class="keyword">function</span> <span class="params">(array)</span> {</span>
+  <span class="comment">// Pop always returns the value it removed from the end of the array.</span>
+  <span class="keyword">return</span> array.pop();
+});
+<span class="comment">//=&gt; [1, 2, 3]</span>
+</code></pre>
+</article>
+      <div class="content-share"><a href="https://twitter.com/JonasKrop" data-show-count="false" class="twitter-follow-button">Follow @JonasKrop</a><a href="https://twitter.com/share" data-url="http://www.armblog.pl/articles/javascript-tap-function/" data-text="The Tap Utility in JavaScript" data-via="JonasKrop" class="twitter-share-button">Tweet</a></div>
+      <div id="disqus_thread"></div>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        
+      </script>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        
+      </script>
+      <script>
+        var disqus_shortname = 'myarmblog'; // required: replace example with your forum shortname
+        
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+    </main>
+    <footer role="contentinfo" class="footer"><a href="/" title="Wojciech L-Łapiński" class="icon-home back-to-home"></a>
+      <p class="container">&copy; 2014&nbsp;<a href="http://armblog.pl">Wojciech L-Łapiński</a>&nbsp;&mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
+    </footer><a href="https://github.com/Lu6ith/blog" class="fork-me ir">Fork me on Github</a>
+  </body>
+</html>

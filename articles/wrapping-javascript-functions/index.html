@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Wrapping JavaScript Functions • Wojciech L-Łapiński
+    </title>
+    <link rel="author" href="https://plus.google.com/118101720568210469158/posts">
+    <link rel="alternate" href="/feed.xml" type="application/rss+xml" title="My thoughts materialised into a blog">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,700italic|Source+Code+Pro">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/fontello.css">
+    <script>(function(d){d.className=d.className.replace(/\bno-js\b/,'js');})(document.documentElement);</script>
+    <!--if lt IE 9script(src='//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js')
+    -->
+  </head>
+  <body class="article"><a href="/" title="Wojciech L-Łapiński" class="home icon-home back-to-home"></a>
+    <header class="header container"><small class="header-metadata"><span class="timestamp">January 13, 2014</span></small>
+      <h1 class="header-title">Wrapping JavaScript Functions</h1>
+    </header>
+    <main role="main" class="content container">
+      <article class="content-article"><p>In the modern age of web applications and development, it seems we are constantly adding side effects to every part of our applications - everything from analytics to event triggering. Unfortunately in a lot of cases, we tend to cram this functionality into function with the useful stuff. As programmers, this causes numerous issues down the line - especially when it comes to refactoring and code comprehensibility.</p>
+<p>A simple way to keep this functionality apart from the core code is create a helpful utility function to manage it for you. And to keep our code readability, we shouldn’t allow anything advanced that can break our understanding of the original function. That means we don’t want to be able to alter the original function, but we can still trigger any side effects we need to inline with the original function.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> before = <span class="function"><span class="keyword">function</span> <span class="params">(before, fn)</span> {</span>
+  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+    before.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);
+    <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);
+  };
+};
+</code></pre>
+<p>To use the function, we can pass any function in as the first argument and the original function we want to wrap as the second argument. For example, we could do <code>before(logger, add)</code>. Even without seeing the <code>logger</code> or <code>add</code> functions, we can imagine what each do. And because we are passing all the arguments to the side effect function, we can do stuff with the information.</p>
+<p>One thing I find myself doing is checking what arguments were passed to a certain function. To do this now, we can <code>before(console.log.bind(console), fn)</code>. Now, let’s implement the reverse functionality.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> after = <span class="function"><span class="keyword">function</span> <span class="params">(fn, after)</span> {</span>
+  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+    <span class="keyword">var</span> result = fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);
+    after.call(<span class="keyword">this</span>, result);
+    <span class="keyword">return</span> result;
+  };
+};
+</code></pre>
+<p>This is extremely similar to the first example. The main difference is that the first function passed in is the side effect, but now we have the side effect running after our wrapped function. Adapting the previous example, we can now do <code>after(add, logger)</code> and the logger will execute after the result is computed with the same arguments.</p>
+<p>One cool thing we could actually do, is to run argument validation in the <code>before</code> function. Consider this.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> validAdd = before(<span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="built_in">arguments</span>.length; i++) {
+    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="built_in">arguments</span>[i] !== <span class="string">'number'</span>) {
+      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'Expected a number'</span>);
+    }
+  }
+}, add);
+</code></pre>
+<p>We can also put these two functions together and create a new utility. This one allows us to pass both a function before and after our core functionality. E.g. <code>around(logger, add, logger)</code>.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> around = <span class="function"><span class="keyword">function</span> <span class="params">(under, fn, over)</span> {</span>
+  <span class="keyword">return</span> before(under, after(fn, over));
+};
+</code></pre>
+<h2 id="allow-unlimited-before-and-after-functions">Allow unlimited before and after functions</h2>
+<p>We can also adapt the functions to accept a variable number of arguments as the <code>before</code> and <code>after</code> functions. However, we can’t do this to the <code>around</code> utility since we wouldn’t know which argument is the core function.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> __slice = <span class="built_in">Array</span>.prototype.slice;
+
+<span class="keyword">var</span> before = <span class="function"><span class="keyword">function</span> <span class="params">(<span class="comment">/* ...before, fn */</span>)</span> {</span>
+  <span class="keyword">var</span> fn     = <span class="built_in">arguments</span>[<span class="built_in">arguments</span>.length - <span class="number">1</span>];
+  <span class="keyword">var</span> before = __slice.call(<span class="built_in">arguments</span>, -<span class="number">1</span>);
+
+  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; before.length; i++) {
+      before[i].apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);
+    }
+
+    <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);
+  };
+};
+
+<span class="keyword">var</span> after = <span class="function"><span class="keyword">function</span> <span class="params">(fn <span class="comment">/*, ...after */</span>)</span> {</span>
+  <span class="keyword">var</span> after = __slice.call(<span class="built_in">arguments</span>, <span class="number">1</span>);
+
+  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+    <span class="keyword">var</span> result = fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);
+
+    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; after.length; i++) {
+      after.call(<span class="keyword">this</span>, result);
+    }
+
+    <span class="keyword">return</span> result;
+  };
+};
+</code></pre>
+<h2 id="advanced-wrapping-utility">Advanced wrapping utility</h2>
+<p>So far we’ve seen some function wrapping utilities that are purely for side effects. They have no capability to alter the main function arguments or change the function result. For something more advanced than trigger side-effects, we might to want to use something a little different.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> __slice = <span class="built_in">Array</span>.prototype.slice;
+
+<span class="keyword">var</span> wrap = <span class="function"><span class="keyword">function</span> <span class="params">(fn, wrap)</span> {</span>
+  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+    <span class="keyword">return</span> wrap.apply(<span class="keyword">this</span>, [fn].concat(__slice.call(<span class="built_in">arguments</span>)));
+  };
+};
+</code></pre>
+<p>This is actually pretty similar the <code>wrap</code> function used in Prototype.js. It allows us to call a custom wrapper function with the original function and all the arguments. But, how do we even use this?</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> addAndMultiplyBy2 = wrap(add, <span class="function"><span class="keyword">function</span> <span class="params">(originalFn, a, b)</span> {</span>
+  <span class="keyword">return</span> <span class="number">2</span> * originalFn(a, b);
+});
+</code></pre>
+</article>
+      <div class="content-share"><a href="https://twitter.com/JonasKrop" data-show-count="false" class="twitter-follow-button">Follow @JonasKrop</a><a href="https://twitter.com/share" data-url="http://www.armblog.pl/articles/wrapping-javascript-functions/" data-text="Wrapping JavaScript Functions" data-via="JonasKrop" class="twitter-share-button">Tweet</a></div>
+      <div id="disqus_thread"></div>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        
+      </script>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        
+      </script>
+      <script>
+        var disqus_shortname = 'myarmblog'; // required: replace example with your forum shortname
+        
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+    </main>
+    <footer role="contentinfo" class="footer"><a href="/" title="Wojciech L-Łapiński" class="icon-home back-to-home"></a>
+      <p class="container">&copy; 2014&nbsp;<a href="http://armblog.pl">Wojciech L-Łapiński</a>&nbsp;&mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
+    </footer><a href="https://github.com/Lu6ith/blog" class="fork-me ir">Fork me on Github</a>
+  </body>
+</html>

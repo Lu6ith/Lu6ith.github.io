@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Simplify Local Development with Dnsmasq • Wojciech L-Łapiński
+    </title>
+    <link rel="author" href="https://plus.google.com/118101720568210469158/posts">
+    <link rel="alternate" href="/feed.xml" type="application/rss+xml" title="My thoughts materialised into a blog">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,700italic|Source+Code+Pro">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/fontello.css">
+    <script>(function(d){d.className=d.className.replace(/\bno-js\b/,'js');})(document.documentElement);</script>
+    <!--if lt IE 9script(src='//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js')
+    -->
+  </head>
+  <body class="article"><a href="/" title="Wojciech L-Łapiński" class="home icon-home back-to-home"></a>
+    <header class="header container"><small class="header-metadata"><span class="timestamp">April 24, 2012</span></small>
+      <h1 class="header-title">Simplify Local Development with Dnsmasq</h1>
+    </header>
+    <main role="main" class="content container">
+      <article class="content-article"><p>Ever wanted to be able to set up your local domains instantly and never have to worry about your <code>/etc/hosts</code> again? Me too! A bit of looking around and I discovered a wealth of information about a small <em>DNS Forwarder</em> called DNSMASQ.</p>
+<p>So, this is great. We have our solution - it’s a tiny program barely taking 700KB of RAM, and it’s a cinch to set up. By the end of this post, you will have a working TLD for use with your local development applications. No more playing with your <code>/etc/hosts</code> file every time you want to add a new domain.</p>
+<p>In this tutorial, I will be focusing on Mac as it is the OS I use, however, the instructions should be fairly similar on linux. It has been tested in Mountain Lion and should work without a hiccup all the way down to Leopard (probably lower).</p>
+<p>First of all, if you haven’t installed it already, we will install <strong>homebrew</strong> - the missing package manager for OS X. To install, just follow the instructions available on <a href="http://mxcl.github.com/homebrew/">the homepage</a> or just copy and paste this snippet into terminal:</p>
+<pre><code>/usr/bin/ruby -e &quot;$(/usr/bin/curl -fksSL https://raw.github.com/mxcl/homebrew/master/Library/Contributions/install_homebrew.rb)&quot;
+</code></pre><p>Once brew is installed, we’ll install dnsmasq using <code>brew install dnsmasq</code></p>
+<p>Next, let’s activate dnsmasq. Homebrew should have output some hints on how to get started, but in case you missed it  should be something along these lines.</p>
+<pre><code>cp /usr/local/Cellar/dnsmasq/2.57/dnsmasq.conf.example /usr/local/etc/dnsmasq.conf
+sudo cp /usr/local/Cellar/dnsmasq/2.57/homebrew.mxcl.dnsmasq.plist /Library/LaunchDaemons
+sudo launchctl load -w /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist
+</code></pre><p>Brilliant, now let’s modify our configuration file at <code>/usr/local/etc/dnsmasq.conf</code>:</p>
+<p>We’ll add two rules. The first is the address, or TLD, we will listen to. In this case we will use <code>.dev</code>, but you can use anything (except <code>.local</code> - <a href="http://www.justincarmony.com/blog/2011/07/27/mac-os-x-lion-etc-hosts-bugs-and-dns-resolution/">not a good idea</a>)</p>
+<pre><code>address=/dev/127.0.0.1
+listen-address=127.0.0.1
+</code></pre><p>To start and stop dnsmasq, simply use</p>
+<pre><code>sudo launchctl stop homebrew.mxcl.dnsmasq &amp;&amp; sudo launchctl start homebrew.mxcl.dnsmasq
+</code></pre><p>However, I found it even easier to just kill the script in the Activity Monitor. For the final step, add <code>127.0.0.1</code> as a name server in <code>System Preferences -&gt; Network -&gt; Advanced -&gt; DNS</code>. You can add it along with some other DNS records, just make sure it’s at the top. For example, I use Google’s Public DNS - <code>8.8.8.8</code> and <code>8.8.4.4</code>.</p>
+<p>Now in whichever language you are writing in, you should be able to easily set up your virtual hosts for use on the <code>.dev</code> TLD. You should be even able to see your name server setup using <code>scutil --dns</code>.</p>
+<p>References:</p>
+<ul>
+<li><a href="http://serverfault.com/a/164215">ServerFault Question</a></li>
+<li><a href="http://blog.philippklaus.de/2012/02/install-dnsmasq-locally-on-mac-os-x-via-homebrew/">Install DNSmasq locally on Mac OS X via Homebrew</a></li>
+</ul>
+</article>
+      <div class="content-share"><a href="https://twitter.com/JonasKrop" data-show-count="false" class="twitter-follow-button">Follow @JonasKrop</a><a href="https://twitter.com/share" data-url="http://www.armblog.pl/articles/local-development-with-dnsmasq/" data-text="Simplify Local Development with Dnsmasq" data-via="JonasKrop" class="twitter-share-button">Tweet</a></div>
+      <div id="disqus_thread"></div>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        
+      </script>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        
+      </script>
+      <script>
+        var disqus_shortname = 'myarmblog'; // required: replace example with your forum shortname
+        
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+    </main>
+    <footer role="contentinfo" class="footer"><a href="/" title="Wojciech L-Łapiński" class="icon-home back-to-home"></a>
+      <p class="container">&copy; 2014&nbsp;<a href="http://armblog.pl">Wojciech L-Łapiński</a>&nbsp;&mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
+    </footer><a href="https://github.com/Lu6ith/blog" class="fork-me ir">Fork me on Github</a>
+  </body>
+</html>

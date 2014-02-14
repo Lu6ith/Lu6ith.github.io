@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Enabling Generators in Mocha • Wojciech L-Łapiński
+    </title>
+    <link rel="author" href="https://plus.google.com/118101720568210469158/posts">
+    <link rel="alternate" href="/feed.xml" type="application/rss+xml" title="My thoughts materialised into a blog">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,700italic|Source+Code+Pro">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/fontello.css">
+    <script>(function(d){d.className=d.className.replace(/\bno-js\b/,'js');})(document.documentElement);</script>
+    <!--if lt IE 9script(src='//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js')
+    -->
+  </head>
+  <body class="article"><a href="/" title="Wojciech L-Łapiński" class="home icon-home back-to-home"></a>
+    <header class="header container"><small class="header-metadata"><span class="timestamp">February 3, 2014</span></small>
+      <h1 class="header-title">Enabling Generators in Mocha</h1>
+    </header>
+    <main role="main" class="content container">
+      <article class="content-article"><p>For the last week, I’ve been working on a new project that uses node 0.11 and generators. Aside from the numerous benefits with generators in the application, I also integrated generators into my test suite. By using <a href="http://visionmedia.github.io/mocha/">mocha</a> and <a href="https://github.com/visionmedia/co">co</a>, you can also enable support for generator functions in your test suite.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> co       = <span class="built_in">require</span>(<span class="string">'co'</span>);
+<span class="keyword">var</span> mocha    = <span class="built_in">require</span>(<span class="string">'mocha'</span>);
+<span class="keyword">var</span> Runnable = mocha.Runnable;
+<span class="keyword">var</span> run      = Runnable.prototype.run;
+
+<span class="comment">/**
+ * Override the Mocha function runner and enable generator support with co.
+ *
+ * @param {Function} fn
+ */</span>
+Runnable.prototype.run = <span class="function"><span class="keyword">function</span> <span class="params">(fn)</span> {</span>
+  <span class="keyword">if</span> (<span class="keyword">this</span>.fn.constructor.name === <span class="string">'GeneratorFunction'</span>) {
+    <span class="keyword">this</span>.fn   = co(<span class="keyword">this</span>.fn);
+    <span class="keyword">this</span>.sync = !(<span class="keyword">this</span>.async = <span class="literal">true</span>);
+  }
+
+  <span class="keyword">return</span> run.call(<span class="keyword">this</span>, fn);
+};
+</code></pre>
+<p>Save the snippet of code above into a JavaScript file and pass the filename to <code>mocha.opts</code>.</p>
+<pre><code>mocha --harmony-generators --require test/support/co-mocha
+</code></pre><p>Writing tests using generators has made testing even more enjoyable, so I decided to release the <a href="https://github.com/blakeembrey/co-mocha">code on Github</a> with some accompanying tests and test coverage.</p>
+</article>
+      <div class="content-share"><a href="https://twitter.com/JonasKrop" data-show-count="false" class="twitter-follow-button">Follow @JonasKrop</a><a href="https://twitter.com/share" data-url="http://www.armblog.pl/articles/mocha-test-harmony-generators/" data-text="Enabling Generators in Mocha" data-via="JonasKrop" class="twitter-share-button">Tweet</a></div>
+      <div id="disqus_thread"></div>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        
+      </script>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        
+      </script>
+      <script>
+        var disqus_shortname = 'myarmblog'; // required: replace example with your forum shortname
+        
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+    </main>
+    <footer role="contentinfo" class="footer"><a href="/" title="Wojciech L-Łapiński" class="icon-home back-to-home"></a>
+      <p class="container">&copy; 2014&nbsp;<a href="http://armblog.pl">Wojciech L-Łapiński</a>&nbsp;&mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
+    </footer><a href="https://github.com/Lu6ith/blog" class="fork-me ir">Fork me on Github</a>
+  </body>
+</html>

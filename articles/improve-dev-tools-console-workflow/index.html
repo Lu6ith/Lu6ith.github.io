@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Improving Your JavaScript Console Skills • Wojciech L-Łapiński
+    </title>
+    <link rel="author" href="https://plus.google.com/118101720568210469158/posts">
+    <link rel="alternate" href="/feed.xml" type="application/rss+xml" title="My thoughts materialised into a blog">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,700italic|Source+Code+Pro">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/fontello.css">
+    <script>(function(d){d.className=d.className.replace(/\bno-js\b/,'js');})(document.documentElement);</script>
+    <!--if lt IE 9script(src='//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js')
+    -->
+  </head>
+  <body class="article"><a href="/" title="Wojciech L-Łapiński" class="home icon-home back-to-home"></a>
+    <header class="header container"><small class="header-metadata"><span class="timestamp">July 5, 2013</span></small>
+      <h1 class="header-title">Improving Your JavaScript Console Skills</h1>
+    </header>
+    <main role="main" class="content container">
+      <article class="content-article"><p><em>This article is meant as an introduction to some of the features of the JavaScript console. It is not all encompassing, but I will try to cover all the features I find myself using and others that I could not live without. All the features mentioned will be tailored to the Chrome Dev Tools, but I will try to mention any differences with other modern browsers.</em></p>
+<h2 id="accessing-the-dev-tools">Accessing the dev tools</h2>
+<p>If you have never used the developer tools before, you may have problems finding them. The easiest and simplest way to access the developer tools is by using the keyboard shortcuts. On Mac, this is <code>Command + Option + I</code>. On Windows, it’ll be <code>F12</code>. In Safari, you’ll have to enable the developer tools under preferences first.</p>
+<p>You can also inspect an element directly by right clicking and choosing <code>Inspect Element</code>, and you can always access the dev tools from the menu shortcuts.</p>
+<h2 id="console-functions">Console Functions</h2>
+<p>The console global is an object that provides some useful shortcuts for debugging JavaScript. Arguably the most used function is <code>console.log</code>, but did you know the console also provides <code>info</code>, <code>warn</code>, <code>debug</code> and <code>error</code> functions. They operate in the same way as the <code>log</code> function, but the visual output will be altered and <code>error</code> output an accompanying stack trace.</p>
+<p><img src="/articles/improve-dev-tools-console-workflow/console-functions.png" alt="Console Functions Demonstrated"></p>
+<p>All these functions accepts an unlimited number of parameters, and will be formatted for output in the console in different ways - depending on the object types there are. For example, DOM nodes will output as a representation of the node from the elements tab while array-like objects will appear as an array.</p>
+<p>However, this added formatting convenience can sometimes be a pain. This is especially relevant when you want to see the underlying structure of a DOM node or an object. You may not even know it, but you have probably needed <code>console.dir</code> at some point because it does exactly this.</p>
+<p><img src="/articles/improve-dev-tools-console-workflow/console-dir-vs-log.png" alt="Difference between console.log and console.dir"></p>
+<h2 id="manipulating-nodes-from-the-elements-tab">Manipulating Nodes from the Elements Tab</h2>
+<p>We’ve all been there - playing with a DOM node in the elements tab, but now we need to use JavaScript on it. We could do a regular DOM traversal to find it, but then we have to remember the ID or tag name, maybe even some obscure combination involving classes. If you switch to the Console tab on the Developer Tools, you can always grab the latest node you had selected using the <code>$0</code> variable shortcut. In Chrome, this can even be expanded upon up to <code>$4</code> - that’s the latest five elements you had selected.</p>
+<p><code>$0</code> - <code>$4</code> are direct references to the DOM nodes, so you can start manipulating it directly by grabbing the inner text (<code>$0.innerText</code>) or passing it to jQuery for manipulation (<code>$($0)</code>). While on the subject, did you know Chrome also provides an alias to <code>document.querySelectorAll</code> under <code>$$</code> and <code>document.querySelector</code> under <code>$</code> (if jQuery hasn’t overwritten it of course).</p>
+<h2 id="other-useful-console-functions">Other Useful Console Functions</h2>
+<p>Don’t despair yet, Chrome still has a wealth of functions at your debugging disposal. For your timing purposes, there is <code>console.time</code> and <code>console.timeEnd</code>. Each accept a single string as the name of the timer to stop and start. Even cooler is <code>console.assert</code>, which accepts two parameters - the check and a string - and logs an assertion failure with the string when the check is falsy.</p>
+<p>An interesting addition is <code>console.table</code>, which allows you to log an array of similar objects in a readable fashion. It accepts the array of objects as the first parameter, but also accepts a second parameter as the object keys you want to log.</p>
+<p><img src="/articles/improve-dev-tools-console-workflow/console-table.png" alt="Demonstrating console.table"></p>
+<h2 id="using-the-console">Using the Console</h2>
+<p>Whenever you are working in the console, hitting <code>Enter</code> will cause the content of the console to be evaluated and output to the screen. You can optionally use <code>Shift + Enter</code> to work over multiple lines, then just use <code>Enter</code> as usual to trigger evaluation. If you want to continue working on the code that was previously evaluated, just press the <code>Up</code> arrow - just like using the command line. The result of the previous evaluation is even stored in the variable <code>$_</code>, so you can use it in your next evaluation.</p>
+<h2 id="other-tips-and-tricks">Other Tips and Tricks</h2>
+<p>The Chrome console also provides a function called <code>monitorEvents</code> that works exactly as described. It accepts an DOM node to monitor as the first argument and by default it’ll monitor and log all the events. Optionally, you could pass in the string <code>&quot;mouse&quot;</code> or <code>&quot;key&quot;</code> to log only mouse or keyboard based events.</p>
+<p>Conveniently, Chrome also provides an <code>inspect</code> method which I feel is almost the opposite to <code>$0</code>. It will open the elements panel and focus on the element within the DOM tree. There is even a <code>copy</code> method to copy stuff to your clipboard.</p>
+<p>Somewhat less used, but Chrome also provides a <code>keys</code> function - which maps to <code>Object.keys</code> - and a <code>values</code> function, which is the polar opposite of keys.</p>
+<p>And if at some point you just feel like a chump using your mouse and clicking to clear the console, it’ll probably be welcome news that there is even a <code>clear</code> function that can do it for you. And remember, you can always persist the console over page reloads by right clicking and selecting “Preserve Log upon Navigation”.</p>
+</article>
+      <div class="content-share"><a href="https://twitter.com/JonasKrop" data-show-count="false" class="twitter-follow-button">Follow @JonasKrop</a><a href="https://twitter.com/share" data-url="http://www.armblog.pl/articles/improve-dev-tools-console-workflow/" data-text="Improving Your JavaScript Console Skills" data-via="JonasKrop" class="twitter-share-button">Tweet</a></div>
+      <div id="disqus_thread"></div>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        
+      </script>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        
+      </script>
+      <script>
+        var disqus_shortname = 'myarmblog'; // required: replace example with your forum shortname
+        
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+    </main>
+    <footer role="contentinfo" class="footer"><a href="/" title="Wojciech L-Łapiński" class="icon-home back-to-home"></a>
+      <p class="container">&copy; 2014&nbsp;<a href="http://armblog.pl">Wojciech L-Łapiński</a>&nbsp;&mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
+    </footer><a href="https://github.com/Lu6ith/blog" class="fork-me ir">Fork me on Github</a>
+  </body>
+</html>

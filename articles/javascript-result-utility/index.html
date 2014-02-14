@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>JavaScript Result Utility • Wojciech L-Łapiński
+    </title>
+    <link rel="author" href="https://plus.google.com/118101720568210469158/posts">
+    <link rel="alternate" href="/feed.xml" type="application/rss+xml" title="My thoughts materialised into a blog">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,700italic|Source+Code+Pro">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/fontello.css">
+    <script>(function(d){d.className=d.className.replace(/\bno-js\b/,'js');})(document.documentElement);</script>
+    <!--if lt IE 9script(src='//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js')
+    -->
+  </head>
+  <body class="article"><a href="/" title="Wojciech L-Łapiński" class="home icon-home back-to-home"></a>
+    <header class="header container"><small class="header-metadata"><span class="timestamp">January 9, 2014</span></small>
+      <h1 class="header-title">JavaScript Result Utility</h1>
+    </header>
+    <main role="main" class="content container">
+      <article class="content-article"><p>In JavaScript, an objects property can hold any type of data, from strings to functions and even nested objects. Since an object can hold any type of potential data, some libraries implement a <a href="http://underscorejs.org/#result">result utility</a> to check whether the property is function and instead return the functions return.</p>
+<p>This functionality is rarely required in your regular JavaScript workflow and is usually reserved for third-party libraries where users can pass in ambiguous data types. A prominent example would be a templating library, where the template can render simple data types like strings and numbers. However, the template may also be capable of rendering ambiguous or dynamic data in the form of functions. To do this, we could abstract it to the following utility.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> result = <span class="function"><span class="keyword">function</span> <span class="params">(obj, property)</span> {</span>
+  <span class="keyword">var</span> value = obj[property];
+
+  <span class="keyword">if</span> (<span class="keyword">typeof</span> value === <span class="string">'function'</span>) {
+    value = value.call(obj);
+  }
+
+  <span class="keyword">return</span> value;
+};
+</code></pre>
+<p>The above is a relatively simple utility, but hopefully you can now imagine some use casesyou can refactor and reuse a utility like this. However, consider a slightly different utility I’m going call <code>ambiguous</code>. This utility is similar, albeit entirely incompatible, but works around some of the limitations I found when using the <code>result</code> function.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> __slice = <span class="built_in">Array</span>.prototype.slice;
+
+<span class="keyword">var</span> ambiguous = <span class="function"><span class="keyword">function</span> <span class="params">(value <span class="comment">/*, ...args */</span>)</span> {</span>
+  <span class="keyword">if</span> (<span class="keyword">typeof</span> value === <span class="string">'function'</span>) {
+    value = value.apply(<span class="keyword">this</span>, __slice.call(<span class="built_in">arguments</span>, <span class="number">1</span>));
+  }
+
+  <span class="keyword">return</span> value;
+};
+</code></pre>
+<p>Personally, the <code>ambiguous</code> utility is much more useful in the real world. Especially since it removes the static context limitation from the <code>result</code> utility above. It also allows us to pass in optional arguments in the case that the value is a function. Just some food for thought.</p>
+</article>
+      <div class="content-share"><a href="https://twitter.com/JonasKrop" data-show-count="false" class="twitter-follow-button">Follow @JonasKrop</a><a href="https://twitter.com/share" data-url="http://www.armblog.pl/articles/javascript-result-utility/" data-text="JavaScript Result Utility" data-via="JonasKrop" class="twitter-share-button">Tweet</a></div>
+      <div id="disqus_thread"></div>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        
+      </script>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        
+      </script>
+      <script>
+        var disqus_shortname = 'myarmblog'; // required: replace example with your forum shortname
+        
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+    </main>
+    <footer role="contentinfo" class="footer"><a href="/" title="Wojciech L-Łapiński" class="icon-home back-to-home"></a>
+      <p class="container">&copy; 2014&nbsp;<a href="http://armblog.pl">Wojciech L-Łapiński</a>&nbsp;&mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
+    </footer><a href="https://github.com/Lu6ith/blog" class="fork-me ir">Fork me on Github</a>
+  </body>
+</html>

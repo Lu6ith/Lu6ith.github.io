@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Forcing Function Arity in JavaScript • Wojciech L-Łapiński
+    </title>
+    <link rel="author" href="https://plus.google.com/118101720568210469158/posts">
+    <link rel="alternate" href="/feed.xml" type="application/rss+xml" title="My thoughts materialised into a blog">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,700italic|Source+Code+Pro">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/fontello.css">
+    <script>(function(d){d.className=d.className.replace(/\bno-js\b/,'js');})(document.documentElement);</script>
+    <!--if lt IE 9script(src='//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js')
+    -->
+  </head>
+  <body class="article"><a href="/" title="Wojciech L-Łapiński" class="home icon-home back-to-home"></a>
+    <header class="header container"><small class="header-metadata"><span class="timestamp">January 22, 2014</span></small>
+      <h1 class="header-title">Forcing Function Arity in JavaScript</h1>
+    </header>
+    <main role="main" class="content container">
+      <article class="content-article"><p>Function arity in something in JavaScript that is usually overlooked. For the most part, that’s perfectly understandable, it’s just a number. Unfortunately, this number can be integral to many other functions working correctly. But first, what number am I talking about?</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> fn = <span class="function"><span class="keyword">function</span> <span class="params">(a, b)</span> {</span>};
+
+fn.length; <span class="comment">//=&gt; 2</span>
+</code></pre>
+<p>As you can see, the length gives up the exact number of arguments the function is expecting to be passed in. This can be useful for other functions that might want to alter its behaviour based on this digit. For example, I found outlining this issue <a href="http://raganwald.com/2013/03/21/arity-and-partial-function-application.html">with currying</a>. Basically, the <code>curry</code> function implementation relies on using the arity information to know how many times the function needs to be curried.</p>
+<p>To force the number of arity in our returned anonymous functions, we need to dynamically generate a function with the specified number of arguments. Why? Because the previous implementations of <a href="http://blakeembrey.com/articles/wrapping-javascript-functions/">wrapping functions</a>, <a href="http://blakeembrey.com/articles/javascript-bind-function/">bind</a>, <a href="http://blakeembrey.com/articles/javascript-variadic-function/">variadic</a> and every other functional utility I have demonstrated don’t proxy the number of arguments through the returned function.</p>
+<p>This can be a problem in the case where we want to use this function somewhere that expects a function length to work correctly, like when currying. We could fix this at the source, a half a dozen times and any number of times more. Or we could write a little utility that will enfore a number of arguments for us.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> names   = <span class="string">'abcdefghijklmnopqrstuvwxyz'</span>;
+<span class="keyword">var</span> __slice = <span class="built_in">Array</span>.prototype.slice;
+
+<span class="comment">/**
+ * Make a function appear as though it accepts a certain number of arguments.
+ *
+ * @param  {Number}   length
+ * @param  {Function} fn
+ * @return {Function}
+ */</span>
+<span class="keyword">var</span> arity = <span class="function"><span class="keyword">function</span> <span class="params">(length, fn)</span> {</span>
+  <span class="keyword">return</span> <span class="built_in">eval</span>(
+    <span class="string">'(function ('</span> + __slice.call(names, <span class="number">0</span>, length).join(<span class="string">','</span>) + <span class="string">') {\n'</span> +
+    <span class="string">'return fn.apply(this, arguments);\n'</span> +
+    <span class="string">'})'</span>
+  );
+};
+</code></pre>
+<p>The above function allows us to pass in an argument length and a function to proxy. It then returns to us an anonymous function with the correct number of arguments defined (<code>.length</code> works!) and allows us to call the function and return the usual result. It doesn’t do anything to the arguments in the interim, it just tells the world how many arguments we are accepting.</p>
+<h2 id="the-other-arity-problem">The Other Arity Problem</h2>
+<p>So we’ve touched one of the arity problems, which is a expecting to read the correct arity from a function. The reverse arity problem is when a function is called with incorrect or overloaded arguments. Consider <code>parseInt</code>, which accepts two arguments - a string and the radix.</p>
+<pre><code class="lang-javascript">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>].map(<span class="built_in">parseInt</span>); <span class="comment">//=&gt; [1, NaN, NaN, NaN, NaN]</span>
+</code></pre>
+<p>Now we’re having problems. To fix this we can make a utility function that limits the number of arguments passed through.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> __slice = <span class="built_in">Array</span>.prototype.slice;
+
+<span class="comment">/**
+ * Force a function to accept a specific number of arguments.
+ *
+ * @param  {Number}   length
+ * @param  {Function} fn
+ * @return {Function}
+ */</span>
+<span class="keyword">var</span> nary = <span class="function"><span class="keyword">function</span> <span class="params">(length, fn)</span> {</span>
+  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+    <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, __slice.call(<span class="built_in">arguments</span>, <span class="number">0</span>, length));
+  };
+};
+</code></pre>
+<p>If you’ve been reading, you would have just noticed that we introduced the original bug we’ve been trying to avoid. That is, we’re returning a new anonymous function without proxying the number of arguments through. Let’s quickly correct that with the function we just wrote.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> __slice = <span class="built_in">Array</span>.prototype.slice;
+
+<span class="comment">/**
+ * Force a function to accept a specific number of arguments.
+ *
+ * @param  {Number}   length
+ * @param  {Function} fn
+ * @return {Function}
+ */</span>
+<span class="keyword">var</span> nary = <span class="function"><span class="keyword">function</span> <span class="params">(length, fn)</span> {</span>
+  <span class="comment">// Uses the previous function to proxy the number of arguments.</span>
+  <span class="keyword">return</span> arity(length, <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+    <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, __slice.call(<span class="built_in">arguments</span>, <span class="number">0</span>, length));
+  });
+};
+</code></pre>
+<p>Now we can use this to fix our map error from earlier. We also have the added bonus of a correct argument representation.</p>
+<pre><code class="lang-javascript">nary(<span class="number">1</span>, <span class="built_in">parseInt</span>).length; <span class="comment">//=&gt; 1</span>
+
+[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>].map(nary(<span class="number">1</span>, <span class="built_in">parseInt</span>)); <span class="comment">//=&gt; [1, 2, 3, 4, 5]</span>
+</code></pre>
+</article>
+      <div class="content-share"><a href="https://twitter.com/JonasKrop" data-show-count="false" class="twitter-follow-button">Follow @JonasKrop</a><a href="https://twitter.com/share" data-url="http://www.armblog.pl/articles/forcing-function-arity-in-javascript/" data-text="Forcing Function Arity in JavaScript" data-via="JonasKrop" class="twitter-share-button">Tweet</a></div>
+      <div id="disqus_thread"></div>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        
+      </script>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        
+      </script>
+      <script>
+        var disqus_shortname = 'myarmblog'; // required: replace example with your forum shortname
+        
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+    </main>
+    <footer role="contentinfo" class="footer"><a href="/" title="Wojciech L-Łapiński" class="icon-home back-to-home"></a>
+      <p class="container">&copy; 2014&nbsp;<a href="http://armblog.pl">Wojciech L-Łapiński</a>&nbsp;&mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
+    </footer><a href="https://github.com/Lu6ith/blog" class="fork-me ir">Fork me on Github</a>
+  </body>
+</html>

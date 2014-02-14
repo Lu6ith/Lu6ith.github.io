@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>The JavaScript Bind Function • Wojciech L-Łapiński
+    </title>
+    <link rel="author" href="https://plus.google.com/118101720568210469158/posts">
+    <link rel="alternate" href="/feed.xml" type="application/rss+xml" title="My thoughts materialised into a blog">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,700italic|Source+Code+Pro">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/fontello.css">
+    <script>(function(d){d.className=d.className.replace(/\bno-js\b/,'js');})(document.documentElement);</script>
+    <!--if lt IE 9script(src='//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js')
+    -->
+  </head>
+  <body class="article"><a href="/" title="Wojciech L-Łapiński" class="home icon-home back-to-home"></a>
+    <header class="header container"><small class="header-metadata"><span class="timestamp">December 31, 2013</span></small>
+      <h1 class="header-title">The JavaScript Bind Function</h1>
+    </header>
+    <main role="main" class="content container">
+      <article class="content-article"><p>The JavaScript <code>bind</code> function is a common-place utility when working with many different frameworks and libraries. It’s purpose is to bind the <code>this</code> value to a static object and is useful when passing functions around as callbacks, where maintaining the correct <code>this</code> value is required. A common convention to circumvent this utility is the <code>var that = this</code>, but this isn’t very feasible everywhere.</p>
+<p>In <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind">modern JavaScript implementations</a> the function is built directly onto <code>Function.prototype</code>, giving us <code>bind</code> functionality on every function. For our implementation we’ll be implementing a standalone functionality that works similar to the built-in <code>bind</code> function.</p>
+<p>However, it’s important to note that <code>bind</code> also comes with another handy feature. It accepts an unlimited number of arguments after the context to pass in as the function parameters, from left to right.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> __slice = <span class="built_in">Array</span>.prototype.slice;
+
+<span class="comment">/**
+ * Bind a function to a certain context.
+ *
+ * @param  {Function} fn
+ * @param  {Object}   context
+ * @param  {*}        ...
+ * @return {Function}
+ */</span>
+<span class="keyword">var</span> bind = <span class="function"><span class="keyword">function</span> <span class="params">(fn, context <span class="comment">/*, ...args */</span>)</span> {</span>
+  <span class="keyword">var</span> args = __slice.call(<span class="built_in">arguments</span>, <span class="number">2</span>);
+
+  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+    <span class="keyword">return</span> fn.apply(context, args.concat(__slice.call(<span class="built_in">arguments</span>)));
+  };
+};
+</code></pre>
+<p>Bind allows us to keep the <code>this</code> context when passing the callback to another function. Imagine passing a function that uses <code>this</code> into <code>setTimeout</code> or someone elses library utility, where <code>this</code> could be unpredictable.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> greet = <span class="function"><span class="keyword">function</span> <span class="params">(greeting)</span> {</span>
+  <span class="keyword">return</span> greeting + <span class="string">' '</span> + <span class="keyword">this</span>.user;
+};
+
+greet(<span class="string">'Hello'</span>); <span class="comment">//=&gt; "Hello undefined"</span>
+
+<span class="keyword">var</span> boundGreet = bind(greet, { user: <span class="string">'Bob'</span> });
+
+boundGreet(<span class="string">'Hello'</span>); <span class="comment">//=&gt; "Hello Bob"</span>
+</code></pre>
+<p>We also have another useful feature built into <code>bind</code> - partial application. Partial application is essentially the act of pre-filling function arguments. Any future arguments are then appended to the arguments we have already defined.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> greet = <span class="function"><span class="keyword">function</span> <span class="params">(user, greeting)</span> {</span>
+  <span class="keyword">return</span> greeting + <span class="string">' '</span> + user;
+};
+
+<span class="keyword">var</span> greetBlake = bind(greet, <span class="literal">null</span>, <span class="string">'Blake'</span>);
+
+greetBlake(<span class="string">'Hi'</span>); <span class="comment">//=&gt; "Hi Blake"</span>
+greetBlake(<span class="string">'Hello'</span>); <span class="comment">//=&gt; "Hello Blake"</span>
+</code></pre>
+<h2 id="bonus-implementation-using-variadic">Bonus Implementation using Variadic</h2>
+<p>In my last post, I introduced the concept of a <a href="http://blakeembrey.com/articles/javascript-variadic-function/">variadic function</a>. As this article demonstrates, <code>bind</code> is a perfect example of a variadic function, so let’s reimplement <code>bind</code> with the variadic function.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> bind = variadic(<span class="function"><span class="keyword">function</span> <span class="params">(fn, context, args)</span> {</span>
+  <span class="keyword">return</span> variadic(<span class="function"><span class="keyword">function</span> <span class="params">(called)</span> {</span>
+    <span class="keyword">return</span> fn.apply(context, args.concat(called));
+  });
+});
+</code></pre>
+</article>
+      <div class="content-share"><a href="https://twitter.com/JonasKrop" data-show-count="false" class="twitter-follow-button">Follow @JonasKrop</a><a href="https://twitter.com/share" data-url="http://www.armblog.pl/articles/javascript-bind-function/" data-text="The JavaScript Bind Function" data-via="JonasKrop" class="twitter-share-button">Tweet</a></div>
+      <div id="disqus_thread"></div>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        
+      </script>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        
+      </script>
+      <script>
+        var disqus_shortname = 'myarmblog'; // required: replace example with your forum shortname
+        
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+    </main>
+    <footer role="contentinfo" class="footer"><a href="/" title="Wojciech L-Łapiński" class="icon-home back-to-home"></a>
+      <p class="container">&copy; 2014&nbsp;<a href="http://armblog.pl">Wojciech L-Łapiński</a>&nbsp;&mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
+    </footer><a href="https://github.com/Lu6ith/blog" class="fork-me ir">Fork me on Github</a>
+  </body>
+</html>

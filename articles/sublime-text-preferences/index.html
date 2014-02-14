@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>My Sublime Text Preferences Explained • Wojciech L-Łapiński
+    </title>
+    <link rel="author" href="https://plus.google.com/118101720568210469158/posts">
+    <link rel="alternate" href="/feed.xml" type="application/rss+xml" title="My thoughts materialised into a blog">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,700italic|Source+Code+Pro">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/fontello.css">
+    <script>(function(d){d.className=d.className.replace(/\bno-js\b/,'js');})(document.documentElement);</script>
+    <!--if lt IE 9script(src='//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js')
+    -->
+  </head>
+  <body class="article"><a href="/" title="Wojciech L-Łapiński" class="home icon-home back-to-home"></a>
+    <header class="header container"><small class="header-metadata"><span class="timestamp">August 11, 2013</span></small>
+      <h1 class="header-title">My Sublime Text Preferences Explained</h1>
+    </header>
+    <main role="main" class="content container">
+      <article class="content-article"><p>Prompted by the many preference file posts recently, I have finally gotten around to posting my config with a few inline comments.</p>
+<pre><code class="lang-javascript">{
+  <span class="comment">// Makes folders stand out from files</span>
+  <span class="string">"bold_folder_labels"</span>: <span class="literal">true</span>,
+  <span class="comment">// Clean colour scheme, comes with Flatland theme</span>
+  <span class="string">"color_scheme"</span>: <span class="string">"Packages/Theme - Flatland/Flatland Monokai.tmTheme"</span>,
+  <span class="comment">// Switch to `all` to always show invisibles</span>
+  <span class="string">"draw_white_space"</span>: <span class="string">"selection"</span>,
+  <span class="comment">// Always adds a trailing newline character</span>
+  <span class="string">"ensure_newline_at_eof_on_save"</span>: <span class="literal">true</span>,
+  <span class="comment">// Exludes directories from showing up in the sidebar and search</span>
+  <span class="string">"folder_exclude_patterns"</span>: [
+    <span class="string">".svn"</span>,
+    <span class="string">".git"</span>,
+    <span class="string">".hg"</span>,
+    <span class="string">"CVS"</span>,
+    <span class="string">"node_modules"</span>,
+    <span class="string">"bower_components"</span>
+  ],
+  <span class="comment">// Source Code Pro is my favourite monospace font - download at https://github.com/adobe/source-code-pro</span>
+  <span class="string">"font_face"</span>: <span class="string">"Source Code Pro"</span>,
+  <span class="comment">// Current working font size</span>
+  <span class="string">"font_size"</span>: <span class="number">15.0</span>,
+  <span class="comment">// Highlight the current line - makes it easier to focus and find where you are typing</span>
+  <span class="string">"highlight_line"</span>: <span class="literal">true</span>,
+  <span class="comment">// Make it obvious when I haven't saved something</span>
+  <span class="string">"highlight_modified_tabs"</span>: <span class="literal">true</span>,
+  <span class="comment">// Ignore VIM mode, it plays havoc with some of my other preferred shortcuts</span>
+  <span class="string">"ignored_packages"</span>: [
+    <span class="string">"Vintage"</span>
+  ],
+  <span class="comment">// Draw all indent guides, but also draw the carets indent guide in a different color</span>
+  <span class="string">"indent_guide_options"</span>: [
+    <span class="string">"draw_active"</span>,
+    <span class="string">"draw_normal"</span>
+  ],
+  <span class="comment">// Removes the extra whitespace using `Source Sans Pro` comes with</span>
+  <span class="string">"line_padding_bottom"</span>: -<span class="number">1</span>,
+  <span class="string">"line_padding_top"</span>: -<span class="number">1</span>,
+  <span class="comment">// Render a vertical ruler at the 80 character mark, tries to keep me considerate</span>
+  <span class="string">"rulers"</span>: [
+    <span class="number">80</span>
+  ],
+  <span class="comment">// Saving everytime I lose focus causes all sorts of conflicts</span>
+  <span class="string">"save_on_focus_lost"</span>: <span class="literal">false</span>,
+  <span class="comment">// Always allow me to scroll beyond the last line</span>
+  <span class="string">"scroll_past_end"</span>: <span class="literal">true</span>,
+  <span class="comment">// Enable `shift + tab` to cause unindent</span>
+  <span class="string">"shift_tab_unindent"</span>: <span class="literal">true</span>,
+  <span class="comment">// Override tab size to equal 2 spaces</span>
+  <span class="string">"tab_size"</span>: <span class="number">2</span>,
+  <span class="comment">// Beautiful and minimal theme - download at https://github.com/thinkpixellab/flatland</span>
+  <span class="string">"theme"</span>: <span class="string">"Flatland Dark.sublime-theme"</span>,
+  <span class="comment">// Use spaces for indentation</span>
+  <span class="string">"translate_tabs_to_spaces"</span>: <span class="literal">true</span>,
+  <span class="comment">// Removes all the trailing white space on save</span>
+  <span class="string">"trim_trailing_white_space_on_save"</span>: <span class="literal">true</span>,
+  <span class="comment">// Wraps lines instead of enabling horizontal scroll</span>
+  <span class="string">"word_wrap"</span>: <span class="literal">true</span>
+}
+</code></pre>
+</article>
+      <div class="content-share"><a href="https://twitter.com/JonasKrop" data-show-count="false" class="twitter-follow-button">Follow @JonasKrop</a><a href="https://twitter.com/share" data-url="http://www.armblog.pl/articles/sublime-text-preferences/" data-text="My Sublime Text Preferences Explained" data-via="JonasKrop" class="twitter-share-button">Tweet</a></div>
+      <div id="disqus_thread"></div>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        
+      </script>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        
+      </script>
+      <script>
+        var disqus_shortname = 'myarmblog'; // required: replace example with your forum shortname
+        
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+    </main>
+    <footer role="contentinfo" class="footer"><a href="/" title="Wojciech L-Łapiński" class="icon-home back-to-home"></a>
+      <p class="container">&copy; 2014&nbsp;<a href="http://armblog.pl">Wojciech L-Łapiński</a>&nbsp;&mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
+    </footer><a href="https://github.com/Lu6ith/blog" class="fork-me ir">Fork me on Github</a>
+  </body>
+</html>

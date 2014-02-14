@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Partial Application in JavaScript • Wojciech L-Łapiński
+    </title>
+    <link rel="author" href="https://plus.google.com/118101720568210469158/posts">
+    <link rel="alternate" href="/feed.xml" type="application/rss+xml" title="My thoughts materialised into a blog">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,700italic|Source+Code+Pro">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/fontello.css">
+    <script>(function(d){d.className=d.className.replace(/\bno-js\b/,'js');})(document.documentElement);</script>
+    <!--if lt IE 9script(src='//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js')
+    -->
+  </head>
+  <body class="article"><a href="/" title="Wojciech L-Łapiński" class="home icon-home back-to-home"></a>
+    <header class="header container"><small class="header-metadata"><span class="timestamp">January 25, 2014</span></small>
+      <h1 class="header-title">Partial Application in JavaScript</h1>
+    </header>
+    <main role="main" class="content container">
+      <article class="content-article"><p>Partial application is the act of pre-filling arguments of a function and returning a new function of smaller arity. The returned function can be called with additional parameters and in JavaScript, the <code>this</code> context can also be changed when called. Using a partially applied function is extremely common in functional programming with JavaScript as it allows us to compose some really nifty utilities and avoid repeating ourselves in code.</p>
+<p>In modern JavaScript engines, there is a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind">bind function</a> which can be used to achieve a similar result. The difference between <code>partial</code> and <code>bind</code> is that the a partial functions <code>this</code> context is set when the returned function is called, while a bound functions <code>this</code> context has already been defined and can’t be changed.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> __slice = <span class="built_in">Array</span>.prototype.slice;
+
+<span class="comment">/**
+ * Wrap a function with default arguments for partial application.
+ *
+ * @param  {Function} fn
+ * @param  {*}        ...
+ * @return {Function}
+ */</span>
+<span class="keyword">var</span> partial = <span class="function"><span class="keyword">function</span> <span class="params">(fn <span class="comment">/*, ...args */</span>)</span> {</span>
+  <span class="keyword">var</span> args = __slice.call(<span class="built_in">arguments</span>, <span class="number">1</span>);
+
+  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+    <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, args.concat(__slice.call(<span class="built_in">arguments</span>)));
+  };
+};
+</code></pre>
+<p>From the function above, we can understand that <code>partial</code> accepts the function to be pre-filled and it’s default arguments. It then returns a new function which can be called with some more arguments. It’s important to note that the context (<code>this</code>) is being defined when the returned function is called. But when would you even want to use this?</p>
+<p>Normally I would be happy to give a simple example of transforming an <code>add</code> function into an <code>add5</code> by partially applying it - <code>partial(add, 5)</code>. This definitely demonstates how we can use the utility, but doesn’t really touch on why.</p>
+<p>Consider writing a logging utility that accepts some different arguments that need to be logged - <code>var log = function (type, value) {}</code>. Fantastic, it looks like a really simple function to use. But now we want set every log in our file to the <code>testing</code> type. We can do a couple of things to achieve this. One option would be to assign our type to a variable and reuse the variable  - <code>var testType = &#39;Testing&#39;</code> and <code>log(testType, value)</code>. This will get messy after we write it more than once. What if we just wrapped the <code>log</code> function automatically?</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> testLog = <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+  <span class="keyword">return</span> log.apply(<span class="keyword">this</span>, [<span class="string">'testing'</span>].concat(__slice.call(<span class="built_in">arguments</span>)));
+};
+</code></pre>
+<p>Great, this looks familiar - we could have just used partial - <code>var testLog = partial(log, &#39;Testing&#39;)</code>. Now we have a function we can continue to reuse any number of times without fear of repeating ourselves.</p>
+<h2 id="bonus-points">Bonus Points</h2>
+<p>If you’ve been reading any of my previous blog posts, you may have noticed me abusing the usefulness of <a href="http://blakeembrey.com/articles/forcing-function-arity-in-javascript/">function arity</a> in anonymously returned functions. And in another article I wrote about a utility that can help us remove the <a href="http://blakeembrey.com/articles/javascript-variadic-function/">repetitive argument slicing</a>. If you haven’t checked out these utilities yet, take a quick look and I bet you’ll see how we could use them here.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> partial = variadic(<span class="function"><span class="keyword">function</span> <span class="params">(fn, args)</span> {</span>
+  <span class="keyword">var</span> remaining = <span class="built_in">Math</span>.max(fn.length - args.length, <span class="number">0</span>);
+
+  <span class="keyword">return</span> arity(remaining, variadic(<span class="function"><span class="keyword">function</span> <span class="params">(called)</span> {</span>
+    <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, args.concat(called));
+  }));
+});
+</code></pre>
+<p>Now the returned partially applied function gives us the correct number of trailing arguments still to be filled using the <code>arity</code> utility. On top of that, we managed to get rid of slicing arguments constantly by using the <code>variadic</code> utility. In fact, I’ve been so interested in these reusable utilities that I published the <a href="https://github.com/blakeembrey/partial">partial utility on Github</a> so I can reuse it later.</p>
+</article>
+      <div class="content-share"><a href="https://twitter.com/JonasKrop" data-show-count="false" class="twitter-follow-button">Follow @JonasKrop</a><a href="https://twitter.com/share" data-url="http://www.armblog.pl/articles/partial-application-in-javascript/" data-text="Partial Application in JavaScript" data-via="JonasKrop" class="twitter-share-button">Tweet</a></div>
+      <div id="disqus_thread"></div>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        
+      </script>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        
+      </script>
+      <script>
+        var disqus_shortname = 'myarmblog'; // required: replace example with your forum shortname
+        
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+    </main>
+    <footer role="contentinfo" class="footer"><a href="/" title="Wojciech L-Łapiński" class="icon-home back-to-home"></a>
+      <p class="container">&copy; 2014&nbsp;<a href="http://armblog.pl">Wojciech L-Łapiński</a>&nbsp;&mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
+    </footer><a href="https://github.com/Lu6ith/blog" class="fork-me ir">Fork me on Github</a>
+  </body>
+</html>

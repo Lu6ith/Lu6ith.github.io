@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Composing Functions in JavaScript • Wojciech L-Łapiński
+    </title>
+    <link rel="author" href="https://plus.google.com/118101720568210469158/posts">
+    <link rel="alternate" href="/feed.xml" type="application/rss+xml" title="My thoughts materialised into a blog">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,700italic|Source+Code+Pro">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/fontello.css">
+    <script>(function(d){d.className=d.className.replace(/\bno-js\b/,'js');})(document.documentElement);</script>
+    <!--if lt IE 9script(src='//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js')
+    -->
+  </head>
+  <body class="article"><a href="/" title="Wojciech L-Łapiński" class="home icon-home back-to-home"></a>
+    <header class="header container"><small class="header-metadata"><span class="timestamp">January 19, 2014</span></small>
+      <h1 class="header-title">Composing Functions in JavaScript</h1>
+    </header>
+    <main role="main" class="content container">
+      <article class="content-article"><p>Composing multiple functions to create more complex ones is a common utility in any programming language. And the ability to construct functions in a way that is easily composable is a true talent, but it really shines with code maintenance and reuse. It’s not uncommon to find huge applications composed of many, much smaller functions. Inspired by this pattern of extremely modular functions, I’ve been slowly migrating my programming style to allow for more composable and reusable functions.</p>
+<p>To compose functions together, we will need to accept a list of functions for it to be made up from. Let’s call the functions <code>a</code>, <code>b</code> and <code>c</code>. Now that we have the list of functions, we need to call each of them with the result of the next function. In JavaScript, we would do this with <code>a(b(c(x)))</code> - with <code>x</code> being the starting value. However, it would be much more useful to have something a little more reusable than this.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> compose = <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+  <span class="keyword">var</span> fns = <span class="built_in">arguments</span>;
+
+  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">(result)</span> {</span>
+    <span class="keyword">for</span> (<span class="keyword">var</span> i = fns.length - <span class="number">1</span>; i &gt; -<span class="number">1</span>; i--) {
+      result = fns[i].call(<span class="keyword">this</span>, result);
+    }
+
+    <span class="keyword">return</span> result;
+  };
+};
+</code></pre>
+<p>The above function iterates over the function list (our arguments) in reverse - the last function to pass in is executed first. Given a single value as the initial input, it’ll chain that value between every function call and return the final result. This allows us to do some really cool things.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> number = compose(<span class="built_in">Math</span>.round, <span class="built_in">parseFloat</span>);
+
+number(<span class="string">'72.5'</span>); <span class="comment">//=&gt; 73</span>
+</code></pre>
+<h2 id="sequence">Sequence</h2>
+<p>Another utility I’ve seen about in some functional libraries is called <a href="https://github.com/raganwald/allong.es#functional-composition">sequence</a>. It’s very similar to <code>compose</code>, except the arguments are executed in reverse. For example:</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> sequence = <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+  <span class="keyword">var</span> fns = <span class="built_in">arguments</span>;
+
+  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">(result)</span> {</span>
+    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; fns.length; i++) {
+      result = fns[i].call(<span class="keyword">this</span>, result);
+    }
+
+    <span class="keyword">return</span> result;
+  };
+};
+</code></pre>
+<p>However, we should make a note of the almost identical function signature to <code>compose</code>. Usually, seeing something like this should trigger a warning in your head to find some way to reuse previous functionality, instead of replicating it. In this example, we can reuse the <code>compose</code> function to write the <code>sequence</code> implementation.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> __slice = <span class="built_in">Array</span>.prototype.slice;
+
+<span class="keyword">var</span> sequence = <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+  <span class="keyword">return</span> compose.apply(<span class="keyword">this</span>, __slice.call(<span class="built_in">arguments</span>).reverse());
+};
+</code></pre>
+</article>
+      <div class="content-share"><a href="https://twitter.com/JonasKrop" data-show-count="false" class="twitter-follow-button">Follow @JonasKrop</a><a href="https://twitter.com/share" data-url="http://www.armblog.pl/articles/compose-functions-javascript/" data-text="Composing Functions in JavaScript" data-via="JonasKrop" class="twitter-share-button">Tweet</a></div>
+      <div id="disqus_thread"></div>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        
+      </script>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        
+      </script>
+      <script>
+        var disqus_shortname = 'myarmblog'; // required: replace example with your forum shortname
+        
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+    </main>
+    <footer role="contentinfo" class="footer"><a href="/" title="Wojciech L-Łapiński" class="icon-home back-to-home"></a>
+      <p class="container">&copy; 2014&nbsp;<a href="http://armblog.pl">Wojciech L-Łapiński</a>&nbsp;&mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a></p>
+    </footer><a href="https://github.com/Lu6ith/blog" class="fork-me ir">Fork me on Github</a>
+  </body>
+</html>
