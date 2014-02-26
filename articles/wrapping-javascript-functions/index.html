@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARMblog</title>
+    <!--CSS 
+    -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/font-awesome.min.css" rel="stylesheet" media="screen">
+    <link href="/css/animate.min.css" rel="stylesheet" media="screen">
+    <link href="/css/lightbox.css" rel="stylesheet" media="screen">
+    <link href="/css/syntax/shCore.css" rel="stylesheet" media="screen">
+    <link href="/css/syntax/shThemeDefault.css" rel="stylesheet" media="screen">
+    <link href="/css/style.css" rel="stylesheet" media="screen" title="default">
+    <link href="/css/color-default.css" rel="stylesheet" media="screen" title="default">
+    <link href="/css/width-boxed.css" rel="stylesheet" media="screen" title="default">
+    <link href="/css/mystyle.css" rel="stylesheet" media="screen" title="default">
+    <!--HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries 
+    -->
+    <!--if lt IE 9
+    script(src='/js/html5shiv.js')
+    script(src='/js/respond.min.js')
+    -->
+  </head>
+  <body>
+    <div class="boxed animated fadeIn animation-delay-5">
+      <header id="header" class="hidden-xs">
+        <div class="container">
+          <div id="header-title">
+            <h1 class="animated fadeInDown"><a href="index.html">ARM<span>blog</span></a></h1>
+            <p class="animated fadeInLeft">Blog nie tylko a ARM-ach...</p>
+          </div>
+          <div id="social-header" class="hidden-xs"><a href="http://twitter.com/JonasKrop" class="social-icon soc-twitter animated fadeInDown animation-delay-1"><i class="fa fa-twitter"></i></a><a href="#" class="social-icon soc-google-plus animated fadeInDown animation-delay-2"><i class="fa fa-google-plus"></i></a><a href="http://www.facebook.com/wojciech.lubiczlapinski" class="social-icon soc-facebook animated fadeInDown animation-delay-3"><i class="fa fa-facebook"></i></a><a href="http://github.com/Lu6ith" class="social-icon soc-github animated fadeInDown animation-delay-7"><i class="fa fa-github"></i></a></div>
+        </div>
+        <!--container 
+        -->
+      </header>
+      <!--header 
+      -->
+      <nav role="navigation" class="navbar navbar-static-top navbar-mind">
+        <div class="container">
+          <!--Brand and toggle get grouped for better mobile display 
+          -->
+          <div class="navbar-header"><a href="index.html" class="navbar-brand visible-xs">ARM<span>blog</span></a>
+            <button type="button" data-toggle="collapse" data-target=".navbar-mind-collapse" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><i class="fa fa-bars fa-inverse"></i></button>
+          </div>
+          <!--Collect the nav links, forms, and other content for toggling 
+          -->
+          <div class="collapse navbar-collapse navbar-mind-collapse">
+            <ul class="nav navbar-nav">
+              <li class="dropdown"><a href="/" class="dropdown-toggle">Home </a></li>
+              <!--dropdown 
+              -->
+              <li class="dropdown"><a href="/about/" class="dropdown-toggle">O mnie </a></li>
+              <!--dropdown 
+              -->
+              <li class="dropdown active"><a href="#" class="dropdown-toggle">Blog </a></li>
+              <!--dropdown 
+              -->
+              <li class="dropdown"><a href="/galerie/" data-toggle="dropdown" class="dropdown-toggle">Galerie<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="portfolio.html">Podroze</a></li>
+                  <li><a href="portfolio2.html">Przyroda</a></li>
+                  <li><a href="portfolio_item.html">Ania</a></li>
+                </ul>
+              </li>
+              <!--dropdown 
+              -->
+              <li class="dropdown"><a href="/contact/" class="dropdown-toggle">Kontakt </a></li>
+              <!--dropdown 
+              -->
+            </ul>
+            <!--nav nabvar-nav 
+            -->
+          </div>
+          <!--navbar-collapse 
+          -->
+        </div>
+        <!--container 
+        -->
+      </nav>
+      <!--navbar navbar-default 
+      -->
+      <header class="wrap-title">
+        <div class="container">
+          <h1 class="page-title">Blog</h1>
+          <ol class="breadcrumb hidden-xs">
+            <li><a href="/">Home</a></li>
+            <li class="active">Blog</li>
+          </ol>
+        </div>
+      </header>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-9">
+            <section class="post">
+              <h2 class="post-title">Wrapping JavaScript Functions</h2>
+              <div class="row well well-sm">
+                <div class="col-lg-12 col-md-11 col-sm-10"><i class="fa fa-clock-o"></i> sty 13, 2014
+                   <i class="fa fa-user"> </i>  <a href="#">Blake Embrey</a>  <i class="fa fa-tags"></i>  <a href="#">Web</a>,<a href="#">Javascript</a>.
+                </div>
+                <!--img.img-responsive.imageborder(src='/img/7.jpg', alt='Image')
+                -->
+              </div>
+              <p><p>In the modern age of web applications and development, it seems we are constantly adding side effects to every part of our applications - everything from analytics to event triggering. Unfortunately in a lot of cases, we tend to cram this functionality into function with the useful stuff. As programmers, this causes numerous issues down the line - especially when it comes to refactoring and code comprehensibility.</p>
+<p>A simple way to keep this functionality apart from the core code is create a helpful utility function to manage it for you. And to keep our code readability, we shouldn’t allow anything advanced that can break our understanding of the original function. That means we don’t want to be able to alter the original function, but we can still trigger any side effects we need to inline with the original function.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> before = <span class="function"><span class="keyword">function</span> <span class="params">(before, fn)</span> {</span>
+  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+    before.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);
+    <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);
+  };
+};
+</code></pre>
+<p>To use the function, we can pass any function in as the first argument and the original function we want to wrap as the second argument. For example, we could do <code>before(logger, add)</code>. Even without seeing the <code>logger</code> or <code>add</code> functions, we can imagine what each do. And because we are passing all the arguments to the side effect function, we can do stuff with the information.</p>
+<p>One thing I find myself doing is checking what arguments were passed to a certain function. To do this now, we can <code>before(console.log.bind(console), fn)</code>. Now, let’s implement the reverse functionality.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> after = <span class="function"><span class="keyword">function</span> <span class="params">(fn, after)</span> {</span>
+  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+    <span class="keyword">var</span> result = fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);
+    after.call(<span class="keyword">this</span>, result);
+    <span class="keyword">return</span> result;
+  };
+};
+</code></pre>
+<p>This is extremely similar to the first example. The main difference is that the first function passed in is the side effect, but now we have the side effect running after our wrapped function. Adapting the previous example, we can now do <code>after(add, logger)</code> and the logger will execute after the result is computed with the same arguments.</p>
+<p>One cool thing we could actually do, is to run argument validation in the <code>before</code> function. Consider this.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> validAdd = before(<span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="built_in">arguments</span>.length; i++) {
+    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="built_in">arguments</span>[i] !== <span class="string">'number'</span>) {
+      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'Expected a number'</span>);
+    }
+  }
+}, add);
+</code></pre>
+<p>We can also put these two functions together and create a new utility. This one allows us to pass both a function before and after our core functionality. E.g. <code>around(logger, add, logger)</code>.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> around = <span class="function"><span class="keyword">function</span> <span class="params">(under, fn, over)</span> {</span>
+  <span class="keyword">return</span> before(under, after(fn, over));
+};
+</code></pre>
+<h2 id="allow-unlimited-before-and-after-functions">Allow unlimited before and after functions</h2>
+<p>We can also adapt the functions to accept a variable number of arguments as the <code>before</code> and <code>after</code> functions. However, we can’t do this to the <code>around</code> utility since we wouldn’t know which argument is the core function.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> __slice = <span class="built_in">Array</span>.prototype.slice;
+
+<span class="keyword">var</span> before = <span class="function"><span class="keyword">function</span> <span class="params">(<span class="comment">/* ...before, fn */</span>)</span> {</span>
+  <span class="keyword">var</span> fn     = <span class="built_in">arguments</span>[<span class="built_in">arguments</span>.length - <span class="number">1</span>];
+  <span class="keyword">var</span> before = __slice.call(<span class="built_in">arguments</span>, -<span class="number">1</span>);
+
+  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; before.length; i++) {
+      before[i].apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);
+    }
+
+    <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);
+  };
+};
+
+<span class="keyword">var</span> after = <span class="function"><span class="keyword">function</span> <span class="params">(fn <span class="comment">/*, ...after */</span>)</span> {</span>
+  <span class="keyword">var</span> after = __slice.call(<span class="built_in">arguments</span>, <span class="number">1</span>);
+
+  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+    <span class="keyword">var</span> result = fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);
+
+    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; after.length; i++) {
+      after.call(<span class="keyword">this</span>, result);
+    }
+
+    <span class="keyword">return</span> result;
+  };
+};
+</code></pre>
+<h2 id="advanced-wrapping-utility">Advanced wrapping utility</h2>
+<p>So far we’ve seen some function wrapping utilities that are purely for side effects. They have no capability to alter the main function arguments or change the function result. For something more advanced than trigger side-effects, we might to want to use something a little different.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> __slice = <span class="built_in">Array</span>.prototype.slice;
+
+<span class="keyword">var</span> wrap = <span class="function"><span class="keyword">function</span> <span class="params">(fn, wrap)</span> {</span>
+  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+    <span class="keyword">return</span> wrap.apply(<span class="keyword">this</span>, [fn].concat(__slice.call(<span class="built_in">arguments</span>)));
+  };
+};
+</code></pre>
+<p>This is actually pretty similar the <code>wrap</code> function used in Prototype.js. It allows us to call a custom wrapper function with the original function and all the arguments. But, how do we even use this?</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> addAndMultiplyBy2 = wrap(add, <span class="function"><span class="keyword">function</span> <span class="params">(originalFn, a, b)</span> {</span>
+  <span class="keyword">return</span> <span class="number">2</span> * originalFn(a, b);
+});
+</code></pre>
+</p>
+            </section>
+            <section>
+              <h2 class="post-title">Comments</h2>
+              <div id="disqus_thread"></div>
+            </section>
+            <script>
+              var disqus_shortname = 'myarmblog'; // required: replace example with your forum shortname
+              
+              (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+              })();
+            </script>
+          </div>
+          <!--col-md-8 
+          -->
+          <div class="col-md-3">
+            <aside class="sidebar">
+              <div class="block">
+                <ul id="myTab2" class="nav nav-tabs">
+                  <li class="active"><a href="#fav" data-toggle="tab"><i class="fa fa-star"></i></a></li>
+                  <li><a href="#categories" data-toggle="tab"><i class="fa fa-folder-open"></i></a></li>
+                  <li><a href="#archive" data-toggle="tab"><i class="fa fa-clock-o"></i></a></li>
+                  <li><a href="#tags" data-toggle="tab"><i class="fa fa-tags"></i></a></li>
+                </ul>
+                <div class="tab-content">
+                  <div id="fav" class="tab-pane active">
+                    <h3 class="post-title">Favorite Post</h3>
+                    <ul class="media-list">
+                      <li class="media"><a href="#" class="pull-left"><img src="/img/m2.jpg" width="80" height="80" alt="image" class="media-object"></a>
+                        <div class="media-body">
+                          <p class="media-heading"><a href="#">Lorem ipsum dolor sit amet aut consectetur adipisicing elitl libero</a></p><small>Sep, 28 2013</small>
+                        </div>
+                      </li>
+                      <li class="media"><a href="#" class="pull-left"><img src="/img/m9.jpg" width="80" height="80" alt="image" class="media-object"></a>
+                        <div class="media-body">
+                          <p class="media-heading"><a href="#">Lorem ipsum dolor sit amet in consectetur adipisicing consequuntur</a></p><small>Oct, 9 2013</small>
+                        </div>
+                      </li>
+                      <li class="media"><a href="#" class="pull-left"><img src="/img/m12.jpg" width="80" height="80" alt="image" class="media-object"></a>
+                        <div class="media-body">
+                          <p class="media-heading"><a href="#">Sit amet consectetur adipisicing elit incidunt minus</a></p><small>Dec, 30 2013</small>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div id="categories" class="tab-pane">
+                    <h3 class="post-title">Kategorie</h3>
+                    <ul class="simple">
+                      <li><a href="#">Programowanie</a></li>
+                      <li><a href="#">ARM</a>
+                        <ul>
+                          <li><a href="#">Allwinner</a></li>
+                          <li><a href="#">Rokchip</a></li>
+                        </ul>
+                      </li>
+                      <li><a href="#">Fotografia</a></li>
+                      <li><a href="#">Web Developer</a></li>
+                    </ul>
+                  </div>
+                  <div id="archive" class="tab-pane">
+                    <h3 class="post-title">Archiwum</h3>
+                    <ul class="simple">
+                      <li><a href="#">Grudzien 2013</a></li>
+                      <li><a href="#">Styczen 2014</a></li>
+                      <li><a href="#">Luty 2014</a></li>
+                    </ul>
+                  </div>
+                  <div id="tags" class="tab-pane">
+                    <h3 class="post-title">Tagi</h3>
+                    <div class="tags-cloud"><a href="#" class="tag">Web</a><a href="#" class="tag">Artificial Intelligence</a><a href="#" class="tag">Programing</a><a href="#" class="tag">Design</a><a href="#" class="tag">3D</a><a href="#" class="tag">Games</a><a href="#" class="tag">Resources</a><a href="#" class="tag">2D</a><a href="#" class="tag">C++</a><a href="#" class="tag">Jquery</a><a href="#" class="tag">Javascript</a><a href="#" class="tag">Library</a><a href="#" class="tag">Windows</a><a href="#" class="tag">Linux</a><a href="#" class="tag">Cloud</a><a href="#" class="tag">Game developer</a><a href="#" class="tag">Server</a><a href="#" class="tag">Google</a><a href="#" class="tag">Bootstrap</a><a href="#" class="tag">Less</a><a href="#" class="tag">Sass</a><a href="#" class="tag">Engine</a><a href="#" class="tag">Node.js</a></div>
+                  </div>
+                </div>
+                <!--tab-content 
+                -->
+              </div>
+              <div class="panel panel-primary">
+                <div class="panel-heading"><i class="fa fa-align-left"></i>ARMblog</div>
+                <div class="panel-body">
+                  <p>Blog poświecony zagadnieniom zwiazanym z programowaniem i obsługa urzadzen z procesorami ARM oraz WebMasteringiem szeroko pojetym :)</p>
+                </div>
+              </div>
+            </aside>
+            <!--Sidebar 
+            -->
+          </div>
+        </div>
+        <!--row 
+        -->
+      </div>
+      <!--container  
+      -->
+      <aside id="footer-widgets">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+              <h3 class="footer-widget-title">Mapa strony</h3>
+              <ul class="list-unstyled three_cols">
+                <li><a href="/">Home</a></li>
+                <li><a href="/">Blog</a></li>
+                <li><a href="/">Prace</a></li>
+                <li><a href="/galerie/">Galeria</a></li>
+                <li><a href="/about/">O mnie</a></li>
+                <li><a href="/contact/">Kontakt</a></li>
+              </ul>
+              <h3 class="footer-widget-title">Zapisz sie </h3>
+              <p>Lorem ipsum Amet fugiat elit nisi anim mollit in labore ut esse Duis ullamco ad dolor veniam velit lorem ipsum dolor sit amet, consectetur adipisicing..</p>
+              <div class="input-group">
+                <input type="text" placeholder="Email Adress" class="form-control"><span class="input-group-btn">
+                  <button type="button" class="btn btn-success">Subscribe</button></span>
+              </div>
+              <!--/input-group 
+              -->
+            </div>
+            <div class="col-md-6">
+              <div class="footer-widget">
+                <h3 class="footer-widget-title">Ostatnie Prace</h3>
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-sm-3 col-xs-6"><a href="#" class="thumbnail"><img src="/img/wf1.jpg" alt="Image" class="img-responsive"></a></div>
+                  <div class="col-lg-6 col-md-6 col-sm-3 col-xs-6"><a href="#" class="thumbnail"><img src="/img/wf2.jpg" alt="Image" class="img-responsive"></a></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--row 
+          -->
+        </div>
+        <!--container 
+        -->
+      </aside>
+      <!--footer-widgets 
+      -->
+      <footer id="footer">
+        <p>
+          © 2014
+            <a href="/">Wojciech Lubicz-Łapinski</a>  
+          All rights reserved.
+        </p>
+      </footer>
+    </div>
+    <!--boxed 
+    -->
+    <div id="back-top"><a href="#header"><i class="fa fa-chevron-up"></i></a></div>
+    <!--Scripts 
+    -->
+    <script src="/js/jquery-1.10.2.min.js"></script>
+    <script src="/js/jquery.cookie.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.mixitup.min.js"></script>
+    <script src="/js/lightbox-2.6.min.js"></script>
+    <script src="/js/holder.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/styleswitcher.js"></script>
+    <script src="/js/syntax/shCore.js"></script>
+    <script src="/js/syntax/shBrushXml.js"></script>
+    <script src="/js/syntax/shBrushJScript.js"></script>
+    <script type="text/javascript">
+      <SyntaxHighlighter class="all"></SyntaxHighlighter>
+    </script>
+  </body>
+</html>

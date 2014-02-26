@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARMblog</title>
+    <!--CSS 
+    -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/font-awesome.min.css" rel="stylesheet" media="screen">
+    <link href="/css/animate.min.css" rel="stylesheet" media="screen">
+    <link href="/css/lightbox.css" rel="stylesheet" media="screen">
+    <link href="/css/syntax/shCore.css" rel="stylesheet" media="screen">
+    <link href="/css/syntax/shThemeDefault.css" rel="stylesheet" media="screen">
+    <link href="/css/style.css" rel="stylesheet" media="screen" title="default">
+    <link href="/css/color-default.css" rel="stylesheet" media="screen" title="default">
+    <link href="/css/width-boxed.css" rel="stylesheet" media="screen" title="default">
+    <link href="/css/mystyle.css" rel="stylesheet" media="screen" title="default">
+    <!--HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries 
+    -->
+    <!--if lt IE 9
+    script(src='/js/html5shiv.js')
+    script(src='/js/respond.min.js')
+    -->
+  </head>
+  <body>
+    <div class="boxed animated fadeIn animation-delay-5">
+      <header id="header" class="hidden-xs">
+        <div class="container">
+          <div id="header-title">
+            <h1 class="animated fadeInDown"><a href="index.html">ARM<span>blog</span></a></h1>
+            <p class="animated fadeInLeft">Blog nie tylko a ARM-ach...</p>
+          </div>
+          <div id="social-header" class="hidden-xs"><a href="http://twitter.com/JonasKrop" class="social-icon soc-twitter animated fadeInDown animation-delay-1"><i class="fa fa-twitter"></i></a><a href="#" class="social-icon soc-google-plus animated fadeInDown animation-delay-2"><i class="fa fa-google-plus"></i></a><a href="http://www.facebook.com/wojciech.lubiczlapinski" class="social-icon soc-facebook animated fadeInDown animation-delay-3"><i class="fa fa-facebook"></i></a><a href="http://github.com/Lu6ith" class="social-icon soc-github animated fadeInDown animation-delay-7"><i class="fa fa-github"></i></a></div>
+        </div>
+        <!--container 
+        -->
+      </header>
+      <!--header 
+      -->
+      <nav role="navigation" class="navbar navbar-static-top navbar-mind">
+        <div class="container">
+          <!--Brand and toggle get grouped for better mobile display 
+          -->
+          <div class="navbar-header"><a href="index.html" class="navbar-brand visible-xs">ARM<span>blog</span></a>
+            <button type="button" data-toggle="collapse" data-target=".navbar-mind-collapse" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><i class="fa fa-bars fa-inverse"></i></button>
+          </div>
+          <!--Collect the nav links, forms, and other content for toggling 
+          -->
+          <div class="collapse navbar-collapse navbar-mind-collapse">
+            <ul class="nav navbar-nav">
+              <li class="dropdown"><a href="/" class="dropdown-toggle">Home </a></li>
+              <!--dropdown 
+              -->
+              <li class="dropdown"><a href="/about/" class="dropdown-toggle">O mnie </a></li>
+              <!--dropdown 
+              -->
+              <li class="dropdown active"><a href="#" class="dropdown-toggle">Blog </a></li>
+              <!--dropdown 
+              -->
+              <li class="dropdown"><a href="/galerie/" data-toggle="dropdown" class="dropdown-toggle">Galerie<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="portfolio.html">Podroze</a></li>
+                  <li><a href="portfolio2.html">Przyroda</a></li>
+                  <li><a href="portfolio_item.html">Ania</a></li>
+                </ul>
+              </li>
+              <!--dropdown 
+              -->
+              <li class="dropdown"><a href="/contact/" class="dropdown-toggle">Kontakt </a></li>
+              <!--dropdown 
+              -->
+            </ul>
+            <!--nav nabvar-nav 
+            -->
+          </div>
+          <!--navbar-collapse 
+          -->
+        </div>
+        <!--container 
+        -->
+      </nav>
+      <!--navbar navbar-default 
+      -->
+      <header class="wrap-title">
+        <div class="container">
+          <h1 class="page-title">Blog</h1>
+          <ol class="breadcrumb hidden-xs">
+            <li><a href="/">Home</a></li>
+            <li class="active">Blog</li>
+          </ol>
+        </div>
+      </header>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-9">
+            <section class="post">
+              <h2 class="post-title">Composing Functions in JavaScript</h2>
+              <div class="row well well-sm">
+                <div class="col-lg-12 col-md-11 col-sm-10"><i class="fa fa-clock-o"></i> sty 19, 2014
+                   <i class="fa fa-user"> </i>  <a href="#">Blake Embrey</a>  <i class="fa fa-tags"></i>  <a href="#">Web</a>,<a href="#">Javascript</a>.
+                </div>
+                <!--img.img-responsive.imageborder(src='/img/7.jpg', alt='Image')
+                -->
+              </div>
+              <p><p>Composing multiple functions to create more complex ones is a common utility in any programming language. And the ability to construct functions in a way that is easily composable is a true talent, but it really shines with code maintenance and reuse. It’s not uncommon to find huge applications composed of many, much smaller functions. Inspired by this pattern of extremely modular functions, I’ve been slowly migrating my programming style to allow for more composable and reusable functions.</p>
+<p>To compose functions together, we will need to accept a list of functions for it to be made up from. Let’s call the functions <code>a</code>, <code>b</code> and <code>c</code>. Now that we have the list of functions, we need to call each of them with the result of the next function. In JavaScript, we would do this with <code>a(b(c(x)))</code> - with <code>x</code> being the starting value. However, it would be much more useful to have something a little more reusable than this.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> compose = <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+  <span class="keyword">var</span> fns = <span class="built_in">arguments</span>;
+
+  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">(result)</span> {</span>
+    <span class="keyword">for</span> (<span class="keyword">var</span> i = fns.length - <span class="number">1</span>; i &gt; -<span class="number">1</span>; i--) {
+      result = fns[i].call(<span class="keyword">this</span>, result);
+    }
+
+    <span class="keyword">return</span> result;
+  };
+};
+</code></pre>
+<p>The above function iterates over the function list (our arguments) in reverse - the last function to pass in is executed first. Given a single value as the initial input, it’ll chain that value between every function call and return the final result. This allows us to do some really cool things.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> number = compose(<span class="built_in">Math</span>.round, <span class="built_in">parseFloat</span>);
+
+number(<span class="string">'72.5'</span>); <span class="comment">//=&gt; 73</span>
+</code></pre>
+<h2 id="sequence">Sequence</h2>
+<p>Another utility I’ve seen about in some functional libraries is called <a href="https://github.com/raganwald/allong.es#functional-composition">sequence</a>. It’s very similar to <code>compose</code>, except the arguments are executed in reverse. For example:</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> sequence = <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+  <span class="keyword">var</span> fns = <span class="built_in">arguments</span>;
+
+  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">(result)</span> {</span>
+    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; fns.length; i++) {
+      result = fns[i].call(<span class="keyword">this</span>, result);
+    }
+
+    <span class="keyword">return</span> result;
+  };
+};
+</code></pre>
+<p>However, we should make a note of the almost identical function signature to <code>compose</code>. Usually, seeing something like this should trigger a warning in your head to find some way to reuse previous functionality, instead of replicating it. In this example, we can reuse the <code>compose</code> function to write the <code>sequence</code> implementation.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> __slice = <span class="built_in">Array</span>.prototype.slice;
+
+<span class="keyword">var</span> sequence = <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+  <span class="keyword">return</span> compose.apply(<span class="keyword">this</span>, __slice.call(<span class="built_in">arguments</span>).reverse());
+};
+</code></pre>
+</p>
+            </section>
+            <section>
+              <h2 class="post-title">Comments</h2>
+              <div id="disqus_thread"></div>
+            </section>
+            <script>
+              var disqus_shortname = 'myarmblog'; // required: replace example with your forum shortname
+              
+              (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+              })();
+            </script>
+          </div>
+          <!--col-md-8 
+          -->
+          <div class="col-md-3">
+            <aside class="sidebar">
+              <div class="block">
+                <ul id="myTab2" class="nav nav-tabs">
+                  <li class="active"><a href="#fav" data-toggle="tab"><i class="fa fa-star"></i></a></li>
+                  <li><a href="#categories" data-toggle="tab"><i class="fa fa-folder-open"></i></a></li>
+                  <li><a href="#archive" data-toggle="tab"><i class="fa fa-clock-o"></i></a></li>
+                  <li><a href="#tags" data-toggle="tab"><i class="fa fa-tags"></i></a></li>
+                </ul>
+                <div class="tab-content">
+                  <div id="fav" class="tab-pane active">
+                    <h3 class="post-title">Favorite Post</h3>
+                    <ul class="media-list">
+                      <li class="media"><a href="#" class="pull-left"><img src="/img/m2.jpg" width="80" height="80" alt="image" class="media-object"></a>
+                        <div class="media-body">
+                          <p class="media-heading"><a href="#">Lorem ipsum dolor sit amet aut consectetur adipisicing elitl libero</a></p><small>Sep, 28 2013</small>
+                        </div>
+                      </li>
+                      <li class="media"><a href="#" class="pull-left"><img src="/img/m9.jpg" width="80" height="80" alt="image" class="media-object"></a>
+                        <div class="media-body">
+                          <p class="media-heading"><a href="#">Lorem ipsum dolor sit amet in consectetur adipisicing consequuntur</a></p><small>Oct, 9 2013</small>
+                        </div>
+                      </li>
+                      <li class="media"><a href="#" class="pull-left"><img src="/img/m12.jpg" width="80" height="80" alt="image" class="media-object"></a>
+                        <div class="media-body">
+                          <p class="media-heading"><a href="#">Sit amet consectetur adipisicing elit incidunt minus</a></p><small>Dec, 30 2013</small>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div id="categories" class="tab-pane">
+                    <h3 class="post-title">Kategorie</h3>
+                    <ul class="simple">
+                      <li><a href="#">Programowanie</a></li>
+                      <li><a href="#">ARM</a>
+                        <ul>
+                          <li><a href="#">Allwinner</a></li>
+                          <li><a href="#">Rokchip</a></li>
+                        </ul>
+                      </li>
+                      <li><a href="#">Fotografia</a></li>
+                      <li><a href="#">Web Developer</a></li>
+                    </ul>
+                  </div>
+                  <div id="archive" class="tab-pane">
+                    <h3 class="post-title">Archiwum</h3>
+                    <ul class="simple">
+                      <li><a href="#">Grudzien 2013</a></li>
+                      <li><a href="#">Styczen 2014</a></li>
+                      <li><a href="#">Luty 2014</a></li>
+                    </ul>
+                  </div>
+                  <div id="tags" class="tab-pane">
+                    <h3 class="post-title">Tagi</h3>
+                    <div class="tags-cloud"><a href="#" class="tag">Web</a><a href="#" class="tag">Artificial Intelligence</a><a href="#" class="tag">Programing</a><a href="#" class="tag">Design</a><a href="#" class="tag">3D</a><a href="#" class="tag">Games</a><a href="#" class="tag">Resources</a><a href="#" class="tag">2D</a><a href="#" class="tag">C++</a><a href="#" class="tag">Jquery</a><a href="#" class="tag">Javascript</a><a href="#" class="tag">Library</a><a href="#" class="tag">Windows</a><a href="#" class="tag">Linux</a><a href="#" class="tag">Cloud</a><a href="#" class="tag">Game developer</a><a href="#" class="tag">Server</a><a href="#" class="tag">Google</a><a href="#" class="tag">Bootstrap</a><a href="#" class="tag">Less</a><a href="#" class="tag">Sass</a><a href="#" class="tag">Engine</a><a href="#" class="tag">Node.js</a></div>
+                  </div>
+                </div>
+                <!--tab-content 
+                -->
+              </div>
+              <div class="panel panel-primary">
+                <div class="panel-heading"><i class="fa fa-align-left"></i>ARMblog</div>
+                <div class="panel-body">
+                  <p>Blog poświecony zagadnieniom zwiazanym z programowaniem i obsługa urzadzen z procesorami ARM oraz WebMasteringiem szeroko pojetym :)</p>
+                </div>
+              </div>
+            </aside>
+            <!--Sidebar 
+            -->
+          </div>
+        </div>
+        <!--row 
+        -->
+      </div>
+      <!--container  
+      -->
+      <aside id="footer-widgets">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+              <h3 class="footer-widget-title">Mapa strony</h3>
+              <ul class="list-unstyled three_cols">
+                <li><a href="/">Home</a></li>
+                <li><a href="/">Blog</a></li>
+                <li><a href="/">Prace</a></li>
+                <li><a href="/galerie/">Galeria</a></li>
+                <li><a href="/about/">O mnie</a></li>
+                <li><a href="/contact/">Kontakt</a></li>
+              </ul>
+              <h3 class="footer-widget-title">Zapisz sie </h3>
+              <p>Lorem ipsum Amet fugiat elit nisi anim mollit in labore ut esse Duis ullamco ad dolor veniam velit lorem ipsum dolor sit amet, consectetur adipisicing..</p>
+              <div class="input-group">
+                <input type="text" placeholder="Email Adress" class="form-control"><span class="input-group-btn">
+                  <button type="button" class="btn btn-success">Subscribe</button></span>
+              </div>
+              <!--/input-group 
+              -->
+            </div>
+            <div class="col-md-6">
+              <div class="footer-widget">
+                <h3 class="footer-widget-title">Ostatnie Prace</h3>
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-sm-3 col-xs-6"><a href="#" class="thumbnail"><img src="/img/wf1.jpg" alt="Image" class="img-responsive"></a></div>
+                  <div class="col-lg-6 col-md-6 col-sm-3 col-xs-6"><a href="#" class="thumbnail"><img src="/img/wf2.jpg" alt="Image" class="img-responsive"></a></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--row 
+          -->
+        </div>
+        <!--container 
+        -->
+      </aside>
+      <!--footer-widgets 
+      -->
+      <footer id="footer">
+        <p>
+          © 2014
+            <a href="/">Wojciech Lubicz-Łapinski</a>  
+          All rights reserved.
+        </p>
+      </footer>
+    </div>
+    <!--boxed 
+    -->
+    <div id="back-top"><a href="#header"><i class="fa fa-chevron-up"></i></a></div>
+    <!--Scripts 
+    -->
+    <script src="/js/jquery-1.10.2.min.js"></script>
+    <script src="/js/jquery.cookie.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.mixitup.min.js"></script>
+    <script src="/js/lightbox-2.6.min.js"></script>
+    <script src="/js/holder.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/styleswitcher.js"></script>
+    <script src="/js/syntax/shCore.js"></script>
+    <script src="/js/syntax/shBrushXml.js"></script>
+    <script src="/js/syntax/shBrushJScript.js"></script>
+    <script type="text/javascript">
+      <SyntaxHighlighter class="all"></SyntaxHighlighter>
+    </script>
+  </body>
+</html>

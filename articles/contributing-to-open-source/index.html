@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARMblog</title>
+    <!--CSS 
+    -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/font-awesome.min.css" rel="stylesheet" media="screen">
+    <link href="/css/animate.min.css" rel="stylesheet" media="screen">
+    <link href="/css/lightbox.css" rel="stylesheet" media="screen">
+    <link href="/css/syntax/shCore.css" rel="stylesheet" media="screen">
+    <link href="/css/syntax/shThemeDefault.css" rel="stylesheet" media="screen">
+    <link href="/css/style.css" rel="stylesheet" media="screen" title="default">
+    <link href="/css/color-default.css" rel="stylesheet" media="screen" title="default">
+    <link href="/css/width-boxed.css" rel="stylesheet" media="screen" title="default">
+    <link href="/css/mystyle.css" rel="stylesheet" media="screen" title="default">
+    <!--HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries 
+    -->
+    <!--if lt IE 9
+    script(src='/js/html5shiv.js')
+    script(src='/js/respond.min.js')
+    -->
+  </head>
+  <body>
+    <div class="boxed animated fadeIn animation-delay-5">
+      <header id="header" class="hidden-xs">
+        <div class="container">
+          <div id="header-title">
+            <h1 class="animated fadeInDown"><a href="index.html">ARM<span>blog</span></a></h1>
+            <p class="animated fadeInLeft">Blog nie tylko a ARM-ach...</p>
+          </div>
+          <div id="social-header" class="hidden-xs"><a href="http://twitter.com/JonasKrop" class="social-icon soc-twitter animated fadeInDown animation-delay-1"><i class="fa fa-twitter"></i></a><a href="#" class="social-icon soc-google-plus animated fadeInDown animation-delay-2"><i class="fa fa-google-plus"></i></a><a href="http://www.facebook.com/wojciech.lubiczlapinski" class="social-icon soc-facebook animated fadeInDown animation-delay-3"><i class="fa fa-facebook"></i></a><a href="http://github.com/Lu6ith" class="social-icon soc-github animated fadeInDown animation-delay-7"><i class="fa fa-github"></i></a></div>
+        </div>
+        <!--container 
+        -->
+      </header>
+      <!--header 
+      -->
+      <nav role="navigation" class="navbar navbar-static-top navbar-mind">
+        <div class="container">
+          <!--Brand and toggle get grouped for better mobile display 
+          -->
+          <div class="navbar-header"><a href="index.html" class="navbar-brand visible-xs">ARM<span>blog</span></a>
+            <button type="button" data-toggle="collapse" data-target=".navbar-mind-collapse" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><i class="fa fa-bars fa-inverse"></i></button>
+          </div>
+          <!--Collect the nav links, forms, and other content for toggling 
+          -->
+          <div class="collapse navbar-collapse navbar-mind-collapse">
+            <ul class="nav navbar-nav">
+              <li class="dropdown"><a href="/" class="dropdown-toggle">Home </a></li>
+              <!--dropdown 
+              -->
+              <li class="dropdown"><a href="/about/" class="dropdown-toggle">O mnie </a></li>
+              <!--dropdown 
+              -->
+              <li class="dropdown active"><a href="#" class="dropdown-toggle">Blog </a></li>
+              <!--dropdown 
+              -->
+              <li class="dropdown"><a href="/galerie/" data-toggle="dropdown" class="dropdown-toggle">Galerie<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="portfolio.html">Podroze</a></li>
+                  <li><a href="portfolio2.html">Przyroda</a></li>
+                  <li><a href="portfolio_item.html">Ania</a></li>
+                </ul>
+              </li>
+              <!--dropdown 
+              -->
+              <li class="dropdown"><a href="/contact/" class="dropdown-toggle">Kontakt </a></li>
+              <!--dropdown 
+              -->
+            </ul>
+            <!--nav nabvar-nav 
+            -->
+          </div>
+          <!--navbar-collapse 
+          -->
+        </div>
+        <!--container 
+        -->
+      </nav>
+      <!--navbar navbar-default 
+      -->
+      <header class="wrap-title">
+        <div class="container">
+          <h1 class="page-title">Blog</h1>
+          <ol class="breadcrumb hidden-xs">
+            <li><a href="/">Home</a></li>
+            <li class="active">Blog</li>
+          </ol>
+        </div>
+      </header>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-9">
+            <section class="post">
+              <h2 class="post-title">Contributing to Open Source</h2>
+              <div class="row well well-sm">
+                <div class="col-lg-12 col-md-11 col-sm-10"><i class="fa fa-clock-o"></i> kwi 03, 2013
+                   <i class="fa fa-user"> </i>  <a href="#">Blake Embrey</a>  <i class="fa fa-tags"></i>  <a href="#">Web</a>,<a href="#">Javascript</a>.
+                </div>
+                <!--img.img-responsive.imageborder(src='/img/7.jpg', alt='Image')
+                -->
+              </div>
+              <p><blockquote>
+<p>“Software is like sex; it’s better when it’s free.”</p>
+<ul>
+<li>Linus Torvalds</li>
+</ul>
+</blockquote>
+<p>Being able to contribute to open source is an awesome feeling. The feeling of having code which thousands, if not millions, of people will run everyday is enough to make you cringe. Surprisingly though, few people realize how empowering, yet simple, contributing to an open source project can be.</p>
+<p>In this article I am going to run you through what my usual process looks like when issuing a pull request through GitHub, and what sort of things to expect.</p>
+<h2 id="first-steps">First Steps</h2>
+<p>The first thing you’ll need is an open source library or project that you are passionate about. Finding a library that fits this criteria can be difficult, but I am sure there are a dozen of projects you take for granted everyday. It’s unlikely you even realize how many issues some libraries have backlogged to work through.</p>
+<p>Once you have found a project you are interested in contributing to, chances are it’s on GitHub. If it’s not on GitHub, repeat the previous step. For the purpose of this blog post, I’ll be running with <a href="https://github.com/LearnBoost/stylus/issues/989">this issue from Stylus</a>.</p>
+<p><img src="http://f.cl.ly/items/2n2R1S3M291X3V1k110C/CapturFiles_1.png" alt="Stylus issue on GitHub"></p>
+<p>The first thing you’ll need to do is fork the repo. This is done by clicking the <code>Fork</code> button in the top right of GitHub. Once you fork the repo, you’ll have your own personal copy of the original repo that you can do what you want with. From there, you’ll want to use you command line to clone the repo off GitHub.</p>
+<p><img src="http://f.cl.ly/items/0s0V12453x0X3Z102i1Z/CapturFiles_3.png" alt="Local Stylus Fork"></p>
+<pre><code>git clone git@github.com:blakeembrey/stylus.git
+</code></pre><p>After cloning the repository, you’ll now have a local copy on your machine. My next step is usually to set up the <code>upstream</code> repository link for pulling down code.</p>
+<pre><code>git remote add upstream git@github.com:LearnBoost/stylus.git
+</code></pre><p>The next step is to create a branch, normally based on the name or description of the issue you are trying to solve. You don’t want to make your changes in the <code>master</code> branch as it will make future updates and pull requests more difficult to do.</p>
+<pre><code>git checkout -b media-query-colon
+</code></pre><p>With that command, I’ll quickly create a new branch based off <code>master</code> and switch to it. The first thing you’ll want to do before writing any code is try and find the test suite for the project (hopefully they have one). This is the most useful thing I find during development, especially when it’s a library I’m not entire familiar with. With Stylus, I know I can find the test script under the scripts section the <code>package.json</code>.</p>
+<pre><code>npm test
+</code></pre><p><img src="http://f.cl.ly/items/0f0x1n22031F3j3E060D/CapturFiles_4.png" alt="Command Line after working through the previous steps"></p>
+<h2 id="committing-your-work">Committing your work</h2>
+<p>Running the test script should quickly give an overview of how the library is constructed and the current status of the library. Most of the time, all tests should be passing - otherwise this would mean more bugs that need fixing.</p>
+<p>After running the test script, I usually find it useful to whip up a new test based on the issue you are trying to solve - which will be failing initially. This is known as Test Driven Development (TDD), and will be crucial as you explore the core of some libraries. Make sure to add as many test cases to demostrate the issue and fix, which will also stop future regressions.</p>
+<blockquote>
+<p>In lieu of a formal styleguide, take care to maintain the existing coding style.</p>
+</blockquote>
+<p>When contributing to someone elses library, you’ll want to make sure your coding style is matching the code which already exists. This is an important concept to understand, as it makes future commits easier to read through when all the code is consistent. <a href="https://github.com/rwldrn/idiomatic.js/#all-code-in-any-code-base-should-look-like-a-single-person-typed-it-no-matter-how-many-people-contributed">All code in any code-base should look like a single person typed it, no matter how many people contributed</a>. You may find that some projects also include a <a href="https://github.com/twitter/bootstrap/blob/master/CONTRIBUTING.md">CONTRIBUTING.md</a> file.</p>
+<p>Somewhere during this time you’ll want to commit your changes. Next, we’ll want to push our changes back to the remote repository we cloned from earlier (<code>git push -u origin media-query-colon</code>). This will create a new branch on the remote repo to track from. Once the code is pushed back up to GitHub, you can create a pull request from your repo back to the original (<code>upstream</code>).</p>
+<h2 id="creating-a-pull-request">Creating a pull request</h2>
+<p>When creating the pull request, it is vital to provide a descriptive title and contents - anyone reading the issue should understand what your trying to achieve before reading any code. If there are similar issues or you were fixing an existing issue, make sure to take a note of the issue numbers in the issue description. You can even make a reference to another repo if it affects it - this shows the impact of your change and demostrates the priority of your patch.</p>
+<h2 id="keeping-it-relevant">Keeping it relevant</h2>
+<p>Chances are, by now there have been new commits created since you forked the repo, or perhaps your commit history for the issue is just getting a little unwieldly. Fortunately there is a simple utility built into git for this known as rebasing.</p>
+<pre><code>git checkout master
+git pull upstream master
+git checkout media-query-colon
+git rebase -i master # Interactively rebase
+</code></pre><p><img src="http://f.cl.ly/items/1k3N1Q1I282p3Y3J233L/CapturFiles_6.png" alt="Rebase process"></p>
+<p>A rebase will rewrite your commit history, so you can squash commits together into a single commit and clean up all the changes you have made. It’ll also move the commits to be the lastest in the commit log. Because the history will be rewritten, next time you push you’ll probably need to use the force push flag which overrides the remote commit (<code>git push -f</code>).</p>
+<p>Luckily, with the way GitHub works, any commits in the branch - new or old -  will be appended to your pull request. This makes is simple to quickly iterate on any issues raised by fellow developers or the project owner.</p>
+<h2 id="completion">Completion</h2>
+<p>Now you are likely done. Depending on the repo and repo owner(s), it could take anywhere from a few minutes to a few months for your pull request to be reviewed. It won’t always be perfect, and it may be denied. In the case of your pull request being denied, check out the feedback - it’ll usually be really useful and maybe even give you an idea of where to go from there. If not, there are always more repos in need of contributors.</p>
+</p>
+            </section>
+            <section>
+              <h2 class="post-title">Comments</h2>
+              <div id="disqus_thread"></div>
+            </section>
+            <script>
+              var disqus_shortname = 'myarmblog'; // required: replace example with your forum shortname
+              
+              (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+              })();
+            </script>
+          </div>
+          <!--col-md-8 
+          -->
+          <div class="col-md-3">
+            <aside class="sidebar">
+              <div class="block">
+                <ul id="myTab2" class="nav nav-tabs">
+                  <li class="active"><a href="#fav" data-toggle="tab"><i class="fa fa-star"></i></a></li>
+                  <li><a href="#categories" data-toggle="tab"><i class="fa fa-folder-open"></i></a></li>
+                  <li><a href="#archive" data-toggle="tab"><i class="fa fa-clock-o"></i></a></li>
+                  <li><a href="#tags" data-toggle="tab"><i class="fa fa-tags"></i></a></li>
+                </ul>
+                <div class="tab-content">
+                  <div id="fav" class="tab-pane active">
+                    <h3 class="post-title">Favorite Post</h3>
+                    <ul class="media-list">
+                      <li class="media"><a href="#" class="pull-left"><img src="/img/m2.jpg" width="80" height="80" alt="image" class="media-object"></a>
+                        <div class="media-body">
+                          <p class="media-heading"><a href="#">Lorem ipsum dolor sit amet aut consectetur adipisicing elitl libero</a></p><small>Sep, 28 2013</small>
+                        </div>
+                      </li>
+                      <li class="media"><a href="#" class="pull-left"><img src="/img/m9.jpg" width="80" height="80" alt="image" class="media-object"></a>
+                        <div class="media-body">
+                          <p class="media-heading"><a href="#">Lorem ipsum dolor sit amet in consectetur adipisicing consequuntur</a></p><small>Oct, 9 2013</small>
+                        </div>
+                      </li>
+                      <li class="media"><a href="#" class="pull-left"><img src="/img/m12.jpg" width="80" height="80" alt="image" class="media-object"></a>
+                        <div class="media-body">
+                          <p class="media-heading"><a href="#">Sit amet consectetur adipisicing elit incidunt minus</a></p><small>Dec, 30 2013</small>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div id="categories" class="tab-pane">
+                    <h3 class="post-title">Kategorie</h3>
+                    <ul class="simple">
+                      <li><a href="#">Programowanie</a></li>
+                      <li><a href="#">ARM</a>
+                        <ul>
+                          <li><a href="#">Allwinner</a></li>
+                          <li><a href="#">Rokchip</a></li>
+                        </ul>
+                      </li>
+                      <li><a href="#">Fotografia</a></li>
+                      <li><a href="#">Web Developer</a></li>
+                    </ul>
+                  </div>
+                  <div id="archive" class="tab-pane">
+                    <h3 class="post-title">Archiwum</h3>
+                    <ul class="simple">
+                      <li><a href="#">Grudzien 2013</a></li>
+                      <li><a href="#">Styczen 2014</a></li>
+                      <li><a href="#">Luty 2014</a></li>
+                    </ul>
+                  </div>
+                  <div id="tags" class="tab-pane">
+                    <h3 class="post-title">Tagi</h3>
+                    <div class="tags-cloud"><a href="#" class="tag">Web</a><a href="#" class="tag">Artificial Intelligence</a><a href="#" class="tag">Programing</a><a href="#" class="tag">Design</a><a href="#" class="tag">3D</a><a href="#" class="tag">Games</a><a href="#" class="tag">Resources</a><a href="#" class="tag">2D</a><a href="#" class="tag">C++</a><a href="#" class="tag">Jquery</a><a href="#" class="tag">Javascript</a><a href="#" class="tag">Library</a><a href="#" class="tag">Windows</a><a href="#" class="tag">Linux</a><a href="#" class="tag">Cloud</a><a href="#" class="tag">Game developer</a><a href="#" class="tag">Server</a><a href="#" class="tag">Google</a><a href="#" class="tag">Bootstrap</a><a href="#" class="tag">Less</a><a href="#" class="tag">Sass</a><a href="#" class="tag">Engine</a><a href="#" class="tag">Node.js</a></div>
+                  </div>
+                </div>
+                <!--tab-content 
+                -->
+              </div>
+              <div class="panel panel-primary">
+                <div class="panel-heading"><i class="fa fa-align-left"></i>ARMblog</div>
+                <div class="panel-body">
+                  <p>Blog poświecony zagadnieniom zwiazanym z programowaniem i obsługa urzadzen z procesorami ARM oraz WebMasteringiem szeroko pojetym :)</p>
+                </div>
+              </div>
+            </aside>
+            <!--Sidebar 
+            -->
+          </div>
+        </div>
+        <!--row 
+        -->
+      </div>
+      <!--container  
+      -->
+      <aside id="footer-widgets">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+              <h3 class="footer-widget-title">Mapa strony</h3>
+              <ul class="list-unstyled three_cols">
+                <li><a href="/">Home</a></li>
+                <li><a href="/">Blog</a></li>
+                <li><a href="/">Prace</a></li>
+                <li><a href="/galerie/">Galeria</a></li>
+                <li><a href="/about/">O mnie</a></li>
+                <li><a href="/contact/">Kontakt</a></li>
+              </ul>
+              <h3 class="footer-widget-title">Zapisz sie </h3>
+              <p>Lorem ipsum Amet fugiat elit nisi anim mollit in labore ut esse Duis ullamco ad dolor veniam velit lorem ipsum dolor sit amet, consectetur adipisicing..</p>
+              <div class="input-group">
+                <input type="text" placeholder="Email Adress" class="form-control"><span class="input-group-btn">
+                  <button type="button" class="btn btn-success">Subscribe</button></span>
+              </div>
+              <!--/input-group 
+              -->
+            </div>
+            <div class="col-md-6">
+              <div class="footer-widget">
+                <h3 class="footer-widget-title">Ostatnie Prace</h3>
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-sm-3 col-xs-6"><a href="#" class="thumbnail"><img src="/img/wf1.jpg" alt="Image" class="img-responsive"></a></div>
+                  <div class="col-lg-6 col-md-6 col-sm-3 col-xs-6"><a href="#" class="thumbnail"><img src="/img/wf2.jpg" alt="Image" class="img-responsive"></a></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--row 
+          -->
+        </div>
+        <!--container 
+        -->
+      </aside>
+      <!--footer-widgets 
+      -->
+      <footer id="footer">
+        <p>
+          © 2014
+            <a href="/">Wojciech Lubicz-Łapinski</a>  
+          All rights reserved.
+        </p>
+      </footer>
+    </div>
+    <!--boxed 
+    -->
+    <div id="back-top"><a href="#header"><i class="fa fa-chevron-up"></i></a></div>
+    <!--Scripts 
+    -->
+    <script src="/js/jquery-1.10.2.min.js"></script>
+    <script src="/js/jquery.cookie.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.mixitup.min.js"></script>
+    <script src="/js/lightbox-2.6.min.js"></script>
+    <script src="/js/holder.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/styleswitcher.js"></script>
+    <script src="/js/syntax/shCore.js"></script>
+    <script src="/js/syntax/shBrushXml.js"></script>
+    <script src="/js/syntax/shBrushJScript.js"></script>
+    <script type="text/javascript">
+      <SyntaxHighlighter class="all"></SyntaxHighlighter>
+    </script>
+  </body>
+</html>

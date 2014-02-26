@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARMblog</title>
+    <!--CSS 
+    -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/font-awesome.min.css" rel="stylesheet" media="screen">
+    <link href="/css/animate.min.css" rel="stylesheet" media="screen">
+    <link href="/css/lightbox.css" rel="stylesheet" media="screen">
+    <link href="/css/syntax/shCore.css" rel="stylesheet" media="screen">
+    <link href="/css/syntax/shThemeDefault.css" rel="stylesheet" media="screen">
+    <link href="/css/style.css" rel="stylesheet" media="screen" title="default">
+    <link href="/css/color-default.css" rel="stylesheet" media="screen" title="default">
+    <link href="/css/width-boxed.css" rel="stylesheet" media="screen" title="default">
+    <link href="/css/mystyle.css" rel="stylesheet" media="screen" title="default">
+    <!--HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries 
+    -->
+    <!--if lt IE 9
+    script(src='/js/html5shiv.js')
+    script(src='/js/respond.min.js')
+    -->
+  </head>
+  <body>
+    <div class="boxed animated fadeIn animation-delay-5">
+      <header id="header" class="hidden-xs">
+        <div class="container">
+          <div id="header-title">
+            <h1 class="animated fadeInDown"><a href="index.html">ARM<span>blog</span></a></h1>
+            <p class="animated fadeInLeft">Blog nie tylko a ARM-ach...</p>
+          </div>
+          <div id="social-header" class="hidden-xs"><a href="http://twitter.com/JonasKrop" class="social-icon soc-twitter animated fadeInDown animation-delay-1"><i class="fa fa-twitter"></i></a><a href="#" class="social-icon soc-google-plus animated fadeInDown animation-delay-2"><i class="fa fa-google-plus"></i></a><a href="http://www.facebook.com/wojciech.lubiczlapinski" class="social-icon soc-facebook animated fadeInDown animation-delay-3"><i class="fa fa-facebook"></i></a><a href="http://github.com/Lu6ith" class="social-icon soc-github animated fadeInDown animation-delay-7"><i class="fa fa-github"></i></a></div>
+        </div>
+        <!--container 
+        -->
+      </header>
+      <!--header 
+      -->
+      <nav role="navigation" class="navbar navbar-static-top navbar-mind">
+        <div class="container">
+          <!--Brand and toggle get grouped for better mobile display 
+          -->
+          <div class="navbar-header"><a href="index.html" class="navbar-brand visible-xs">ARM<span>blog</span></a>
+            <button type="button" data-toggle="collapse" data-target=".navbar-mind-collapse" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><i class="fa fa-bars fa-inverse"></i></button>
+          </div>
+          <!--Collect the nav links, forms, and other content for toggling 
+          -->
+          <div class="collapse navbar-collapse navbar-mind-collapse">
+            <ul class="nav navbar-nav">
+              <li class="dropdown"><a href="/" class="dropdown-toggle">Home </a></li>
+              <!--dropdown 
+              -->
+              <li class="dropdown"><a href="/about/" class="dropdown-toggle">O mnie </a></li>
+              <!--dropdown 
+              -->
+              <li class="dropdown active"><a href="#" class="dropdown-toggle">Blog </a></li>
+              <!--dropdown 
+              -->
+              <li class="dropdown"><a href="/galerie/" data-toggle="dropdown" class="dropdown-toggle">Galerie<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="portfolio.html">Podroze</a></li>
+                  <li><a href="portfolio2.html">Przyroda</a></li>
+                  <li><a href="portfolio_item.html">Ania</a></li>
+                </ul>
+              </li>
+              <!--dropdown 
+              -->
+              <li class="dropdown"><a href="/contact/" class="dropdown-toggle">Kontakt </a></li>
+              <!--dropdown 
+              -->
+            </ul>
+            <!--nav nabvar-nav 
+            -->
+          </div>
+          <!--navbar-collapse 
+          -->
+        </div>
+        <!--container 
+        -->
+      </nav>
+      <!--navbar navbar-default 
+      -->
+      <header class="wrap-title">
+        <div class="container">
+          <h1 class="page-title">Blog</h1>
+          <ol class="breadcrumb hidden-xs">
+            <li><a href="/">Home</a></li>
+            <li class="active">Blog</li>
+          </ol>
+        </div>
+      </header>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-9">
+            <section class="post">
+              <h2 class="post-title">Potrzeba Statycznego Generatora Stron ?!</h2>
+              <div class="row well well-sm">
+                <div class="col-lg-12 col-md-11 col-sm-10"><i class="fa fa-clock-o"></i> lut 17, 2014
+                   <i class="fa fa-user"> </i>  <a href="#">Wojciech Lubicz-Łapinski</a>  <i class="fa fa-tags"></i>  <a href="#">Web</a>,<a href="#">Javascript</a>.
+                </div>
+                <!--img.img-responsive.imageborder(src='/img/7.jpg', alt='Image')
+                -->
+              </div>
+              <p><p>Writing has always been a part of what I do.  I’ve had a chance to blog for sites like <a href="http://mashable.com/" target="_blank">Mashable</a>, <a href="http://www.appolicious.com/" target="_blank">Appolicious</a>, and the <a href="http://www.adobe.com/inspire.html" target="_blank">Adobe Inspire Magazine</a>.  That being said, my primary goal has been to have a quality personal blog with fresh content that is added regularly.  However, that hasn’t always happened since over blog maintenance kept getting in my way.  I wanted to find the best way to create a blog that required minimal maintenance of the engine and also allowed me to write content quickly and easily while also rapdily iterating on the design and structure.  </p>
+<p>This led me down a path of completely redoing everything about my personal site.  In this series I will outline all of my decisions and the technologies I chose.  In this first article, I will give some background information and outline my decision process for choosing a static site generator.  </p>
+<blockquote>
+<p>All code for my new site is <a href="https://github.com/davidtucker/davidtucker-blog" target="_blank">available on Github</a> and is being released under an MIT License.  You can feel free to use as you see fit.</p>
+</blockquote>
+<h2 id="the-backstory">The Backstory</h2>
+<p>To give you some insight on why I chose to utilize a static site generator, I have to give you a short history of my blogging and the platforms I have used.  Don’t worry, this will be short and relatively painless.</p>
+<h3 id="wordpress">Wordpress</h3>
+<p>When I first put up a blog at davidtucker.net, it was powered by <a href="http://wordpress.org/" target="_blank">Wordpress</a>.  If my memory serves me correctly this was back around 2007.  Wordpress is obviously a quality blogging platform, and since I was doing PHP development at that time, it made sense.  However, a few big problems became evident over the years I used Wordpress:</p>
+<ul>
+<li>Wordpress requires maintenance.  Updates need to be installed immediately because Wordpress vulnerabilities are targeted by hackers (and often).</li>
+<li>Wordpress also required server maintenance.  I’ve generally always managed a personal Linux server, and I was managing a personal LAMP stack server on which my blog ran.  In many cases I was hacked because of a vulnerability in my server setup (I recall three hacks specifically during my early days of using Wordpress before I knew how to fully harden Apache for Wordpress use).</li>
+<li>Wordpress templates mix too much presentation and logic in the same code.  As I grew into a more seasoned developer, I began to realize the problems that this created.  Every time I would work on a new design for my blog, I would quickly realize the huge amount of time it took to take a completed design idea which was in HTML, CSS, and JS and make it into a workable template for Wordpress.</li>
+<li>Wordpress is a blogging engine with pre-defined types (yes, I realize this has changed since then).  This is fine for sites that are just blogs, but if you want it to manage other types of content or add other content properties you had to fit a square peg into a round hole.  That certainly isn’t to say it could not be done, but in those earlier days of Wordpress it always felt like a bad hack to get those other properties included and referenced within the templates.</li>
+</ul>
+<p>It didn’t take long for me to realize that these elements were truly limiting my ability to blog regularly and to rapidly iterate on some elements within my blog’s structure.  I needed to find something that fit me better.</p>
+<h3 id="expression-engine">Expression Engine</h3>
+<p>Next, I took a much more traditional content management approach.  I had known about <a href="http://ellislab.com/expressionengine" target="_blank">Expression Engine</a> (EE) for some time, and I had tried it for some other sites I was working on.   Right out of the gate there were some big benefits:</p>
+<ul>
+<li>EE provided a true type-based content management system.  This allows me to model my own data types and have them reflected properly in my site.</li>
+<li>EE had a much cleaner separation between the presentation and logic layers.  It wasn’t perfect, but it was miles ahead of Wordpress.  This made it very easy to iterate on my site’s design and structure.</li>
+</ul>
+<p>I purchased an EE license, and had it deployed relatively quickly.  For a while, my blogging increased, but then the other problems reemerged.  I still had the problem of both server maintenance as well as maintaining the Expression Engine version.  I stopped counting how many times I went to write a blog post only to discover that I needed to update a version of something or change a configuration.  This utterly destroyed my blogging productivity.</p>
+<h3 id="a-better-way">A Better Way</h3>
+<p>It was at this point that I took note that most all of my site was static.  The only dynamic element that I was utilizing was commenting, and frankly I didn’t care about commenting (and there were client side options like <a href="http://disqus.com/" target="_blank">Disqus</a> that I could leverage if I needed it).  When I finally came to this conclusion, I knew I was going to choose a static site generator and deploy it on a cloud service like <a href="http://aws.amazon.com/s3/" target="_blank">Amazon S3</a> or <a href="http://www.rackspace.com/cloud/files/" target="_blank">Rackspace CloudFiles</a>.</p>
+<h2 id="choosing-a-static-site-generator">Choosing a Static Site Generator</h2>
+<p>Once I realized that I needed to adopt a static site generator, I began to survey the landscape.  In my search, certain generators rose to the top like <a href="http://jekyllrb.com/" target="_blank">Jekyll</a>, <a href="http://hammerformac.com/" target="_blank">Hammer</a>, and <a href="http://middlemanapp.com/" target="_blank">Middleman</a>.  To determine the best one for me, I evaluated them based off of certain criteria:</p>
+<ul>
+<li>It needed to be using a technology I am very familiar with so that I can extend and customize as needed.  I knew that this meant that it would probably not be one of the popular generators as many of them are Ruby-based (and Ruby isn’t my area of expertise).</li>
+<li>It needed to be open source so that I could contribute to the core project.</li>
+<li>It needed to provide a workflow that could be easily automated and potentially tie in well with tools for this like Grunt JS.</li>
+<li>It needed to be command line driven.  I wasn’t interested in using an <em>all-in-one</em> GUI approach as I felt that could limit customization.</li>
+</ul>
+<p>I know several people who have chosen <a href="http://pages.github.com/" target="_blank">Github Pages</a> (which optionally can utilize Jekyll), and it obviously was an area that I checked out early on.  Since its static site generator is powered by Jekyll, I decided it was not an option (just solely because as mentioned before I don’t do a ton of Ruby work).  In addition, there are some limiting factors on what you can do with Jekyll on Github Pages (since you don’t really control the static generator but instead leave that to Github Pages).</p>
+<p>With that being said, I continued to look as I felt that none of the early options really met all of my criteria.</p>
+<h3 id="wintersmith">Wintersmith</h3>
+<p>When I researched Node JS static site generators <a href="https://github.com/jnordberg/wintersmith" target="_blank">Wintersmith</a> (created by <a href="https://github.com/jnordberg" target="_blank">Johan Nordberg</a>) quickly rose to the top.  I did some initial research, and within thirty minutes I realized it would fit my needs well.  It met my earlier criteria (for the most part) and provided a few examples that I could run with.</p>
+<p>My main issue with the examples were that they were all done with Jade as the templating engine.  I have worked with Jade before, and I’m not a big fan of it (which I realize is a discussion for another day), however I also knew that Wintersmith had a plugin API for templating.  I assumed I could find something that would work well.  After some initial investigation I settled on <a href="http://nunjucks.jlongster.com/" target="_blank">nunjucks</a> and the <a href="https://github.com/jbuck/wintersmith-nunjucks" target="_blank">wintersmith-nunjucks</a> plugin by <a href="https://github.com/jbuck" target="_blank">John Buckley</a>.  Nunjucks is based on the <a href="http://jinja.pocoo.org/" target="_blank">jinja2</a> templating engine in python and it also had similarities to Expression Engine’s templates.   In both cases it allowed for the clean separation of the presentation and logic layers.  </p>
+<h2 id="conclusion">Conclusion</h2>
+<p>With these elements in place, I was able to move forward to building the first version of my new site.  In the upcoming posts in this series I will outline my development process, technical choices, and even my deployment choices and process.</p>
+<hr>
+<p><a name="seriesListing"></a></p>
+<h2 id="article-series">Article Series</h2>
+<ul>
+<li>Part 1 - <a href="/articles/move-to-static-site-generator/">The Need for a Static Site Generator</a></li>
+<li>Part 2 - <a href="/articles/introduction-to-wintersmith/">An Introduction to the Wintersmith Process</a></li>
+<li>Part 3 - <a href="/articles/automating-with-grunt/">Automating The Development, Build, and Deployment Process with Grunt</a></li>
+<li>More posts coming soon</li>
+</ul>
+</p>
+            </section>
+            <section>
+              <h2 class="post-title">Comments</h2>
+              <div id="disqus_thread"></div>
+            </section>
+            <script>
+              var disqus_shortname = 'myarmblog'; // required: replace example with your forum shortname
+              
+              (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+              })();
+            </script>
+          </div>
+          <!--col-md-8 
+          -->
+          <div class="col-md-3">
+            <aside class="sidebar">
+              <div class="block">
+                <ul id="myTab2" class="nav nav-tabs">
+                  <li class="active"><a href="#fav" data-toggle="tab"><i class="fa fa-star"></i></a></li>
+                  <li><a href="#categories" data-toggle="tab"><i class="fa fa-folder-open"></i></a></li>
+                  <li><a href="#archive" data-toggle="tab"><i class="fa fa-clock-o"></i></a></li>
+                  <li><a href="#tags" data-toggle="tab"><i class="fa fa-tags"></i></a></li>
+                </ul>
+                <div class="tab-content">
+                  <div id="fav" class="tab-pane active">
+                    <h3 class="post-title">Favorite Post</h3>
+                    <ul class="media-list">
+                      <li class="media"><a href="#" class="pull-left"><img src="/img/m2.jpg" width="80" height="80" alt="image" class="media-object"></a>
+                        <div class="media-body">
+                          <p class="media-heading"><a href="#">Lorem ipsum dolor sit amet aut consectetur adipisicing elitl libero</a></p><small>Sep, 28 2013</small>
+                        </div>
+                      </li>
+                      <li class="media"><a href="#" class="pull-left"><img src="/img/m9.jpg" width="80" height="80" alt="image" class="media-object"></a>
+                        <div class="media-body">
+                          <p class="media-heading"><a href="#">Lorem ipsum dolor sit amet in consectetur adipisicing consequuntur</a></p><small>Oct, 9 2013</small>
+                        </div>
+                      </li>
+                      <li class="media"><a href="#" class="pull-left"><img src="/img/m12.jpg" width="80" height="80" alt="image" class="media-object"></a>
+                        <div class="media-body">
+                          <p class="media-heading"><a href="#">Sit amet consectetur adipisicing elit incidunt minus</a></p><small>Dec, 30 2013</small>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div id="categories" class="tab-pane">
+                    <h3 class="post-title">Kategorie</h3>
+                    <ul class="simple">
+                      <li><a href="#">Programowanie</a></li>
+                      <li><a href="#">ARM</a>
+                        <ul>
+                          <li><a href="#">Allwinner</a></li>
+                          <li><a href="#">Rokchip</a></li>
+                        </ul>
+                      </li>
+                      <li><a href="#">Fotografia</a></li>
+                      <li><a href="#">Web Developer</a></li>
+                    </ul>
+                  </div>
+                  <div id="archive" class="tab-pane">
+                    <h3 class="post-title">Archiwum</h3>
+                    <ul class="simple">
+                      <li><a href="#">Grudzien 2013</a></li>
+                      <li><a href="#">Styczen 2014</a></li>
+                      <li><a href="#">Luty 2014</a></li>
+                    </ul>
+                  </div>
+                  <div id="tags" class="tab-pane">
+                    <h3 class="post-title">Tagi</h3>
+                    <div class="tags-cloud"><a href="#" class="tag">Web</a><a href="#" class="tag">Artificial Intelligence</a><a href="#" class="tag">Programing</a><a href="#" class="tag">Design</a><a href="#" class="tag">3D</a><a href="#" class="tag">Games</a><a href="#" class="tag">Resources</a><a href="#" class="tag">2D</a><a href="#" class="tag">C++</a><a href="#" class="tag">Jquery</a><a href="#" class="tag">Javascript</a><a href="#" class="tag">Library</a><a href="#" class="tag">Windows</a><a href="#" class="tag">Linux</a><a href="#" class="tag">Cloud</a><a href="#" class="tag">Game developer</a><a href="#" class="tag">Server</a><a href="#" class="tag">Google</a><a href="#" class="tag">Bootstrap</a><a href="#" class="tag">Less</a><a href="#" class="tag">Sass</a><a href="#" class="tag">Engine</a><a href="#" class="tag">Node.js</a></div>
+                  </div>
+                </div>
+                <!--tab-content 
+                -->
+              </div>
+              <div class="panel panel-primary">
+                <div class="panel-heading"><i class="fa fa-align-left"></i>ARMblog</div>
+                <div class="panel-body">
+                  <p>Blog poświecony zagadnieniom zwiazanym z programowaniem i obsługa urzadzen z procesorami ARM oraz WebMasteringiem szeroko pojetym :)</p>
+                </div>
+              </div>
+            </aside>
+            <!--Sidebar 
+            -->
+          </div>
+        </div>
+        <!--row 
+        -->
+      </div>
+      <!--container  
+      -->
+      <aside id="footer-widgets">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+              <h3 class="footer-widget-title">Mapa strony</h3>
+              <ul class="list-unstyled three_cols">
+                <li><a href="/">Home</a></li>
+                <li><a href="/">Blog</a></li>
+                <li><a href="/">Prace</a></li>
+                <li><a href="/galerie/">Galeria</a></li>
+                <li><a href="/about/">O mnie</a></li>
+                <li><a href="/contact/">Kontakt</a></li>
+              </ul>
+              <h3 class="footer-widget-title">Zapisz sie </h3>
+              <p>Lorem ipsum Amet fugiat elit nisi anim mollit in labore ut esse Duis ullamco ad dolor veniam velit lorem ipsum dolor sit amet, consectetur adipisicing..</p>
+              <div class="input-group">
+                <input type="text" placeholder="Email Adress" class="form-control"><span class="input-group-btn">
+                  <button type="button" class="btn btn-success">Subscribe</button></span>
+              </div>
+              <!--/input-group 
+              -->
+            </div>
+            <div class="col-md-6">
+              <div class="footer-widget">
+                <h3 class="footer-widget-title">Ostatnie Prace</h3>
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-sm-3 col-xs-6"><a href="#" class="thumbnail"><img src="/img/wf1.jpg" alt="Image" class="img-responsive"></a></div>
+                  <div class="col-lg-6 col-md-6 col-sm-3 col-xs-6"><a href="#" class="thumbnail"><img src="/img/wf2.jpg" alt="Image" class="img-responsive"></a></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--row 
+          -->
+        </div>
+        <!--container 
+        -->
+      </aside>
+      <!--footer-widgets 
+      -->
+      <footer id="footer">
+        <p>
+          © 2014
+            <a href="/">Wojciech Lubicz-Łapinski</a>  
+          All rights reserved.
+        </p>
+      </footer>
+    </div>
+    <!--boxed 
+    -->
+    <div id="back-top"><a href="#header"><i class="fa fa-chevron-up"></i></a></div>
+    <!--Scripts 
+    -->
+    <script src="/js/jquery-1.10.2.min.js"></script>
+    <script src="/js/jquery.cookie.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.mixitup.min.js"></script>
+    <script src="/js/lightbox-2.6.min.js"></script>
+    <script src="/js/holder.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/styleswitcher.js"></script>
+    <script src="/js/syntax/shCore.js"></script>
+    <script src="/js/syntax/shBrushXml.js"></script>
+    <script src="/js/syntax/shBrushJScript.js"></script>
+    <script type="text/javascript">
+      <SyntaxHighlighter class="all"></SyntaxHighlighter>
+    </script>
+  </body>
+</html>
